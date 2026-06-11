@@ -1,0 +1,5 @@
+ARCHIVO TEMPORAL 
+
+Es ideal que en esta carpeta vayan los paquetes dto, es decir, los 
+objetos simples para poder recibir datos desde formularios de Thymeleaf,
+asi no mezclamos directamente los modelos con el formulario como tal.
