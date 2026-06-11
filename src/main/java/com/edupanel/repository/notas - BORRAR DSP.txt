@@ -1,0 +1,38 @@
+De momento creare repositorios en memoria para probar logica de
+la aplicacion, y luego conectamos con firebase.
+
+
+UsuarioRepository (Interface)
+responsabilidades:
+- Guardar usuarios
+- Buscar usuario por su ID
+- Buscar usuarios por su email
+- Listgar usuarios pendientes
+- Actualizar roles
+
+AlumnoRepository (Interface)
+responsabilidades:
+- Guardar alumnos
+- Listar alumnos
+- Buscar alumno
+- Eliminar alumno
+
+ProfesorRepository (Interface)
+responsabilidades:
+- Guardar profesores
+- Listar profesores
+- Buscar profesor
+- Actualizar asignaturas del profesor
+
+CalificacionRepository (Interface)
+responsabilidades:
+- Guardar notas
+- Listar notas de un alumno
+- Listar notas por asignatura
+- Eliminar notas
+
+AnuncioRepository (Interface)
+responsabilidades:
+- Guardar anuncios
+- Listar anuncios por asignatura
+- Eliminar anuncios
