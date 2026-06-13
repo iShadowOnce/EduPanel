@@ -1,11 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduPanel</title>
+    <title>Cuenta Pendiente | EduPanel</title>
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
-    <h1>Pagina PENDIENTE</h1>
+
+<body class="review-page">
+
+    <!-- Efecto de brillo de fondo sutil -->
+    <div class="background-glow"></div>
+
+    <!-- Contenedor del Mensaje -->
+    <main class="review-card">
+
+        <!-- Ícono de éxito y espera -->
+        <div class="review-icon-container">
+            <div class="review-icon-wrapper">
+
+                <!-- Círculo de fondo animado -->
+                <div class="review-icon-pulse"></div>
+
+                <!-- Ícono de reloj -->
+                <svg class="review-clock-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
+
+                <!-- Check de éxito -->
+                <div class="review-check-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Título -->
+        <h1>Registro Completado</h1>
+
+        <!-- Mensaje -->
+        <section class="review-message">
+            <p>
+                Tu cuenta ha sido creada exitosamente. Sin embargo, por razones de seguridad,
+                <strong>tu perfil está pendiente de validación</strong>.
+            </p>
+
+            <p>
+                Un Profesor Jefe o Administrador debe verificar tus datos y asignarte el rol correspondiente.
+                Una vez completado este proceso, se te otorgará acceso total al
+                <strong>Portal Académico</strong>.
+            </p>
+        </section>
+
+        <!-- Tarjeta de soporte -->
+        <section class="support-card">
+            <svg class="support-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
+                <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
+            </svg>
+
+            <div>
+                <h3>¿Tu acceso está demorando?</h3>
+                <p>
+                    Si han pasado más de 48 horas o necesitas acceso urgente, por favor contáctate con soporte:
+                    <a href="mailto:soporte@institucion.edu">soporte@institucion.edu</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Botón de acción -->
+        <a href="index.html" class="review-action-button">
+            Cerrar sesión y volver al inicio
+        </a>
+
+    </main>
+
 </body>
+
 </html>
