@@ -17,4 +17,10 @@ public class Profesor extends Usuario {
         setRol(Rol.PROFESOR);
     }
 
+    @Override
+    public String obtenerRutaDashboard() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'obtenerRutaDashboard'");
+    }
+
 }

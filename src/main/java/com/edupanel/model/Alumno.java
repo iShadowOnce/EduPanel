@@ -14,4 +14,10 @@ public class Alumno extends Usuario {
         super();
         setRol(Rol.ALUMNO);
     }
+
+    @Override
+    public String obtenerRutaDashboard() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'obtenerRutaDashboard'");
+    }
 }
