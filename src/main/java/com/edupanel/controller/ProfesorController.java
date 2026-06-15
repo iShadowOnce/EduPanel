@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ProfesorController {
@@ -35,6 +36,12 @@ public class ProfesorController {
     @PostMapping("/profesor/anuncios/guardar")
     public String guardarAnuncio(@ModelAttribute Anuncio nuevoAnuncio) {
         anuncioService.guardarAnuncio(nuevoAnuncio);
+        return "redirect:/profesor/anuncios";
+    }
+
+    @PostMapping("/profesor/anuncios/{id}/eliminar")
+    public String eliminarAnuncio(@PathVariable String id) {
+        anuncioService.eliminarAnuncio(id);
         return "redirect:/profesor/anuncios";
     }
 }

@@ -10,15 +10,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.edupanel.model.Calificacion;
+import com.edupanel.service.AnuncioService;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class AlumnoController {
 
     private final AlumnoService alumnoService;
+    private final AnuncioService anuncioService;
 
-    public AlumnoController(AlumnoService alumnoService) {
+    public AlumnoController(AlumnoService alumnoService, AnuncioService anuncioService) {
         this.alumnoService = alumnoService;
+        this.anuncioService = anuncioService;
     }
 
     @GetMapping("/profesor/alumnos")
@@ -47,4 +50,30 @@ public class AlumnoController {
         alumnoService.agregarCalificacion(id, nuevaCalificacion);
         return "redirect:/profesor/alumnos/" + id + "/notas";
     }
+
+    @GetMapping("/alumno/{id}/dashboard")
+    public String dashboardAlumno(@PathVariable String id, Model model) {
+        model.addAttribute("alumno", alumnoService.buscarPorId(id));
+        return "alumno-dashboard";
+    }
+
+    @GetMapping("/alumno/{id}/notas")
+    public String verNotasAlumnoComoAlumno(@PathVariable String id, Model model) {
+        model.addAttribute("alumno", alumnoService.buscarPorId(id));
+        return "alumno-notas";
+    }
+
+    @GetMapping("/alumno/{id}/anuncios")
+    public String verAnunciosAlumno(@PathVariable String id, Model model) {
+        model.addAttribute("alumno", alumnoService.buscarPorId(id));
+        model.addAttribute("anuncios", anuncioService.listarAnuncios());
+        return "alumno-anuncios";
+    }
+
+    @PostMapping("/profesor/alumnos/{id}/eliminar")
+    public String eliminarAlumno(@PathVariable String id) {
+        alumnoService.eliminarAlumno(id);
+        return "redirect:/profesor/alumnos";
+    }
+
 }

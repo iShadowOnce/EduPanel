@@ -74,4 +74,8 @@ public class AlumnoService {
             alumno.getNotas().add(calificacion);
         }
     }
+
+    public void eliminarAlumno(String uid) {
+        alumnos.removeIf(alumno -> alumno.getUid().equals(uid));
+    }
 }

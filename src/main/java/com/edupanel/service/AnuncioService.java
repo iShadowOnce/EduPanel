@@ -48,4 +48,8 @@ public class AnuncioService {
 
         return anunciosFiltrados;
     }
+
+    public void eliminarAnuncio(String id) {
+        anuncios.removeIf(anuncio -> anuncio.getId().equals(id));
+    }
 }

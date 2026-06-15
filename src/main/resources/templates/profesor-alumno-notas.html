@@ -1,84 +1,86 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Notas del alumno</title>
 </head>
+
 <body>
 
-<h1>Notas del alumno</h1>
+    <h1>Notas del alumno</h1>
 
-<p>
-    Alumno:
-    <strong th:text="${alumno.nombre + ' ' + alumno.apellido}"></strong>
-</p>
-<p>
-    Promedio:
-    <strong th:text="${alumno.calcularPromedio()}"></strong>
-</p>
-<p>
-    Estado:
-    <strong th:text="${alumno.obtenerEstadoAcademico()}"></strong>
-</p>
+    <p>
+        Alumno:
+        <strong th:text="${alumno.nombre + ' ' + alumno.apellido}"></strong>
+    </p>
+    <p>
+        Promedio:
+        <strong th:text="${alumno.calcularPromedio()}"></strong>
+    </p>
+    <p>
+        Estado:
+        <strong th:text="${alumno.obtenerEstadoAcademico()}"></strong>
+    </p>
 
-<h2>Agregar calificación</h2>
+    <h2>Agregar calificación</h2>
 
-<form th:action="@{/profesor/alumnos/{id}/notas/guardar(id=${alumno.uid})}"
-      th:object="${nuevaCalificacion}"
-      method="post">
+    <form th:action="@{/profesor/alumnos/{id}/notas/guardar(id=${alumno.uid})}" th:object="${nuevaCalificacion}"
+        method="post">
 
-    <label>Asignatura:</label>
-    <select th:field="*{asignatura}">
-        <option value="MATEMATICAS">Matemáticas</option>
-        <option value="LENGUAJE">Lenguaje</option>
-        <option value="CIENCIAS_NATURALES">Ciencias Naturales</option>
-        <option value="INGLES">Inglés</option>
-        <option value="HISTORIA">Historia</option>
-        <option value="ARTES">Artes</option>
-        <option value="EDUCACION_FISICA">Educación Física</option>
-        <option value="MUSICA">Música</option>
-    </select>
+        <label>Asignatura:</label>
+        <select th:field="*{asignatura}">
+            <option value="MATEMATICAS">Matemáticas</option>
+            <option value="LENGUAJE">Lenguaje</option>
+            <option value="CIENCIAS_NATURALES">Ciencias Naturales</option>
+            <option value="INGLES">Inglés</option>
+            <option value="HISTORIA">Historia</option>
+            <option value="ARTES">Artes</option>
+            <option value="EDUCACION_FISICA">Educación Física</option>
+            <option value="MUSICA">Música</option>
+        </select>
+
+        <br>
+
+        <label>Nota:</label>
+        <input type="number" step="0.1" min="1.0" max="7.0" th:field="*{nota}">
+
+        <br>
+
+        <label>Descripción:</label>
+        <input type="text" th:field="*{descripcion}">
+
+        <br>
+
+        <button type="submit">Guardar nota</button>
+    </form>
+
+    <hr>
+
+    <h2>Notas registradas</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Asignatura</th>
+                <th>Nota</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="nota : ${alumno.notas}">
+                <td th:text="${nota.asignatura}"></td>
+                <td th:text="${nota.nota}"></td>
+                <td th:text="${nota.descripcion}"></td>
+            </tr>
+        </tbody>
+    </table>
 
     <br>
 
-    <label>Nota:</label>
-    <input type="number" step="0.1" min="1.0" max="7.0" th:field="*{nota}">
-
-    <br>
-
-    <label>Descripción:</label>
-    <input type="text" th:field="*{descripcion}">
-
-    <br>
-
-    <button type="submit">Guardar nota</button>
-</form>
-
-<hr>
-
-<h2>Notas registradas</h2>
-
-<table border="1">
-    <thead>
-    <tr>
-        <th>Asignatura</th>
-        <th>Nota</th>
-        <th>Descripción</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="nota : ${alumno.notas}">
-        <td th:text="${nota.asignatura}"></td>
-        <td th:text="${nota.nota}"></td>
-        <td th:text="${nota.descripcion}"></td>
-    </tr>
-    </tbody>
-</table>
-
-<br>
-
-<a href="/profesor/alumnos">Volver a alumnos</a>
+    <a href="/profesor/alumnos">Volver a alumnos</a>
 
 </body>
+
 </html>
