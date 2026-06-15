@@ -6,8 +6,12 @@ import com.edupanel.model.Rol;
 import com.edupanel.model.Asignatura;
 import org.springframework.stereotype.Service;
 
+import com.edupanel.exception.AlumnoInvalidoException;
+import com.edupanel.exception.CalificacionInvalidaException;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AlumnoService {
@@ -42,6 +46,12 @@ public class AlumnoService {
     }
 
     public void guardarAlumno(Alumno alumno) {
+        validarAlumno(alumno);
+
+        if (alumno.getUid() == null || alumno.getUid().isBlank()) {
+            alumno.setUid(UUID.randomUUID().toString());
+        }
+
         alumno.setRol(Rol.ALUMNO);
 
         if (alumno.getNotas() == null) {
@@ -62,6 +72,8 @@ public class AlumnoService {
     }
 
     public void agregarCalificacion(String alumnoId, Calificacion calificacion) {
+        validarCalificacion(calificacion);
+
         Alumno alumno = buscarPorId(alumnoId);
 
         if (alumno != null) {
@@ -70,7 +82,7 @@ public class AlumnoService {
                 alumno.setNotas(new ArrayList<>());
             }
 
-            calificacion.setId(String.valueOf(alumno.getNotas().size() + 1));
+            calificacion.setId(UUID.randomUUID().toString());
             calificacion.setAlumnoId(alumnoId);
 
             alumno.getNotas().add(calificacion);
@@ -82,6 +94,8 @@ public class AlumnoService {
     }
 
     public void actualizarAlumno(String uid, Alumno datosActualizados) {
+        validarAlumno(datosActualizados);
+
         Alumno alumnoExistente = buscarPorId(uid);
 
         if (alumnoExistente != null) {
@@ -107,6 +121,8 @@ public class AlumnoService {
     }
 
     public void actualizarCalificacion(String alumnoId, String notaId, Calificacion datosActualizados) {
+        validarCalificacion(datosActualizados);
+
         Calificacion calificacionExistente = buscarCalificacionPorId(alumnoId, notaId);
 
         if (calificacionExistente != null) {
@@ -121,6 +137,38 @@ public class AlumnoService {
 
         if (alumno != null && alumno.getNotas() != null) {
             alumno.getNotas().removeIf(calificacion -> calificacion.getId().equals(notaId));
+        }
+    }
+
+    private void validarAlumno(Alumno alumno) {
+        if (alumno.getNombre() == null || alumno.getNombre().isBlank()) {
+            throw new AlumnoInvalidoException("El nombre del alumno es obligatorio.");
+        }
+
+        if (alumno.getApellido() == null || alumno.getApellido().isBlank()) {
+            throw new AlumnoInvalidoException("El apellido del alumno es obligatorio.");
+        }
+
+        if (alumno.getRut() == null || alumno.getRut().isBlank()) {
+            throw new AlumnoInvalidoException("El RUT del alumno es obligatorio.");
+        }
+
+        if (alumno.getEmail() == null || alumno.getEmail().isBlank()) {
+            throw new AlumnoInvalidoException("El email del alumno es obligatorio.");
+        }
+    }
+
+    private void validarCalificacion(Calificacion calificacion) {
+        if (calificacion.getAsignatura() == null) {
+            throw new CalificacionInvalidaException("Debe seleccionar una asignatura.");
+        }
+
+        if (calificacion.getNota() < 1.0 || calificacion.getNota() > 7.0) {
+            throw new CalificacionInvalidaException("La nota debe estar entre 1.0 y 7.0.");
+        }
+
+        if (calificacion.getDescripcion() == null || calificacion.getDescripcion().isBlank()) {
+            throw new CalificacionInvalidaException("La descripción de la nota es obligatoria.");
         }
     }
 }

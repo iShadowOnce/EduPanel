@@ -10,6 +10,8 @@
 
     <h1>Editar anuncio</h1>
 
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
     <form th:action="@{/profesor/anuncios/{id}/actualizar(id=${anuncio.id})}" th:object="${anuncio}" method="post">
 
         <label>ID:</label>

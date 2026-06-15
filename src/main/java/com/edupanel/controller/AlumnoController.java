@@ -13,6 +13,9 @@ import com.edupanel.model.Calificacion;
 import com.edupanel.service.AnuncioService;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.edupanel.exception.AlumnoInvalidoException;
+import com.edupanel.exception.CalificacionInvalidaException;
+
 @Controller
 public class AlumnoController {
 
@@ -32,9 +35,17 @@ public class AlumnoController {
     }
 
     @PostMapping("/profesor/alumnos/guardar")
-    public String guardarAlumno(@ModelAttribute Alumno nuevoAlumno) {
-        alumnoService.guardarAlumno(nuevoAlumno);
-        return "redirect:/profesor/alumnos";
+    public String guardarAlumno(@ModelAttribute Alumno nuevoAlumno, Model model) {
+        try {
+            alumnoService.guardarAlumno(nuevoAlumno);
+            return "redirect:/profesor/alumnos";
+
+        } catch (AlumnoInvalidoException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("alumnos", alumnoService.listarAlumnos());
+            model.addAttribute("nuevoAlumno", nuevoAlumno);
+            return "profesor-alumnos";
+        }
     }
 
     @GetMapping("/profesor/alumnos/{id}/notas")
@@ -46,9 +57,18 @@ public class AlumnoController {
 
     @PostMapping("/profesor/alumnos/{id}/notas/guardar")
     public String guardarNota(@PathVariable String id,
-            @ModelAttribute Calificacion nuevaCalificacion) {
-        alumnoService.agregarCalificacion(id, nuevaCalificacion);
-        return "redirect:/profesor/alumnos/" + id + "/notas";
+            @ModelAttribute Calificacion nuevaCalificacion,
+            Model model) {
+        try {
+            alumnoService.agregarCalificacion(id, nuevaCalificacion);
+            return "redirect:/profesor/alumnos/" + id + "/notas";
+
+        } catch (CalificacionInvalidaException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("alumno", alumnoService.buscarPorId(id));
+            model.addAttribute("nuevaCalificacion", nuevaCalificacion);
+            return "profesor-alumno-notas";
+        }
     }
 
     @GetMapping("/alumno/{id}/dashboard")
@@ -87,10 +107,25 @@ public class AlumnoController {
 
     @PostMapping("/profesor/alumnos/{id}/actualizar")
     public String actualizarAlumno(@PathVariable String id,
-            @ModelAttribute Alumno alumnoActualizado) {
-        alumnoService.actualizarAlumno(id, alumnoActualizado);
+            @ModelAttribute Alumno alumnoActualizado,
+            Model model) {
+        try {
+            alumnoService.actualizarAlumno(id, alumnoActualizado);
+            return "redirect:/profesor/alumnos";
 
-        return "redirect:/profesor/alumnos";
+        } catch (AlumnoInvalidoException e) {
+            model.addAttribute("error", e.getMessage());
+
+            Alumno alumnoOriginal = alumnoService.buscarPorId(id);
+
+            alumnoActualizado.setUid(alumnoOriginal.getUid());
+            alumnoActualizado.setNotas(alumnoOriginal.getNotas());
+            alumnoActualizado.setRol(alumnoOriginal.getRol());
+
+            model.addAttribute("alumno", alumnoActualizado);
+
+            return "profesor-editar-alumno";
+        }
     }
 
     @GetMapping("/profesor/alumnos/{alumnoId}/notas/{notaId}/editar")
@@ -107,11 +142,23 @@ public class AlumnoController {
     @PostMapping("/profesor/alumnos/{alumnoId}/notas/{notaId}/actualizar")
     public String actualizarNota(@PathVariable String alumnoId,
             @PathVariable String notaId,
-            @ModelAttribute Calificacion calificacionActualizada) {
+            @ModelAttribute Calificacion calificacionActualizada,
+            Model model) {
+        try {
+            alumnoService.actualizarCalificacion(alumnoId, notaId, calificacionActualizada);
+            return "redirect:/profesor/alumnos/" + alumnoId + "/notas";
 
-        alumnoService.actualizarCalificacion(alumnoId, notaId, calificacionActualizada);
+        } catch (CalificacionInvalidaException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("alumno", alumnoService.buscarPorId(alumnoId));
 
-        return "redirect:/profesor/alumnos/" + alumnoId + "/notas";
+            calificacionActualizada.setId(notaId);
+            calificacionActualizada.setAlumnoId(alumnoId);
+
+            model.addAttribute("calificacion", calificacionActualizada);
+
+            return "profesor-editar-nota";
+        }
     }
 
     @PostMapping("/profesor/alumnos/{alumnoId}/notas/{notaId}/eliminar")

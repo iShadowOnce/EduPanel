@@ -12,6 +12,8 @@
 
     <h2>Crear anuncio</h2>
 
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
     <form th:action="@{/profesor/anuncios/guardar}" th:object="${nuevoAnuncio}" method="post">
 
         <label>Título:</label>

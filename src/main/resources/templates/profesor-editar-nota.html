@@ -10,6 +10,8 @@
 
     <h1>Editar nota</h1>
 
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
     <p>
         Alumno:
         <strong th:text="${alumno.nombre + ' ' + alumno.apellido}"></strong>

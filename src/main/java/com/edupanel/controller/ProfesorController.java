@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import com.edupanel.exception.AnuncioInvalidoException;
 
 @Controller
 public class ProfesorController {
@@ -34,9 +35,18 @@ public class ProfesorController {
     }
 
     @PostMapping("/profesor/anuncios/guardar")
-    public String guardarAnuncio(@ModelAttribute Anuncio nuevoAnuncio) {
-        anuncioService.guardarAnuncio(nuevoAnuncio);
-        return "redirect:/profesor/anuncios";
+    public String guardarAnuncio(@ModelAttribute Anuncio nuevoAnuncio, Model model) {
+        try {
+            anuncioService.guardarAnuncio(nuevoAnuncio);
+            return "redirect:/profesor/anuncios";
+
+        } catch (AnuncioInvalidoException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("anuncios", anuncioService.listarAnuncios());
+            model.addAttribute("nuevoAnuncio", nuevoAnuncio);
+            model.addAttribute("asignaturas", Asignatura.values());
+            return "profesor-anuncios";
+        }
     }
 
     @PostMapping("/profesor/anuncios/{id}/eliminar")
@@ -57,9 +67,25 @@ public class ProfesorController {
 
     @PostMapping("/profesor/anuncios/{id}/actualizar")
     public String actualizarAnuncio(@PathVariable String id,
-            @ModelAttribute Anuncio anuncioActualizado) {
-        anuncioService.actualizarAnuncio(id, anuncioActualizado);
+            @ModelAttribute Anuncio anuncioActualizado,
+            Model model) {
+        try {
+            anuncioService.actualizarAnuncio(id, anuncioActualizado);
+            return "redirect:/profesor/anuncios";
 
-        return "redirect:/profesor/anuncios";
+        } catch (AnuncioInvalidoException e) {
+            model.addAttribute("error", e.getMessage());
+
+            Anuncio anuncioOriginal = anuncioService.buscarPorId(id);
+
+            anuncioActualizado.setId(anuncioOriginal.getId());
+            anuncioActualizado.setProfesorId(anuncioOriginal.getProfesorId());
+            anuncioActualizado.setFechaPublicacion(anuncioOriginal.getFechaPublicacion());
+
+            model.addAttribute("anuncio", anuncioActualizado);
+            model.addAttribute("asignaturas", Asignatura.values());
+
+            return "profesor-editar-anuncio";
+        }
     }
 }

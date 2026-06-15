@@ -13,11 +13,9 @@
 
     <h2>Agregar alumno</h2>
 
-    <form th:action="@{/profesor/alumnos/guardar}" th:object="${nuevoAlumno}" method="post">
-        <label>UID:</label>
-        <input type="text" th:field="*{uid}">
-        <br>
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
+    <form th:action="@{/profesor/alumnos/guardar}" th:object="${nuevoAlumno}" method="post">
         <label>Nombre:</label>
         <input type="text" th:field="*{nombre}">
         <br>

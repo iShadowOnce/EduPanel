@@ -4,9 +4,12 @@ import com.edupanel.model.Anuncio;
 import com.edupanel.model.Asignatura;
 import org.springframework.stereotype.Service;
 
+import com.edupanel.exception.AnuncioInvalidoException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AnuncioService {
@@ -30,7 +33,9 @@ public class AnuncioService {
     }
 
     public void guardarAnuncio(Anuncio anuncio) {
-        anuncio.setId(String.valueOf(anuncios.size() + 1));
+        validarAnuncio(anuncio);
+
+        anuncio.setId(UUID.randomUUID().toString());
         anuncio.setProfesorId("profesor-demo");
         anuncio.setFechaPublicacion(LocalDateTime.now());
 
@@ -64,12 +69,28 @@ public class AnuncioService {
     }
 
     public void actualizarAnuncio(String id, Anuncio datosActualizados) {
+        validarAnuncio(datosActualizados);
+
         Anuncio anuncioExistente = buscarPorId(id);
 
         if (anuncioExistente != null) {
             anuncioExistente.setTitulo(datosActualizados.getTitulo());
             anuncioExistente.setMensaje(datosActualizados.getMensaje());
             anuncioExistente.setAsignatura(datosActualizados.getAsignatura());
+        }
+    }
+
+    private void validarAnuncio(Anuncio anuncio) {
+        if (anuncio.getTitulo() == null || anuncio.getTitulo().isBlank()) {
+            throw new AnuncioInvalidoException("El título del anuncio es obligatorio.");
+        }
+
+        if (anuncio.getMensaje() == null || anuncio.getMensaje().isBlank()) {
+            throw new AnuncioInvalidoException("El mensaje del anuncio es obligatorio.");
+        }
+
+        if (anuncio.getAsignatura() == null) {
+            throw new AnuncioInvalidoException("Debe seleccionar una asignatura.");
         }
     }
 }

@@ -25,6 +25,8 @@
 
     <h2>Agregar calificación</h2>
 
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
     <form th:action="@{/profesor/alumnos/{id}/notas/guardar(id=${alumno.uid})}" th:object="${nuevaCalificacion}"
         method="post">
 
