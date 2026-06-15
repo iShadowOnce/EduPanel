@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Alumnos</title>
+</head>
+<body>
+
+<h1>Lista de alumnos</h1>
+
+
+<h2>Agregar alumno</h2>
+
+<form th:action="@{/profesor/alumnos/guardar}" th:object="${nuevoAlumno}" method="post">
+    <label>UID:</label>
+    <input type="text" th:field="*{uid}">
+    <br>
+
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}">
+    <br>
+
+    <label>Apellido:</label>
+    <input type="text" th:field="*{apellido}">
+    <br>
+
+    <label>RUT:</label>
+    <input type="text" th:field="*{rut}">
+    <br>
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}">
+    <br>
+
+    <button type="submit">Guardar alumno</button>
+</form>
+
+<hr> 
+
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>UID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>RUT</th>
+        <th>Email</th>
+        <th>Acciones</th>
+        <th>Promedio</th>
+        <th>Estado</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="alumno : ${alumnos}">
+        <td th:text="${alumno.uid}"></td>
+        <td th:text="${alumno.nombre}"></td>
+        <td th:text="${alumno.apellido}"></td>
+        <td th:text="${alumno.rut}"></td>
+        <td th:text="${alumno.email}"></td>
+        <td th:text="${alumno.calcularPromedio()}"></td>
+        <td th:text="${alumno.obtenerEstadoAcademico()}"></td>
+        <td> 
+            <a th:href="@{/profesor/alumnos/{id}/notas(id=${alumno.uid})}">
+                Ver notas
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

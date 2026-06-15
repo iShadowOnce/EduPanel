@@ -1,16 +1,17 @@
 package com.edupanel.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 public class Profesor extends Usuario {
 
-    private List<Asignatura> asignaturas = new ArrayList<>();
+    private List<Asignatura> asignaturas;
 
     public Profesor() {
         super();
@@ -19,8 +20,7 @@ public class Profesor extends Usuario {
 
     @Override
     public String obtenerRutaDashboard() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'obtenerRutaDashboard'");
+        return "/profesor/dashboard";
     }
 
 }
