@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Anuncio</title>
+</head>
+
+<body>
+
+    <h1>Editar anuncio</h1>
+
+    <form th:action="@{/profesor/anuncios/{id}/actualizar(id=${anuncio.id})}" th:object="${anuncio}" method="post">
+
+        <label>ID:</label>
+        <input type="text" th:field="*{id}" readonly>
+        <br>
+
+        <label>Título:</label>
+        <input type="text" th:field="*{titulo}">
+        <br>
+
+        <label>Mensaje:</label>
+        <textarea th:field="*{mensaje}"></textarea>
+        <br>
+
+        <label>Asignatura:</label>
+        <select th:field="*{asignatura}">
+            <option th:each="asignatura : ${asignaturas}" th:value="${asignatura}" th:text="${asignatura}">
+            </option>
+        </select>
+        <br>
+
+        <button type="submit">Guardar cambios</button>
+    </form>
+
+    <br>
+
+    <a href="/profesor/anuncios">Volver a anuncios</a>
+
+</body>
+
+</html>

@@ -52,4 +52,24 @@ public class AnuncioService {
     public void eliminarAnuncio(String id) {
         anuncios.removeIf(anuncio -> anuncio.getId().equals(id));
     }
+
+    public Anuncio buscarPorId(String id) {
+        for (Anuncio anuncio : anuncios) {
+            if (anuncio.getId().equals(id)) {
+                return anuncio;
+            }
+        }
+
+        return null;
+    }
+
+    public void actualizarAnuncio(String id, Anuncio datosActualizados) {
+        Anuncio anuncioExistente = buscarPorId(id);
+
+        if (anuncioExistente != null) {
+            anuncioExistente.setTitulo(datosActualizados.getTitulo());
+            anuncioExistente.setMensaje(datosActualizados.getMensaje());
+            anuncioExistente.setAsignatura(datosActualizados.getAsignatura());
+        }
+    }
 }

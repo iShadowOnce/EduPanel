@@ -65,11 +65,13 @@ public class AlumnoService {
         Alumno alumno = buscarPorId(alumnoId);
 
         if (alumno != null) {
-            calificacion.setAlumnoId(alumnoId);
 
             if (alumno.getNotas() == null) {
                 alumno.setNotas(new ArrayList<>());
             }
+
+            calificacion.setId(String.valueOf(alumno.getNotas().size() + 1));
+            calificacion.setAlumnoId(alumnoId);
 
             alumno.getNotas().add(calificacion);
         }
@@ -77,5 +79,48 @@ public class AlumnoService {
 
     public void eliminarAlumno(String uid) {
         alumnos.removeIf(alumno -> alumno.getUid().equals(uid));
+    }
+
+    public void actualizarAlumno(String uid, Alumno datosActualizados) {
+        Alumno alumnoExistente = buscarPorId(uid);
+
+        if (alumnoExistente != null) {
+            alumnoExistente.setNombre(datosActualizados.getNombre());
+            alumnoExistente.setApellido(datosActualizados.getApellido());
+            alumnoExistente.setRut(datosActualizados.getRut());
+            alumnoExistente.setEmail(datosActualizados.getEmail());
+        }
+    }
+
+    public Calificacion buscarCalificacionPorId(String alumnoId, String notaId) {
+        Alumno alumno = buscarPorId(alumnoId);
+
+        if (alumno != null && alumno.getNotas() != null) {
+            for (Calificacion calificacion : alumno.getNotas()) {
+                if (calificacion.getId().equals(notaId)) {
+                    return calificacion;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void actualizarCalificacion(String alumnoId, String notaId, Calificacion datosActualizados) {
+        Calificacion calificacionExistente = buscarCalificacionPorId(alumnoId, notaId);
+
+        if (calificacionExistente != null) {
+            calificacionExistente.setAsignatura(datosActualizados.getAsignatura());
+            calificacionExistente.setNota(datosActualizados.getNota());
+            calificacionExistente.setDescripcion(datosActualizados.getDescripcion());
+        }
+    }
+
+    public void eliminarCalificacion(String alumnoId, String notaId) {
+        Alumno alumno = buscarPorId(alumnoId);
+
+        if (alumno != null && alumno.getNotas() != null) {
+            alumno.getNotas().removeIf(calificacion -> calificacion.getId().equals(notaId));
+        }
     }
 }

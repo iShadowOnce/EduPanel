@@ -50,7 +50,7 @@
                 <th>Email</th>
                 <th>Promedio</th>
                 <th>Estado</th>
-                <th>Notas</th>
+                <th>Acciones</th>
             </tr>
         </thead>
 
@@ -66,6 +66,12 @@
                 <td>
                     <a th:href="@{/profesor/alumnos/{id}/notas(id=${alumno.uid})}">
                         Ver notas
+                    </a>
+
+                    |
+
+                    <a th:href="@{/profesor/alumnos/{id}/editar(id=${alumno.uid})}">
+                        Editar
                     </a>
 
                     |

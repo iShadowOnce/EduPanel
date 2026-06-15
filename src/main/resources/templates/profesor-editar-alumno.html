@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Alumno</title>
+</head>
+<body>
+
+<h1>Editar alumno</h1>
+
+<form th:action="@{/profesor/alumnos/{id}/actualizar(id=${alumno.uid})}"
+      th:object="${alumno}"
+      method="post">
+
+    <label>UID:</label>
+    <input type="text" th:field="*{uid}" readonly>
+    <br>
+
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}">
+    <br>
+
+    <label>Apellido:</label>
+    <input type="text" th:field="*{apellido}">
+    <br>
+
+    <label>RUT:</label>
+    <input type="text" th:field="*{rut}">
+    <br>
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}">
+    <br>
+
+    <button type="submit">Guardar cambios</button>
+</form>
+
+<br>
+
+<a href="/profesor/alumnos">Volver a alumnos</a>
+
+</body>
+</html>

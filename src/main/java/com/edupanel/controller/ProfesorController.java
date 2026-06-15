@@ -44,4 +44,22 @@ public class ProfesorController {
         anuncioService.eliminarAnuncio(id);
         return "redirect:/profesor/anuncios";
     }
+
+    @GetMapping("/profesor/anuncios/{id}/editar")
+    public String editarAnuncio(@PathVariable String id, Model model) {
+        Anuncio anuncio = anuncioService.buscarPorId(id);
+
+        model.addAttribute("anuncio", anuncio);
+        model.addAttribute("asignaturas", Asignatura.values());
+
+        return "profesor-editar-anuncio";
+    }
+
+    @PostMapping("/profesor/anuncios/{id}/actualizar")
+    public String actualizarAnuncio(@PathVariable String id,
+            @ModelAttribute Anuncio anuncioActualizado) {
+        anuncioService.actualizarAnuncio(id, anuncioActualizado);
+
+        return "redirect:/profesor/anuncios";
+    }
 }

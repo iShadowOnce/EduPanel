@@ -76,4 +76,50 @@ public class AlumnoController {
         return "redirect:/profesor/alumnos";
     }
 
+    @GetMapping("/profesor/alumnos/{id}/editar")
+    public String editarAlumno(@PathVariable String id, Model model) {
+        Alumno alumno = alumnoService.buscarPorId(id);
+
+        model.addAttribute("alumno", alumno);
+
+        return "profesor-editar-alumno";
+    }
+
+    @PostMapping("/profesor/alumnos/{id}/actualizar")
+    public String actualizarAlumno(@PathVariable String id,
+            @ModelAttribute Alumno alumnoActualizado) {
+        alumnoService.actualizarAlumno(id, alumnoActualizado);
+
+        return "redirect:/profesor/alumnos";
+    }
+
+    @GetMapping("/profesor/alumnos/{alumnoId}/notas/{notaId}/editar")
+    public String editarNota(@PathVariable String alumnoId,
+            @PathVariable String notaId,
+            Model model) {
+
+        model.addAttribute("alumno", alumnoService.buscarPorId(alumnoId));
+        model.addAttribute("calificacion", alumnoService.buscarCalificacionPorId(alumnoId, notaId));
+
+        return "profesor-editar-nota";
+    }
+
+    @PostMapping("/profesor/alumnos/{alumnoId}/notas/{notaId}/actualizar")
+    public String actualizarNota(@PathVariable String alumnoId,
+            @PathVariable String notaId,
+            @ModelAttribute Calificacion calificacionActualizada) {
+
+        alumnoService.actualizarCalificacion(alumnoId, notaId, calificacionActualizada);
+
+        return "redirect:/profesor/alumnos/" + alumnoId + "/notas";
+    }
+
+    @PostMapping("/profesor/alumnos/{alumnoId}/notas/{notaId}/eliminar")
+    public String eliminarNota(@PathVariable String alumnoId,
+            @PathVariable String notaId) {
+
+        alumnoService.eliminarCalificacion(alumnoId, notaId);
+
+        return "redirect:/profesor/alumnos/" + alumnoId + "/notas";
+    }
 }
