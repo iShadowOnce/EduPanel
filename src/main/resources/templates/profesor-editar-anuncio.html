@@ -12,7 +12,9 @@
 
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
-    <form th:action="@{/profesor/anuncios/{id}/actualizar(id=${anuncio.id})}" th:object="${anuncio}" method="post">
+    <form
+        th:action="@{/profesor/{profesorId}/anuncios/{anuncioId}/actualizar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}"
+        th:object="${anuncio}" method="post">
 
         <label>ID:</label>
         <input type="text" th:field="*{id}" readonly>
@@ -38,7 +40,9 @@
 
     <br>
 
-    <a href="/profesor/anuncios">Volver a anuncios</a>
+    <a th:href="@{/profesor/{id}/anuncios(id=${profesor.uid})}">
+        Volver a anuncios
+    </a>
 
 </body>
 

@@ -20,6 +20,7 @@
                 <th>Email</th>
                 <th>Rol</th>
                 <th>Asignaturas</th>
+                <th>Acciones</th>
             </tr>
         </thead>
 
@@ -32,6 +33,11 @@
                 <td th:text="${profesor.email}"></td>
                 <td th:text="${profesor.rol}"></td>
                 <td th:text="${profesor.asignaturas}"></td>
+                <td>
+                    <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
+                        Entrar como profesor
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -39,8 +45,6 @@
     <br>
 
     <a href="/profesor-jefe/usuarios-pendientes">Volver a usuarios pendientes</a>
-    <br>
-    <a href="/profesor/dashboard">Volver al dashboard profesor</a>
 
 </body>
 

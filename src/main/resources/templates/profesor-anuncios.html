@@ -14,7 +14,7 @@
 
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
-    <form th:action="@{/profesor/anuncios/guardar}" th:object="${nuevoAnuncio}" method="post">
+    <form th:action="@{/profesor/{id}/anuncios/guardar(id=${profesor.uid})}" th:object="${nuevoAnuncio}" method="post">
 
         <label>Título:</label>
         <input type="text" th:field="*{titulo}">
@@ -45,6 +45,7 @@
                 <th>Título</th>
                 <th>Mensaje</th>
                 <th>Asignatura</th>
+                <th>Publicado por</th>
                 <th>Fecha</th>
                 <th>Acciones</th>
             </tr>
@@ -56,16 +57,19 @@
                 <td th:text="${anuncio.titulo}"></td>
                 <td th:text="${anuncio.mensaje}"></td>
                 <td th:text="${anuncio.asignatura}"></td>
+                <td th:text="${anuncio.profesorNombre}"></td>
                 <td th:text="${anuncio.fechaPublicacion}"></td>
                 <td>
-                    <a th:href="@{/profesor/anuncios/{id}/editar(id=${anuncio.id})}">
+                    <a
+                        th:href="@{/profesor/{profesorId}/anuncios/{anuncioId}/editar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}">
                         Editar
                     </a>
 
                     |
 
-                    <form th:action="@{/profesor/anuncios/{id}/eliminar(id=${anuncio.id})}" method="post"
-                        style="display:inline;">
+                    <form
+                        th:action="@{/profesor/{profesorId}/anuncios/{anuncioId}/eliminar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}"
+                        method="post" style="display:inline;">
                         <button type="submit">Eliminar</button>
                     </form>
                 </td>
@@ -75,7 +79,9 @@
 
     <br>
 
-    <a href="/profesor/dashboard">Volver al dashboard</a>
+    <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
+    Volver al dashboard
+</a>
 
 </body>
 

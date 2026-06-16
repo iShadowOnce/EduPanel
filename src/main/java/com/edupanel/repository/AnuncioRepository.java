@@ -15,7 +15,11 @@ public interface AnuncioRepository {
 
     List<Anuncio> listarPorAsignatura(Asignatura asignatura);
 
+    List<Anuncio> listarPorProfesorId(String profesorId);
+
     void actualizar(Anuncio anuncio);
 
     void eliminar(String id);
+
+    
 }

@@ -37,11 +37,12 @@ public class AnuncioService {
         return anuncioRepository.buscarPorId(id);
     }
 
-    public void guardarAnuncio(Anuncio anuncio) {
+    public void guardarAnuncio(Anuncio anuncio, String profesorId, String profesorNombre) {
         validarAnuncio(anuncio);
 
         anuncio.setId(UUID.randomUUID().toString());
-        anuncio.setProfesorId("profesor-demo");
+        anuncio.setProfesorId(profesorId);
+        anuncio.setProfesorNombre(profesorNombre);
         anuncio.setFechaPublicacion(LocalDateTime.now());
 
         anuncioRepository.guardar(anuncio);
@@ -81,5 +82,9 @@ public class AnuncioService {
         if (anuncio.getAsignatura() == null) {
             throw new AnuncioInvalidoException("Debe seleccionar una asignatura.");
         }
+    }
+
+    public List<Anuncio> listarPorProfesor(String profesorId) {
+        return anuncioRepository.listarPorProfesorId(profesorId);
     }
 }

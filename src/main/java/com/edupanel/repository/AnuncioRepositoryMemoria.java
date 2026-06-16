@@ -55,6 +55,7 @@ public class AnuncioRepositoryMemoria implements AnuncioRepository {
             anuncioExistente.setMensaje(anuncioActualizado.getMensaje());
             anuncioExistente.setAsignatura(anuncioActualizado.getAsignatura());
             anuncioExistente.setProfesorId(anuncioActualizado.getProfesorId());
+            anuncioExistente.setProfesorNombre(anuncioActualizado.getProfesorNombre());
             anuncioExistente.setFechaPublicacion(anuncioActualizado.getFechaPublicacion());
         }
     }
@@ -62,5 +63,18 @@ public class AnuncioRepositoryMemoria implements AnuncioRepository {
     @Override
     public void eliminar(String id) {
         anuncios.removeIf(anuncio -> anuncio.getId().equals(id));
+    }
+
+    @Override
+    public List<Anuncio> listarPorProfesorId(String profesorId) {
+        List<Anuncio> anunciosFiltrados = new ArrayList<>();
+
+        for (Anuncio anuncio : anuncios) {
+            if (anuncio.getProfesorId().equals(profesorId)) {
+                anunciosFiltrados.add(anuncio);
+            }
+        }
+
+        return anunciosFiltrados;
     }
 }
