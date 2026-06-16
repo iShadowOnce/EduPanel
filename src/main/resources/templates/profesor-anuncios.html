@@ -10,11 +10,30 @@
 
     <h1>Anuncios del profesor</h1>
 
+    <p>
+        Profesor:
+        <strong th:text="${profesor.nombre + ' ' + profesor.apellido}"></strong>
+    </p>
+
+    <p>
+        Asignaturas asignadas:
+        <strong th:text="${profesor.asignaturas}"></strong>
+    </p>
+
+    <hr>
+
     <h2>Crear anuncio</h2>
 
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
-    <form th:action="@{/profesor/{id}/anuncios/guardar(id=${profesor.uid})}" th:object="${nuevoAnuncio}" method="post">
+    <p th:if="${asignaturas == null or #lists.isEmpty(asignaturas)}" style="color:red;">
+        Este profesor no tiene asignaturas asignadas. No puede crear anuncios todavía.
+    </p>
+
+    <form th:if="${asignaturas != null and !#lists.isEmpty(asignaturas)}"
+          th:action="@{/profesor/{id}/anuncios/guardar(id=${profesor.uid})}"
+          th:object="${nuevoAnuncio}"
+          method="post">
 
         <label>Título:</label>
         <input type="text" th:field="*{titulo}">
@@ -26,7 +45,9 @@
 
         <label>Asignatura:</label>
         <select th:field="*{asignatura}">
-            <option th:each="asignatura : ${asignaturas}" th:value="${asignatura}" th:text="${asignatura}">
+            <option th:each="asignatura : ${asignaturas}"
+                    th:value="${asignatura}"
+                    th:text="${asignatura}">
             </option>
         </select>
         <br>
@@ -38,7 +59,11 @@
 
     <h2>Lista de anuncios</h2>
 
-    <table border="1">
+    <p th:if="${anuncios == null or #lists.isEmpty(anuncios)}">
+        Este profesor todavía no ha publicado anuncios.
+    </p>
+
+    <table th:if="${anuncios != null and !#lists.isEmpty(anuncios)}" border="1">
         <thead>
             <tr>
                 <th>ID</th>
@@ -59,17 +84,17 @@
                 <td th:text="${anuncio.asignatura}"></td>
                 <td th:text="${anuncio.profesorNombre}"></td>
                 <td th:text="${anuncio.fechaPublicacion}"></td>
+
                 <td>
-                    <a
-                        th:href="@{/profesor/{profesorId}/anuncios/{anuncioId}/editar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}">
+                    <a th:href="@{/profesor/{profesorId}/anuncios/{anuncioId}/editar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}">
                         Editar
                     </a>
 
                     |
 
-                    <form
-                        th:action="@{/profesor/{profesorId}/anuncios/{anuncioId}/eliminar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}"
-                        method="post" style="display:inline;">
+                    <form th:action="@{/profesor/{profesorId}/anuncios/{anuncioId}/eliminar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}"
+                          method="post"
+                          style="display:inline;">
                         <button type="submit">Eliminar</button>
                     </form>
                 </td>
@@ -80,8 +105,8 @@
     <br>
 
     <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
-    Volver al dashboard
-</a>
+        Volver al dashboard
+    </a>
 
 </body>
 

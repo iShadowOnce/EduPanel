@@ -33,9 +33,16 @@
                 <td th:text="${profesor.email}"></td>
                 <td th:text="${profesor.rol}"></td>
                 <td th:text="${profesor.asignaturas}"></td>
+
                 <td>
                     <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
                         Entrar como profesor
+                    </a>
+
+                    |
+
+                    <a th:href="@{/profesor-jefe/profesores/{id}/asignaturas(id=${profesor.uid})}">
+                        Asignar asignaturas
                     </a>
                 </td>
             </tr>
