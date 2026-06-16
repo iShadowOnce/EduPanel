@@ -16,22 +16,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.edupanel.exception.AlumnoInvalidoException;
 import com.edupanel.exception.CalificacionInvalidaException;
 
+import com.edupanel.model.Profesor;
+import com.edupanel.service.ProfesorService;
+
 @Controller
 public class AlumnoController {
 
     private final AlumnoService alumnoService;
     private final AnuncioService anuncioService;
+    private final ProfesorService profesorService;
 
-    public AlumnoController(AlumnoService alumnoService, AnuncioService anuncioService) {
+    public AlumnoController(AlumnoService alumnoService, AnuncioService anuncioService,
+            ProfesorService profesorService) {
         this.alumnoService = alumnoService;
         this.anuncioService = anuncioService;
+        this.profesorService = profesorService;
     }
 
     @GetMapping("/profesor/alumnos")
-    public String verAlumnos(Model model) {
-        model.addAttribute("alumnos", alumnoService.listarAlumnos());
-        model.addAttribute("nuevoAlumno", new Alumno());
-        return "profesor-alumnos";
+    public String verAlumnosSinProfesor() {
+        return "redirect:/profesor-jefe/profesores";
     }
 
     @PostMapping("/profesor/alumnos/guardar")
@@ -168,5 +172,73 @@ public class AlumnoController {
         alumnoService.eliminarCalificacion(alumnoId, notaId);
 
         return "redirect:/profesor/alumnos/" + alumnoId + "/notas";
+    }
+
+    @GetMapping("/profesor/{profesorId}/alumnos")
+    public String verAlumnosComoProfesor(@PathVariable String profesorId, Model model) {
+        Profesor profesor = profesorService.buscarPorId(profesorId);
+
+        model.addAttribute("profesor", profesor);
+        model.addAttribute("alumnos", alumnoService.listarAlumnos());
+        model.addAttribute("nuevoAlumno", new Alumno());
+
+        return "profesor-alumnos";
+    }
+
+    @GetMapping("/profesor/{profesorId}/alumnos/{alumnoId}/notas")
+    public String verNotasAlumnoComoProfesor(@PathVariable String profesorId,
+            @PathVariable String alumnoId,
+            Model model) {
+        Profesor profesor = profesorService.buscarPorId(profesorId);
+
+        model.addAttribute("profesor", profesor);
+        model.addAttribute("alumno", alumnoService.buscarPorId(alumnoId));
+        model.addAttribute("nuevaCalificacion", new Calificacion());
+        model.addAttribute("asignaturas", profesor.getAsignaturas());
+
+        return "profesor-alumno-notas";
+    }
+
+    @PostMapping("/profesor/{profesorId}/alumnos/{alumnoId}/notas/guardar")
+    public String guardarNotaComoProfesor(@PathVariable String profesorId,
+            @PathVariable String alumnoId,
+            @ModelAttribute Calificacion nuevaCalificacion,
+            Model model) {
+        try {
+            alumnoService.agregarCalificacion(alumnoId, nuevaCalificacion);
+
+            return "redirect:/profesor/" + profesorId + "/alumnos/" + alumnoId + "/notas";
+
+        } catch (CalificacionInvalidaException e) {
+            Profesor profesor = profesorService.buscarPorId(profesorId);
+
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("profesor", profesor);
+            model.addAttribute("alumno", alumnoService.buscarPorId(alumnoId));
+            model.addAttribute("nuevaCalificacion", nuevaCalificacion);
+            model.addAttribute("asignaturas", profesor.getAsignaturas());
+
+            return "profesor-alumno-notas";
+        }
+    }
+
+    @PostMapping("/profesor/{profesorId}/alumnos/guardar")
+    public String guardarAlumnoComoProfesor(@PathVariable String profesorId,
+            @ModelAttribute Alumno nuevoAlumno,
+            Model model) {
+        try {
+            alumnoService.guardarAlumno(nuevoAlumno);
+            return "redirect:/profesor/" + profesorId + "/alumnos";
+
+        } catch (AlumnoInvalidoException e) {
+            Profesor profesor = profesorService.buscarPorId(profesorId);
+
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("profesor", profesor);
+            model.addAttribute("alumnos", alumnoService.listarAlumnos());
+            model.addAttribute("nuevoAlumno", nuevoAlumno);
+
+            return "profesor-alumnos";
+        }
     }
 }

@@ -62,7 +62,8 @@
                 <td th:text="${alumno.calcularPromedio()}"></td>
                 <td th:text="${alumno.obtenerEstadoAcademico()}"></td>
                 <td>
-                    <a th:href="@{/profesor/alumnos/{id}/notas(id=${alumno.uid})}">
+                    <a th:if="${profesor != null}"
+                        th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas(profesorId=${profesor.uid}, alumnoId=${alumno.uid})}">
                         Ver notas
                     </a>
 

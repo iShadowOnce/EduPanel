@@ -2,10 +2,15 @@ package com.edupanel.service;
 
 import com.edupanel.model.Alumno;
 import com.edupanel.model.Calificacion;
+import com.edupanel.model.Profesor;
 import com.edupanel.model.Rol;
 import com.edupanel.repository.AlumnoRepository;
 import com.edupanel.model.Asignatura;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.edupanel.exception.AlumnoInvalidoException;
 import com.edupanel.exception.CalificacionInvalidaException;

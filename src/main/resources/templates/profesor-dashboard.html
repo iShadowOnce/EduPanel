@@ -25,7 +25,9 @@
 
 <ul>
     <li>
-        <a href="/profesor/alumnos">Gestionar alumnos</a>
+        <a th:href="@{/profesor/{id}/alumnos(id=${profesor.uid})}">
+            Gestionar alumnos
+        </a>
     </li>
 
     <li>
