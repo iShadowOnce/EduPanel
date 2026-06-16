@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-public class Alumno extends Usuario {
+public class Alumno extends Usuario implements Promediable {
 
     private List<Calificacion> notas;
 
@@ -25,6 +25,7 @@ public class Alumno extends Usuario {
         return "/alumno/dashboard";
     }
 
+    @Override
     public double calcularPromedio() {
         if (notas == null || notas.isEmpty()) {
             return 0.0;
@@ -39,10 +40,12 @@ public class Alumno extends Usuario {
         return suma / notas.size();
     }
 
+    @Override
     public boolean estaAprobado() {
         return calcularPromedio() >= 4.0;
     }
 
+    @Override
     public String obtenerEstadoAcademico() {
         if (notas == null || notas.isEmpty()) {
             return "Sin notas";

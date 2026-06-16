@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profesores registrados</title>
+</head>
+
+<body>
+
+    <h1>Profesores registrados</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>UID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>RUT</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Asignaturas</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="profesor : ${profesores}">
+                <td th:text="${profesor.uid}"></td>
+                <td th:text="${profesor.nombre}"></td>
+                <td th:text="${profesor.apellido}"></td>
+                <td th:text="${profesor.rut}"></td>
+                <td th:text="${profesor.email}"></td>
+                <td th:text="${profesor.rol}"></td>
+                <td th:text="${profesor.asignaturas}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <a href="/profesor-jefe/usuarios-pendientes">Volver a usuarios pendientes</a>
+    <br>
+    <a href="/profesor/dashboard">Volver al dashboard profesor</a>
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+package com.edupanel.repository;
+
+import com.edupanel.model.Anuncio;
+import com.edupanel.model.Asignatura;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Repository
+public class AnuncioRepositoryMemoria implements AnuncioRepository {
+
+    private List<Anuncio> anuncios = new ArrayList<>();
+
+    @Override
+    public void guardar(Anuncio anuncio) {
+        anuncios.add(anuncio);
+    }
+
+    @Override
+    public Anuncio buscarPorId(String id) {
+        for (Anuncio anuncio : anuncios) {
+            if (anuncio.getId().equals(id)) {
+                return anuncio;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Anuncio> listarTodos() {
+        return anuncios;
+    }
+
+    @Override
+    public List<Anuncio> listarPorAsignatura(Asignatura asignatura) {
+        List<Anuncio> anunciosFiltrados = new ArrayList<>();
+
+        for (Anuncio anuncio : anuncios) {
+            if (anuncio.getAsignatura() == asignatura) {
+                anunciosFiltrados.add(anuncio);
+            }
+        }
+
+        return anunciosFiltrados;
+    }
+
+    @Override
+    public void actualizar(Anuncio anuncioActualizado) {
+        Anuncio anuncioExistente = buscarPorId(anuncioActualizado.getId());
+
+        if (anuncioExistente != null) {
+            anuncioExistente.setTitulo(anuncioActualizado.getTitulo());
+            anuncioExistente.setMensaje(anuncioActualizado.getMensaje());
+            anuncioExistente.setAsignatura(anuncioActualizado.getAsignatura());
+            anuncioExistente.setProfesorId(anuncioActualizado.getProfesorId());
+            anuncioExistente.setFechaPublicacion(anuncioActualizado.getFechaPublicacion());
+        }
+    }
+
+    @Override
+    public void eliminar(String id) {
+        anuncios.removeIf(anuncio -> anuncio.getId().equals(id));
+    }
+}

@@ -1,35 +1,40 @@
 package com.edupanel.service;
 
+import com.edupanel.exception.AnuncioInvalidoException;
 import com.edupanel.model.Anuncio;
 import com.edupanel.model.Asignatura;
+import com.edupanel.repository.AnuncioRepository;
 import org.springframework.stereotype.Service;
 
-import com.edupanel.exception.AnuncioInvalidoException;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class AnuncioService {
 
-    private List<Anuncio> anuncios = new ArrayList<>();
+    private final AnuncioRepository anuncioRepository;
 
-    public AnuncioService() {
+    public AnuncioService(AnuncioRepository anuncioRepository) {
+        this.anuncioRepository = anuncioRepository;
+
         Anuncio anuncio1 = new Anuncio();
-        anuncio1.setId("1");
+        anuncio1.setId(UUID.randomUUID().toString());
         anuncio1.setTitulo("Bienvenidos a EduPanel");
         anuncio1.setMensaje("Este es el primer anuncio del sistema.");
         anuncio1.setAsignatura(Asignatura.MATEMATICAS);
         anuncio1.setProfesorId("profesor-demo");
         anuncio1.setFechaPublicacion(LocalDateTime.now());
 
-        anuncios.add(anuncio1);
+        anuncioRepository.guardar(anuncio1);
     }
 
     public List<Anuncio> listarAnuncios() {
-        return anuncios;
+        return anuncioRepository.listarTodos();
+    }
+
+    public Anuncio buscarPorId(String id) {
+        return anuncioRepository.buscarPorId(id);
     }
 
     public void guardarAnuncio(Anuncio anuncio) {
@@ -39,33 +44,7 @@ public class AnuncioService {
         anuncio.setProfesorId("profesor-demo");
         anuncio.setFechaPublicacion(LocalDateTime.now());
 
-        anuncios.add(anuncio);
-    }
-
-    public List<Anuncio> listarPorAsignatura(Asignatura asignatura) {
-        List<Anuncio> anunciosFiltrados = new ArrayList<>();
-
-        for (Anuncio anuncio : anuncios) {
-            if (anuncio.getAsignatura() == asignatura) {
-                anunciosFiltrados.add(anuncio);
-            }
-        }
-
-        return anunciosFiltrados;
-    }
-
-    public void eliminarAnuncio(String id) {
-        anuncios.removeIf(anuncio -> anuncio.getId().equals(id));
-    }
-
-    public Anuncio buscarPorId(String id) {
-        for (Anuncio anuncio : anuncios) {
-            if (anuncio.getId().equals(id)) {
-                return anuncio;
-            }
-        }
-
-        return null;
+        anuncioRepository.guardar(anuncio);
     }
 
     public void actualizarAnuncio(String id, Anuncio datosActualizados) {
@@ -77,7 +56,17 @@ public class AnuncioService {
             anuncioExistente.setTitulo(datosActualizados.getTitulo());
             anuncioExistente.setMensaje(datosActualizados.getMensaje());
             anuncioExistente.setAsignatura(datosActualizados.getAsignatura());
+
+            anuncioRepository.actualizar(anuncioExistente);
         }
+    }
+
+    public void eliminarAnuncio(String id) {
+        anuncioRepository.eliminar(id);
+    }
+
+    public List<Anuncio> listarPorAsignatura(Asignatura asignatura) {
+        return anuncioRepository.listarPorAsignatura(asignatura);
     }
 
     private void validarAnuncio(Anuncio anuncio) {

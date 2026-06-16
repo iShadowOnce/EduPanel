@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios pendientes</title>
+</head>
+
+<body>
+
+    <h1>Usuarios pendientes</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>UID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>RUT</th>
+                <th>Email</th>
+                <th>Rol actual</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="usuario : ${usuariosPendientes}">
+                <td th:text="${usuario.uid}"></td>
+                <td th:text="${usuario.nombre}"></td>
+                <td th:text="${usuario.apellido}"></td>
+                <td th:text="${usuario.rut}"></td>
+                <td th:text="${usuario.email}"></td>
+                <td th:text="${usuario.rol}"></td>
+                <td>
+                    <form th:action="@{/profesor-jefe/usuarios/{id}/asignar-alumno(id=${usuario.uid})}" method="post"
+                        style="display:inline;">
+                        <button type="submit">Asignar como alumno</button>
+                    </form>
+
+                    |
+
+                    <form th:action="@{/profesor-jefe/usuarios/{id}/asignar-profesor(id=${usuario.uid})}" method="post"
+                        style="display:inline;">
+                        <button type="submit">Asignar como profesor</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <a href="/profesor/dashboard">Volver</a>
+
+    <br>
+    <a href="/profesor-jefe/profesores">Ver profesores registrados</a>
+
+</body>
+
+</html>

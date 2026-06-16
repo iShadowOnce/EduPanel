@@ -3,6 +3,7 @@ package com.edupanel.service;
 import com.edupanel.model.Alumno;
 import com.edupanel.model.Calificacion;
 import com.edupanel.model.Rol;
+import com.edupanel.repository.AlumnoRepository;
 import com.edupanel.model.Asignatura;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,12 @@ import java.util.UUID;
 @Service
 public class AlumnoService {
 
-    private List<Alumno> alumnos = new ArrayList<>();
+    private final AlumnoRepository alumnoRepository;
 
-    public AlumnoService() {
+    public AlumnoService(AlumnoRepository alumnoRepository) {
+
+        this.alumnoRepository = alumnoRepository;
+
         Alumno alumno1 = new Alumno();
         alumno1.setUid("1");
         alumno1.setNombre("Joaquín");
@@ -38,11 +42,11 @@ public class AlumnoService {
 
         alumno1.setNotas(notas);
 
-        alumnos.add(alumno1);
+        alumnoRepository.guardar(alumno1);
     }
 
     public List<Alumno> listarAlumnos() {
-        return alumnos;
+        return alumnoRepository.listarTodos();
     }
 
     public void guardarAlumno(Alumno alumno) {
@@ -58,17 +62,11 @@ public class AlumnoService {
             alumno.setNotas(new ArrayList<>());
         }
 
-        alumnos.add(alumno);
+        alumnoRepository.guardar(alumno);
     }
 
     public Alumno buscarPorId(String uid) {
-        for (Alumno alumno : alumnos) {
-            if (alumno.getUid().equals(uid)) {
-                return alumno;
-            }
-        }
-
-        return null;
+        return alumnoRepository.buscarPorId(uid);
     }
 
     public void agregarCalificacion(String alumnoId, Calificacion calificacion) {
@@ -90,7 +88,7 @@ public class AlumnoService {
     }
 
     public void eliminarAlumno(String uid) {
-        alumnos.removeIf(alumno -> alumno.getUid().equals(uid));
+        alumnoRepository.eliminar(uid);
     }
 
     public void actualizarAlumno(String uid, Alumno datosActualizados) {
@@ -103,6 +101,8 @@ public class AlumnoService {
             alumnoExistente.setApellido(datosActualizados.getApellido());
             alumnoExistente.setRut(datosActualizados.getRut());
             alumnoExistente.setEmail(datosActualizados.getEmail());
+
+            alumnoRepository.actualizar(alumnoExistente);
         }
     }
 

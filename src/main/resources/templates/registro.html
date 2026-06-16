@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro | EduPanel</title>
+</head>
+
+<body>
+
+    <h1>Registro de usuario</h1>
+
+    <p>
+        Completa tus datos. Tu cuenta quedará pendiente hasta que un profesor jefe te asigne un rol.
+    </p>
+
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+    <form th:action="@{/registro}" th:object="${nuevoUsuario}" method="post">
+
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}">
+        <br><br>
+
+        <label>Apellido:</label>
+        <input type="text" th:field="*{apellido}">
+        <br><br>
+
+        <label>RUT:</label>
+        <input type="text" th:field="*{rut}">
+        <br><br>
+
+        <label>Email:</label>
+        <input type="email" th:field="*{email}">
+        <br><br>
+
+        <button type="submit">Registrarme</button>
+
+    </form>
+
+    <br>
+
+    <a href="/login">Ya tengo cuenta</a>
+    <br>
+    <a href="/">Volver al inicio</a>
+
+</body>
+
+</html>
