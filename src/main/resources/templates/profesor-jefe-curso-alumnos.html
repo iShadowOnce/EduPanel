@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Alumnos del curso</title>
+</head>
+
+<body>
+
+    <h1>Alumnos del curso</h1>
+
+    <p>
+        Curso:
+        <strong th:text="${curso.nombre}"></strong>
+    </p>
+
+    <p>
+        Cantidad de alumnos asignados:
+        <strong th:text="${curso.alumnosIds.size()}"></strong>
+    </p>
+
+    <hr>
+
+    <h2>Lista de alumnos</h2>
+
+    <p th:if="${alumnos == null or #lists.isEmpty(alumnos)}">
+        Todavía no hay alumnos registrados.
+    </p>
+
+    <table th:if="${alumnos != null and !#lists.isEmpty(alumnos)}" border="1">
+        <thead>
+            <tr>
+                <th>UUID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>RUT</th>
+                <th>Email</th>
+                <th>Estado en el curso</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="alumno : ${alumnos}">
+                <td th:text="${alumno.uid}"></td>
+                <td th:text="${alumno.nombre}"></td>
+                <td th:text="${alumno.apellido}"></td>
+                <td th:text="${alumno.rut}"></td>
+                <td th:text="${alumno.email}"></td>
+
+                <td>
+                    <span th:if="${curso.alumnosIds.contains(alumno.uid)}">
+                        Asignado
+                    </span>
+
+                    <span th:if="${!curso.alumnosIds.contains(alumno.uid)}">
+                        No asignado
+                    </span>
+                </td>
+
+                <td>
+                    <form th:if="${!curso.alumnosIds.contains(alumno.uid)}"
+                        th:action="@{/profesor-jefe/cursos/{cursoId}/alumnos/{alumnoId}/asignar(cursoId=${curso.id}, alumnoId=${alumno.uid})}"
+                        method="post" style="display:inline;">
+                        <button type="submit">Asignar al curso</button>
+                    </form>
+
+                    <form th:if="${curso.alumnosIds.contains(alumno.uid)}"
+                        th:action="@{/profesor-jefe/cursos/{cursoId}/alumnos/{alumnoId}/quitar(cursoId=${curso.id}, alumnoId=${alumno.uid})}"
+                        method="post" style="display:inline;">
+                        <button type="submit">Quitar del curso</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <a href="/profesor-jefe/cursos">Volver a cursos</a>
+
+</body>
+
+</html>
