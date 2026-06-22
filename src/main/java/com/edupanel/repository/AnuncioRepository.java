@@ -9,10 +9,17 @@ public interface AnuncioRepository {
 
     void guardar(Anuncio anuncio);
 
+    Anuncio buscarPorId(String id);
+
     List<Anuncio> listarTodos();
 
     List<Anuncio> listarPorAsignatura(Asignatura asignatura);
 
+    List<Anuncio> listarPorProfesorId(String profesorId);
+
+    void actualizar(Anuncio anuncio);
+
     void eliminar(String id);
+
     
 }

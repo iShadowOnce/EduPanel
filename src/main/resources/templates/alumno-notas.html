@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Notas</title>
+</head>
+
+<body>
+
+    <h1>Mis Notas</h1>
+
+    <p>
+        Alumno:
+        <strong th:text="${alumno.nombre + ' ' + alumno.apellido}"></strong>
+    </p>
+
+    <p>
+        Promedio:
+        <strong th:text="${alumno.calcularPromedio()}"></strong>
+    </p>
+
+    <p>
+        Estado:
+        <strong th:text="${alumno.obtenerEstadoAcademico()}"></strong>
+    </p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Asignatura</th>
+                <th>Nota</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="nota : ${alumno.notas}">
+                <td th:text="${nota.asignatura}"></td>
+                <td th:text="${nota.nota}"></td>
+                <td th:text="${nota.descripcion}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <a th:href="@{/alumno/{id}/dashboard(id=${alumno.uid})}">
+        Volver al dashboard
+    </a>
+
+</body>
+
+</html>

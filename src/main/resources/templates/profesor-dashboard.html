@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Profesor</title>
+</head>
+<body>
+
+<h1>Panel del Profesor</h1>
+
+<p>
+    Profesor:
+    <strong th:text="${profesor.nombre + ' ' + profesor.apellido}"></strong>
+</p>
+
+<p>
+    Email:
+    <strong th:text="${profesor.email}"></strong>
+</p>
+
+<ul>
+    <li>
+        <a href="/profesor/alumnos">Gestionar alumnos</a>
+    </li>
+
+    <li>
+        <a th:href="@{/profesor/{id}/anuncios(id=${profesor.uid})}">
+            Gestionar mis anuncios
+        </a>
+    </li>
+</ul>
+
+<br>
+
+<a href="/profesor-jefe/profesores">Volver a profesores registrados</a>
+
+</body>
+</html>

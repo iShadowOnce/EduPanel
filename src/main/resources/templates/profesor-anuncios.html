@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Anuncios</title>
+</head>
+
+<body>
+
+    <h1>Anuncios del profesor</h1>
+
+    <h2>Crear anuncio</h2>
+
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+    <form th:action="@{/profesor/{id}/anuncios/guardar(id=${profesor.uid})}" th:object="${nuevoAnuncio}" method="post">
+
+        <label>Título:</label>
+        <input type="text" th:field="*{titulo}">
+        <br>
+
+        <label>Mensaje:</label>
+        <textarea th:field="*{mensaje}"></textarea>
+        <br>
+
+        <label>Asignatura:</label>
+        <select th:field="*{asignatura}">
+            <option th:each="asignatura : ${asignaturas}" th:value="${asignatura}" th:text="${asignatura}">
+            </option>
+        </select>
+        <br>
+
+        <button type="submit">Publicar anuncio</button>
+    </form>
+
+    <hr>
+
+    <h2>Lista de anuncios</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Mensaje</th>
+                <th>Asignatura</th>
+                <th>Publicado por</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="anuncio : ${anuncios}">
+                <td th:text="${anuncio.id}"></td>
+                <td th:text="${anuncio.titulo}"></td>
+                <td th:text="${anuncio.mensaje}"></td>
+                <td th:text="${anuncio.asignatura}"></td>
+                <td th:text="${anuncio.profesorNombre}"></td>
+                <td th:text="${anuncio.fechaPublicacion}"></td>
+                <td>
+                    <a
+                        th:href="@{/profesor/{profesorId}/anuncios/{anuncioId}/editar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}">
+                        Editar
+                    </a>
+
+                    |
+
+                    <form
+                        th:action="@{/profesor/{profesorId}/anuncios/{anuncioId}/eliminar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}"
+                        method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
+    Volver al dashboard
+</a>
+
+</body>
+
+</html>

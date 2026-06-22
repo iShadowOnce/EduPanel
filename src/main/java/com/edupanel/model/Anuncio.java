@@ -16,6 +16,7 @@ public class Anuncio {
     private String mensaje;
     private Asignatura asignatura;
     private String profesorId;
+    private String profesorNombre;
     private LocalDateTime fechaPublicacion;
 
 }
