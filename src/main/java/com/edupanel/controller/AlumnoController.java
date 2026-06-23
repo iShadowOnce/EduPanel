@@ -46,17 +46,8 @@ public class AlumnoController {
     }
 
     @PostMapping("/profesor/alumnos/guardar")
-    public String guardarAlumno(@ModelAttribute Alumno nuevoAlumno, Model model) {
-        try {
-            alumnoService.guardarAlumno(nuevoAlumno);
-            return "redirect:/profesor/alumnos";
-
-        } catch (AlumnoInvalidoException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("alumnos", alumnoService.listarAlumnos());
-            model.addAttribute("nuevoAlumno", nuevoAlumno);
-            return "profesor-alumnos";
-        }
+    public String guardarAlumno() {
+        return "redirect:/profesor-jefe/usuarios-pendientes";
     }
 
     @GetMapping("/profesor/alumnos/{id}/notas")
@@ -242,22 +233,7 @@ public class AlumnoController {
     }
 
     @PostMapping("/profesor/{profesorId}/alumnos/guardar")
-    public String guardarAlumnoComoProfesor(@PathVariable String profesorId,
-            @ModelAttribute Alumno nuevoAlumno,
-            Model model) {
-        try {
-            alumnoService.guardarAlumno(nuevoAlumno);
-            return "redirect:/profesor/" + profesorId + "/alumnos";
-
-        } catch (AlumnoInvalidoException e) {
-            Profesor profesor = profesorService.buscarPorId(profesorId);
-
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("profesor", profesor);
-            model.addAttribute("alumnos", alumnoService.listarAlumnos());
-            model.addAttribute("nuevoAlumno", nuevoAlumno);
-
-            return "profesor-alumnos";
-        }
+    public String guardarAlumnoComoProfesor(@PathVariable String profesorId) {
+        return "redirect:/profesor/" + profesorId + "/alumnos";
     }
 }

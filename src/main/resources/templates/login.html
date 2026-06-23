@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login | EduPanel</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
+</head>
+
+<body>
+
+    <h1>Iniciar sesion</h1>
+
+    <form>
+        <label>Email:</label>
+        <input type="email" name="email">
+
+        <label>Contrasena:</label>
+        <input type="password" name="password">
+
+        <button type="submit">Entrar</button>
+    </form>
+
+    <a href="/registro">Crear cuenta</a>
+    <a href="/">Volver al inicio</a>
+
+</body>
+
+</html>

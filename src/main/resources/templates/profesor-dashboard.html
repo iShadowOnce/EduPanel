@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Profesor</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 <body>
 
@@ -26,7 +27,7 @@
 <ul>
     <li>
         <a th:href="@{/profesor/{id}/alumnos(id=${profesor.uid})}">
-            Gestionar alumnos
+            Gestionar notas
         </a>
     </li>
 
