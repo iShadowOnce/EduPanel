@@ -42,12 +42,12 @@ public class AlumnoController {
 
     @GetMapping("/profesor/alumnos")
     public String verAlumnosSinProfesor() {
-        return "redirect:/profesor-jefe/profesores";
+        return "redirect:/login";
     }
 
     @PostMapping("/profesor/alumnos/guardar")
     public String guardarAlumno() {
-        return "redirect:/profesor-jefe/usuarios-pendientes";
+        return "redirect:/login";
     }
 
     @GetMapping("/profesor/alumnos/{id}/notas")

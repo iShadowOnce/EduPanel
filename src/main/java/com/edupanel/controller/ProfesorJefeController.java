@@ -23,6 +23,11 @@ public class ProfesorJefeController {
         this.profesorService = profesorService;
     }
 
+    @GetMapping("/profesor-jefe/dashboard")
+    public String dashboardProfesorJefe() {
+        return "profesor-jefe-dashboard";
+    }
+
     @GetMapping("/profesor-jefe/usuarios-pendientes")
     public String verUsuariosPendientes(Model model) {
         model.addAttribute("usuariosPendientes", usuarioService.listarUsuariosPendientes());

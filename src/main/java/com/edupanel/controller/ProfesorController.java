@@ -26,7 +26,7 @@ public class ProfesorController {
 
     @GetMapping("/profesor/dashboard")
     public String dashboardProfesorSinId() {
-        return "redirect:/profesor-jefe/profesores";
+        return "redirect:/login";
     }
 
     @GetMapping("/profesor/{profesorId}/dashboard")

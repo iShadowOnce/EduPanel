@@ -36,12 +36,6 @@
                 <td th:text="${profesor.asignaturas}"></td>
 
                 <td>
-                    <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
-                        Entrar como profesor
-                    </a>
-
-                    |
-
                     <a th:href="@{/profesor-jefe/profesores/{id}/asignaturas(id=${profesor.uid})}">
                         Asignar asignaturas
                     </a>
@@ -51,6 +45,7 @@
     </table>
 
     <br>
+    <a href="/profesor-jefe/dashboard">Volver al panel</a>
     <a href="/profesor-jefe/cursos">Gestionar cursos</a>
     <br>
     <a href="/profesor-jefe/usuarios-pendientes">Volver a usuarios pendientes</a>
