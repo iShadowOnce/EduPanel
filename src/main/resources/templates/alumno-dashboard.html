@@ -25,6 +25,15 @@
         <strong th:text="${alumno.obtenerEstadoAcademico()}"></strong>
     </p>
 
+    <p th:if="${curso != null}">
+        Curso actual:
+        <strong th:text="${curso.nombre}"></strong>
+    </p>
+
+    <p th:if="${curso == null}" style="color:red;">
+        Aún no tienes un curso asignado.
+    </p>
+
     <ul>
         <li>
             <a th:href="@{/alumno/{id}/notas(id=${alumno.uid})}">

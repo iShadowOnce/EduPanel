@@ -19,18 +19,25 @@ import com.edupanel.exception.CalificacionInvalidaException;
 import com.edupanel.model.Profesor;
 import com.edupanel.service.ProfesorService;
 
+import com.edupanel.model.Curso;
+import com.edupanel.service.CursoService;
+
 @Controller
 public class AlumnoController {
 
     private final AlumnoService alumnoService;
     private final AnuncioService anuncioService;
     private final ProfesorService profesorService;
+    private final CursoService cursoService;
 
-    public AlumnoController(AlumnoService alumnoService, AnuncioService anuncioService,
-            ProfesorService profesorService) {
+    public AlumnoController(AlumnoService alumnoService,
+            AnuncioService anuncioService,
+            ProfesorService profesorService,
+            CursoService cursoService) {
         this.alumnoService = alumnoService;
         this.anuncioService = anuncioService;
         this.profesorService = profesorService;
+        this.cursoService = cursoService;
     }
 
     @GetMapping("/profesor/alumnos")
@@ -77,20 +84,32 @@ public class AlumnoController {
 
     @GetMapping("/alumno/{id}/dashboard")
     public String dashboardAlumno(@PathVariable String id, Model model) {
+        Curso curso = cursoService.buscarCursoPorAlumnoId(id);
+
         model.addAttribute("alumno", alumnoService.buscarPorId(id));
+        model.addAttribute("curso", curso);
+
         return "alumno-dashboard";
     }
 
     @GetMapping("/alumno/{id}/notas")
     public String verNotasAlumnoComoAlumno(@PathVariable String id, Model model) {
+        Curso curso = cursoService.buscarCursoPorAlumnoId(id);
+
         model.addAttribute("alumno", alumnoService.buscarPorId(id));
+        model.addAttribute("curso", curso);
+
         return "alumno-notas";
     }
 
     @GetMapping("/alumno/{id}/anuncios")
     public String verAnunciosAlumno(@PathVariable String id, Model model) {
+        Curso curso = cursoService.buscarCursoPorAlumnoId(id);
+
         model.addAttribute("alumno", alumnoService.buscarPorId(id));
+        model.addAttribute("curso", curso);
         model.addAttribute("anuncios", anuncioService.listarAnuncios());
+
         return "alumno-anuncios";
     }
 

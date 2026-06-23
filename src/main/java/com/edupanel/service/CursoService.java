@@ -74,4 +74,14 @@ public class CursoService {
             cursoRepository.actualizar(curso);
         }
     }
+
+    public Curso buscarCursoPorAlumnoId(String alumnoId) {
+        for (Curso curso : cursoRepository.listarTodos()) {
+            if (curso.getAlumnosIds() != null && curso.getAlumnosIds().contains(alumnoId)) {
+                return curso;
+            }
+        }
+
+        return null;
+    }
 }

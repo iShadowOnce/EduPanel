@@ -15,6 +15,15 @@
         <strong th:text="${alumno.nombre + ' ' + alumno.apellido}"></strong>
     </p>
 
+    <p th:if="${curso != null}">
+        Curso:
+        <strong th:text="${curso.nombre}"></strong>
+    </p>
+
+    <p th:if="${curso == null}" style="color:red;">
+        Sin curso asignado.
+    </p>
+
     <table border="1">
         <thead>
             <tr>
