@@ -12,3 +12,5 @@ memoria o en base de datos...
 
 Como ultima recomendacion para que quede bien ordenado nomas es que crees un paquete (carpeta) aca dentro de repository
 con el nombre de firebase y ahi dentro creas las clases que implementan las interfaces que cree.
+
+Cuando crees los repo usa la anotacion @Profile("firebase")  y @Repository siosi asi arranca con spring
