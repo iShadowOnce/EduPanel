@@ -2,13 +2,19 @@ package com.edupanel.repository;
 
 import com.edupanel.model.Curso;
 import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Profile("!firebase")
 public class CursoRepositoryMemoria implements CursoRepository {
 
+    /*
+    NOTA JOACO: otro repositorio temporal en memoria.
+    Reemplazar por CursoFirebaseRepository usando Realtime Database.
+    */
     private List<Curso> cursos = new ArrayList<>();
 
     @Override

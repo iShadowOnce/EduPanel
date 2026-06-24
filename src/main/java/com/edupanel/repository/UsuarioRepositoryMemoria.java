@@ -2,14 +2,20 @@ package com.edupanel.repository;
 
 import com.edupanel.model.Rol;
 import com.edupanel.model.Usuario;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Profile("!firebase")
 public class UsuarioRepositoryMemoria implements UsuarioRepository {
 
+    /*
+    NOTA JOACO: repositorio temporal en memoria.
+    Reemplazar por UsuarioFirebaseRepository usando Realtime Database.
+    */
     private List<Usuario> usuarios = new ArrayList<>();
 
     @Override

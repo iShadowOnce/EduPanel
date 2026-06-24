@@ -1,0 +1,29 @@
+En teoria, el service es decir la logica deberia servir ya sea memoria/firebase, no deberia destinguir cual es cual
+podrian agregarse mas service segun requerimiento en firebase, pero en teoria es aca donde esta la LOGICA de la app.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+si no funciona comenzare a cruzar la calle sin mirar a ambos lados y en rojo 

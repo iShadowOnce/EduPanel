@@ -1,6 +1,9 @@
 De momento creare repositorios en memoria para probar logica de
 la aplicacion, y luego conectamos con firebase.
 
+Estos repository son interfaces IMPORTANTES que deberan ser implementadas en el repositorio memoria/firebase
+dependiendo de la fase en la que estemos 
+
 
 UsuarioRepository (Interface)
 responsabilidades:

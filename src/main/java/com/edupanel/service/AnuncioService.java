@@ -4,11 +4,10 @@ import com.edupanel.exception.AnuncioInvalidoException;
 import com.edupanel.model.Anuncio;
 import com.edupanel.model.Asignatura;
 import com.edupanel.repository.AnuncioRepository;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AnuncioService {
@@ -17,16 +16,6 @@ public class AnuncioService {
 
     public AnuncioService(AnuncioRepository anuncioRepository) {
         this.anuncioRepository = anuncioRepository;
-
-        Anuncio anuncio1 = new Anuncio();
-        anuncio1.setId(UUID.randomUUID().toString());
-        anuncio1.setTitulo("Bienvenidos a EduPanel");
-        anuncio1.setMensaje("Este es el primer anuncio del sistema.");
-        anuncio1.setAsignatura(Asignatura.MATEMATICAS);
-        anuncio1.setProfesorId("profesor-demo");
-        anuncio1.setFechaPublicacion(LocalDateTime.now());
-
-        anuncioRepository.guardar(anuncio1);
     }
 
     public List<Anuncio> listarAnuncios() {
@@ -70,9 +59,13 @@ public class AnuncioService {
         return anuncioRepository.listarPorAsignatura(asignatura);
     }
 
+    public List<Anuncio> listarPorProfesor(String profesorId) {
+        return anuncioRepository.listarPorProfesorId(profesorId);
+    }
+
     private void validarAnuncio(Anuncio anuncio) {
         if (anuncio.getTitulo() == null || anuncio.getTitulo().isBlank()) {
-            throw new AnuncioInvalidoException("El título del anuncio es obligatorio.");
+            throw new AnuncioInvalidoException("El titulo del anuncio es obligatorio.");
         }
 
         if (anuncio.getMensaje() == null || anuncio.getMensaje().isBlank()) {
@@ -82,9 +75,5 @@ public class AnuncioService {
         if (anuncio.getAsignatura() == null) {
             throw new AnuncioInvalidoException("Debe seleccionar una asignatura.");
         }
-    }
-
-    public List<Anuncio> listarPorProfesor(String profesorId) {
-        return anuncioRepository.listarPorProfesorId(profesorId);
     }
 }

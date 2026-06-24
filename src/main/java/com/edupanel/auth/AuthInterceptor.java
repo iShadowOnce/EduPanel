@@ -10,10 +10,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final AuthTemporalService authTemporalService;
+    private final AuthService authService;
 
-    public AuthInterceptor(AuthTemporalService authTemporalService) {
-        this.authTemporalService = authTemporalService;
+    public AuthInterceptor(AuthService authService) {
+        this.authService = authService;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        response.sendRedirect(request.getContextPath() + authTemporalService.obtenerRutaPrincipal(sesionUsuario));
+        response.sendRedirect(request.getContextPath() + authService.obtenerRutaPrincipal(sesionUsuario));
         return false;
     }
 
@@ -45,7 +45,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return null;
         }
 
-        Object usuarioSesion = session.getAttribute(AuthTemporalService.SESION_USUARIO);
+        Object usuarioSesion = session.getAttribute(AuthService.SESION_USUARIO);
 
         if (usuarioSesion instanceof SesionUsuario sesionUsuario) {
             return sesionUsuario;

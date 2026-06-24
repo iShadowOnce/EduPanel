@@ -1,23 +1,15 @@
 package com.edupanel.service;
 
-import com.edupanel.model.Alumno;
-import com.edupanel.model.Calificacion;
-import com.edupanel.model.Profesor;
-import com.edupanel.model.Rol;
-import com.edupanel.repository.AlumnoRepository;
-import com.edupanel.model.Asignatura;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import com.edupanel.exception.AlumnoInvalidoException;
 import com.edupanel.exception.CalificacionInvalidaException;
-
+import com.edupanel.model.Alumno;
+import com.edupanel.model.Calificacion;
+import com.edupanel.model.Rol;
+import com.edupanel.repository.AlumnoRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AlumnoService {
@@ -25,30 +17,7 @@ public class AlumnoService {
     private final AlumnoRepository alumnoRepository;
 
     public AlumnoService(AlumnoRepository alumnoRepository) {
-
         this.alumnoRepository = alumnoRepository;
-
-        Alumno alumno1 = new Alumno();
-        alumno1.setUid("1");
-        alumno1.setNombre("Joaquín");
-        alumno1.setApellido("Astudillo");
-        alumno1.setRut("11.111.111-1");
-        alumno1.setEmail("joaquin@correo.com");
-        alumno1.setPassword("123456");
-
-        Calificacion nota1 = new Calificacion();
-        nota1.setId("1");
-        nota1.setAlumnoId("1");
-        nota1.setAsignatura(Asignatura.MATEMATICAS);
-        nota1.setNota(6.0);
-        nota1.setDescripcion("Prueba 1");
-
-        List<Calificacion> notas = new ArrayList<>();
-        notas.add(nota1);
-
-        alumno1.setNotas(notas);
-
-        alumnoRepository.guardar(alumno1);
     }
 
     public List<Alumno> listarAlumnos() {
@@ -95,7 +64,6 @@ public class AlumnoService {
         Alumno alumno = buscarPorId(alumnoId);
 
         if (alumno != null) {
-
             if (alumno.getNotas() == null) {
                 alumno.setNotas(new ArrayList<>());
             }
@@ -104,6 +72,7 @@ public class AlumnoService {
             calificacion.setAlumnoId(alumnoId);
 
             alumno.getNotas().add(calificacion);
+            alumnoRepository.actualizar(alumno);
         }
     }
 
@@ -153,6 +122,9 @@ public class AlumnoService {
             calificacionExistente.setAsignatura(datosActualizados.getAsignatura());
             calificacionExistente.setNota(datosActualizados.getNota());
             calificacionExistente.setDescripcion(datosActualizados.getDescripcion());
+
+            Alumno alumno = buscarPorId(alumnoId);
+            alumnoRepository.actualizar(alumno);
         }
     }
 
@@ -161,6 +133,7 @@ public class AlumnoService {
 
         if (alumno != null && alumno.getNotas() != null) {
             alumno.getNotas().removeIf(calificacion -> calificacion.getId().equals(notaId));
+            alumnoRepository.actualizar(alumno);
         }
     }
 
@@ -192,7 +165,7 @@ public class AlumnoService {
         }
 
         if (calificacion.getDescripcion() == null || calificacion.getDescripcion().isBlank()) {
-            throw new CalificacionInvalidaException("La descripción de la nota es obligatoria.");
+            throw new CalificacionInvalidaException("La descripcion de la nota es obligatoria.");
         }
     }
 }

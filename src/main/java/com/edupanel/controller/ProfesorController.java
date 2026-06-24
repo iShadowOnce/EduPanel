@@ -46,7 +46,7 @@ public class ProfesorController {
         model.addAttribute("anuncios", anuncioService.listarPorProfesor(profesorId));
         model.addAttribute("nuevoAnuncio", new Anuncio());
         model.addAttribute("asignaturas", profesor.getAsignaturas());
-        //model.addAttribute("asignaturas", Asignatura.values()); de esta forma veria todos los anuncios
+        //model.addAttribute("asignaturas", Asignatura.values()); de esta forma veria todos los anuncios en memoria
 
         return "profesor-anuncios";
     }

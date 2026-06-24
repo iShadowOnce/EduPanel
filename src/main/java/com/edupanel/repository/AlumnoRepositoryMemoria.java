@@ -3,13 +3,19 @@ package com.edupanel.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.edupanel.model.Alumno;
 
 @Repository
+@Profile("!firebase")
 public class AlumnoRepositoryMemoria implements AlumnoRepository {
 
+    /*
+    NOTA JOACO: estos son repositorios temporales en memoria.
+    Cuando AlumnoFirebaseRepository funcione, esta clase debe dejar de usarse.
+    */
     private List<Alumno> alumnos = new ArrayList<>();
 
     @Override

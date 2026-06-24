@@ -1,6 +1,0 @@
-verificar rama: git branch
-cambio de rama: git checkout nombre_rama
-agregar cambios: git add .
-realizar el commmit: git commmit -m "mensaje"
-subir los cambios a github: git push
-traer cambios

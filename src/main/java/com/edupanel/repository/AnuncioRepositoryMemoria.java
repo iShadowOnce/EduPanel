@@ -3,13 +3,19 @@ package com.edupanel.repository;
 import com.edupanel.model.Anuncio;
 import com.edupanel.model.Asignatura;
 import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Profile("!firebase")
 public class AnuncioRepositoryMemoria implements AnuncioRepository {
 
+    /* 
+    NOTA JOACO: otro repositorio temporal en memoria.
+    Reemplazar por AnuncioFirebaseRepository usando Realtime Database.
+    */
     private List<Anuncio> anuncios = new ArrayList<>();
 
     @Override

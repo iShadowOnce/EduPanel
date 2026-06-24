@@ -7,12 +7,17 @@ import com.edupanel.model.Usuario;
 import com.edupanel.service.AlumnoService;
 import com.edupanel.service.ProfesorService;
 import com.edupanel.service.UsuarioService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthTemporalService {
+@Profile("!firebase")
+public class AuthTemporalService implements AuthService {
 
-    public static final String SESION_USUARIO = "usuarioSesion";
+/*
+NOTA JOACO: eliminar esta clase cuando FirebaseAuthService este completo.
+Este servicio solo existe para pder probar sesiones y roles con repositorios en memoria. 
+*/
     private static final String PROFESOR_JEFE_UID = "profesor-jefe-demo";
     private static final String PROFESOR_JEFE_EMAIL = "jefe@edupanel.cl";
     private static final String PROFESOR_JEFE_PASSWORD = "admin123";
@@ -29,6 +34,7 @@ public class AuthTemporalService {
         this.profesorService = profesorService;
     }
 
+    @Override
     public SesionUsuario autenticar(String email, String password) {
         validarCredenciales(email, password);
 
@@ -60,22 +66,6 @@ public class AuthTemporalService {
         }
 
         throw new IllegalArgumentException("Email o contrasena incorrectos.");
-    }
-
-    public String obtenerRutaPrincipal(SesionUsuario sesionUsuario) {
-        if (sesionUsuario.getRol() == Rol.PROFESOR_JEFE) {
-            return "/profesor-jefe/dashboard";
-        }
-
-        if (sesionUsuario.getRol() == Rol.PROFESOR) {
-            return "/profesor/" + sesionUsuario.getUid() + "/dashboard";
-        }
-
-        if (sesionUsuario.getRol() == Rol.ALUMNO) {
-            return "/alumno/" + sesionUsuario.getUid() + "/dashboard";
-        }
-
-        return "/pendiente";
     }
 
     private void validarCredenciales(String email, String password) {

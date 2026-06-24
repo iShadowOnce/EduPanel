@@ -22,6 +22,15 @@ import com.edupanel.service.ProfesorService;
 import com.edupanel.model.Curso;
 import com.edupanel.service.CursoService;
 
+
+/*
+NOTA JOACO: De momento los Controller quedan como estan debido que los 
+get y post estan correctos, y la app no deberia hacer 
+diferencia si el dato que recibe es en memoria o firebase 
+en mucha teoria XD, pero baasicamente aca estan las rutas y
+las peticiones que genera el usuario a la app
+*/
+
 @Controller
 public class AlumnoController {
 

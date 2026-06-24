@@ -1,0 +1,2 @@
+Paginas web y css basico para que funcione nomas con thymeleaf,
+esto sera lo ultimo que debemos hacer
