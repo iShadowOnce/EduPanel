@@ -1,0 +1,49 @@
+package com.edupanel.repository;
+
+import com.edupanel.model.Curso;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Repository
+public class CursoRepositoryMemoria implements CursoRepository {
+
+    private List<Curso> cursos = new ArrayList<>();
+
+    @Override
+    public void guardar(Curso curso) {
+        cursos.add(curso);
+    }
+
+    @Override
+    public Curso buscarPorId(String id) {
+        for (Curso curso : cursos) {
+            if (curso.getId().equals(id)) {
+                return curso;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Curso> listarTodos() {
+        return cursos;
+    }
+
+    @Override
+    public void actualizar(Curso cursoActualizado) {
+        Curso cursoExistente = buscarPorId(cursoActualizado.getId());
+
+        if (cursoExistente != null) {
+            cursoExistente.setNombre(cursoActualizado.getNombre());
+            cursoExistente.setAlumnosIds(cursoActualizado.getAlumnosIds());
+        }
+    }
+
+    @Override
+    public void eliminar(String id) {
+        cursos.removeIf(curso -> curso.getId().equals(id));
+    }
+}

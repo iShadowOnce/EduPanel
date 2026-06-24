@@ -33,7 +33,9 @@ public class UsuarioService {
 
         Usuario usuarioExistente = usuarioRepository.buscarPorEmail(usuario.getEmail());
 
-        if (usuarioExistente != null) {
+        if (usuarioExistente != null
+                || alumnoService.buscarPorEmail(usuario.getEmail()) != null
+                || profesorService.buscarPorEmail(usuario.getEmail()) != null) {
             throw new UsuarioDuplicadoException("Ya existe un usuario registrado con ese email.");
         }
 
@@ -45,6 +47,10 @@ public class UsuarioService {
 
     public List<Usuario> listarUsuariosPendientes() {
         return usuarioRepository.listarPendientes();
+    }
+
+    public Usuario buscarPorEmail(String email) {
+        return usuarioRepository.buscarPorEmail(email);
     }
 
     public void asignarRol(String usuarioId, Rol nuevoRol) {
@@ -61,6 +67,7 @@ public class UsuarioService {
             alumno.setApellido(usuario.getApellido());
             alumno.setRut(usuario.getRut());
             alumno.setEmail(usuario.getEmail());
+            alumno.setPassword(usuario.getPassword());
 
             alumnoService.guardarAlumno(alumno);
             usuarioRepository.eliminar(usuarioId);
@@ -74,6 +81,7 @@ public class UsuarioService {
             profesor.setApellido(usuario.getApellido());
             profesor.setRut(usuario.getRut());
             profesor.setEmail(usuario.getEmail());
+            profesor.setPassword(usuario.getPassword());
 
             profesorService.guardarProfesor(profesor);
             usuarioRepository.eliminar(usuarioId);
@@ -95,6 +103,14 @@ public class UsuarioService {
 
         if (usuario.getEmail() == null || usuario.getEmail().isBlank()) {
             throw new IllegalArgumentException("El email es obligatorio.");
+        }
+
+        if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
+            throw new IllegalArgumentException("La contrasena es obligatoria.");
+        }
+
+        if (usuario.getPassword().length() < 6) {
+            throw new IllegalArgumentException("La contrasena debe tener al menos 6 caracteres.");
         }
     }
 }

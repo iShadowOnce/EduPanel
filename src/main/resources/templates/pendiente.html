@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cuenta pendiente | EduPanel</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
+</head>
+
+<body>
+
+    <h1>Cuenta pendiente</h1>
+
+    <p>
+        Tu registro fue recibido y esta esperando la asignacion de un rol.
+    </p>
+
+    <a href="/login">Volver al login</a>
+    <a href="/">Volver al inicio</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Cerrar sesion</button>
+    </form>
+
+</body>
+
+</html>

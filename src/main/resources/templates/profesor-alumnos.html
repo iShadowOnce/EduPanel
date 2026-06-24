@@ -4,39 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Alumnos</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
 <body>
 
     <h1>Lista de alumnos</h1>
 
-
-    <h2>Agregar alumno</h2>
-
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
-
-    <form th:action="@{/profesor/alumnos/guardar}" th:object="${nuevoAlumno}" method="post">
-        <label>Nombre:</label>
-        <input type="text" th:field="*{nombre}">
-        <br>
-
-        <label>Apellido:</label>
-        <input type="text" th:field="*{apellido}">
-        <br>
-
-        <label>RUT:</label>
-        <input type="text" th:field="*{rut}">
-        <br>
-
-        <label>Email:</label>
-        <input type="email" th:field="*{email}">
-        <br>
-
-        <button type="submit">Guardar alumno</button>
-    </form>
-
-    <hr>
-
 
     <table border="1">
         <thead>
@@ -62,25 +37,16 @@
                 <td th:text="${alumno.calcularPromedio()}"></td>
                 <td th:text="${alumno.obtenerEstadoAcademico()}"></td>
                 <td>
-                    <a th:href="@{/profesor/alumnos/{id}/notas(id=${alumno.uid})}">
+                    <a th:if="${profesor != null}"
+                        th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas(profesorId=${profesor.uid}, alumnoId=${alumno.uid})}">
                         Ver notas
                     </a>
 
-                    |
-
-                    <a th:href="@{/profesor/alumnos/{id}/editar(id=${alumno.uid})}">
+                    <a th:if="${profesor == null}" th:href="@{/profesor/alumnos/{id}/editar(id=${alumno.uid})}">
                         Editar
                     </a>
 
-                    |
-
-                    <a th:href="@{/alumno/{id}/dashboard(id=${alumno.uid})}">
-                        Entrar como alumno
-                    </a>
-
-                    |
-
-                    <form th:action="@{/profesor/alumnos/{id}/eliminar(id=${alumno.uid})}" method="post"
+                    <form th:if="${profesor == null}" th:action="@{/profesor/alumnos/{id}/eliminar(id=${alumno.uid})}" method="post"
                         style="display:inline;">
                         <button type="submit">Eliminar</button>
                     </form>

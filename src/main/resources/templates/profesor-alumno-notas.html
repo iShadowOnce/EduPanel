@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Notas del alumno</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
 <body>
@@ -27,19 +28,14 @@
 
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
-    <form th:action="@{/profesor/alumnos/{id}/notas/guardar(id=${alumno.uid})}" th:object="${nuevaCalificacion}"
-        method="post">
+    <form th:if="${profesor != null}"
+        th:action="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/guardar(profesorId=${profesor.uid}, alumnoId=${alumno.uid})}"
+        th:object="${nuevaCalificacion}" method="post">
 
         <label>Asignatura:</label>
         <select th:field="*{asignatura}">
-            <option value="MATEMATICAS">Matemáticas</option>
-            <option value="LENGUAJE">Lenguaje</option>
-            <option value="CIENCIAS_NATURALES">Ciencias Naturales</option>
-            <option value="INGLES">Inglés</option>
-            <option value="HISTORIA">Historia</option>
-            <option value="ARTES">Artes</option>
-            <option value="EDUCACION_FISICA">Educación Física</option>
-            <option value="MUSICA">Música</option>
+            <option th:each="asignatura : ${asignaturas}" th:value="${asignatura}" th:text="${asignatura}">
+            </option>
         </select>
 
         <br>
@@ -97,7 +93,9 @@
 
     <br>
 
-    <a href="/profesor/alumnos">Volver a alumnos</a>
+    <a th:if="${profesor != null}" th:href="@{/profesor/{id}/alumnos(id=${profesor.uid})}">
+        Volver a alumnos
+    </a>
 
 </body>
 

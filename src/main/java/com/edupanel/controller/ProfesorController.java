@@ -26,7 +26,7 @@ public class ProfesorController {
 
     @GetMapping("/profesor/dashboard")
     public String dashboardProfesorSinId() {
-        return "redirect:/profesor-jefe/profesores";
+        return "redirect:/login";
     }
 
     @GetMapping("/profesor/{profesorId}/dashboard")
@@ -45,7 +45,8 @@ public class ProfesorController {
         model.addAttribute("profesor", profesor);
         model.addAttribute("anuncios", anuncioService.listarPorProfesor(profesorId));
         model.addAttribute("nuevoAnuncio", new Anuncio());
-        model.addAttribute("asignaturas", Asignatura.values());
+        model.addAttribute("asignaturas", profesor.getAsignaturas());
+        //model.addAttribute("asignaturas", Asignatura.values()); de esta forma veria todos los anuncios
 
         return "profesor-anuncios";
     }
@@ -70,7 +71,7 @@ public class ProfesorController {
             model.addAttribute("profesor", profesor);
             model.addAttribute("anuncios", anuncioService.listarPorProfesor(profesorId));
             model.addAttribute("nuevoAnuncio", nuevoAnuncio);
-            model.addAttribute("asignaturas", Asignatura.values());
+            model.addAttribute("asignaturas", profesor.getAsignaturas());
 
             return "profesor-anuncios";
         }
@@ -93,7 +94,7 @@ public class ProfesorController {
 
         model.addAttribute("profesor", profesor);
         model.addAttribute("anuncio", anuncio);
-        model.addAttribute("asignaturas", Asignatura.values());
+        model.addAttribute("asignaturas", profesor.getAsignaturas());
 
         return "profesor-editar-anuncio";
     }
@@ -119,7 +120,7 @@ public class ProfesorController {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("profesor", profesor);
             model.addAttribute("anuncio", anuncioActualizado);
-            model.addAttribute("asignaturas", Asignatura.values());
+            model.addAttribute("asignaturas", profesor.getAsignaturas());
 
             return "profesor-editar-anuncio";
         }

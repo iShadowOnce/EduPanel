@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Alumno</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
 <body>
@@ -25,6 +26,15 @@
         <strong th:text="${alumno.obtenerEstadoAcademico()}"></strong>
     </p>
 
+    <p th:if="${curso != null}">
+        Curso actual:
+        <strong th:text="${curso.nombre}"></strong>
+    </p>
+
+    <p th:if="${curso == null}" style="color:red;">
+        Aún no tienes un curso asignado.
+    </p>
+
     <ul>
         <li>
             <a th:href="@{/alumno/{id}/notas(id=${alumno.uid})}">
@@ -38,6 +48,10 @@
             </a>
         </li>
     </ul>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Cerrar sesion</button>
+    </form>
 
 </body>
 

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Profesor Jefe</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
+</head>
+
+<body>
+
+    <h1>Panel Profesor Jefe</h1>
+
+    <p>
+        Gestiona usuarios pendientes, profesores, cursos y asignaturas desde este panel.
+    </p>
+
+    <ul>
+        <li><a href="/profesor-jefe/usuarios-pendientes">Usuarios pendientes</a></li>
+        <li><a href="/profesor-jefe/profesores">Profesores registrados</a></li>
+        <li><a href="/profesor-jefe/cursos">Cursos</a></li>
+    </ul>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Cerrar sesion</button>
+    </form>
+
+</body>
+
+</html>

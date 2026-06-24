@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Asignaturas del profesor</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
+</head>
+<body>
+
+<h1>Asignaturas del profesor</h1>
+
+<p>
+    Profesor:
+    <strong th:text="${profesor.nombre + ' ' + profesor.apellido}"></strong>
+</p>
+
+<p>
+    Email:
+    <strong th:text="${profesor.email}"></strong>
+</p>
+
+<hr>
+
+<h2>Asignar nueva asignatura</h2>
+
+<form th:action="@{/profesor-jefe/profesores/{id}/asignaturas/asignar(id=${profesor.uid})}"
+      method="post">
+
+    <label>Asignatura:</label>
+
+    <select name="asignatura">
+        <option th:each="asignatura : ${asignaturasDisponibles}"
+                th:value="${asignatura}"
+                th:text="${asignatura}">
+        </option>
+    </select>
+
+    <button type="submit">Asignar</button>
+</form>
+
+<hr>
+
+<h2>Asignaturas asignadas</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Asignatura</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="asignatura : ${profesor.asignaturas}">
+        <td th:text="${asignatura}"></td>
+        <td>
+            <form th:action="@{/profesor-jefe/profesores/{id}/asignaturas/{asignatura}/quitar(id=${profesor.uid}, asignatura=${asignatura})}"
+                  method="post"
+                  style="display:inline;">
+                <button type="submit">Quitar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<a href="/profesor-jefe/dashboard">Volver al panel</a>
+<a href="/profesor-jefe/profesores">Volver a profesores</a>
+
+</body>
+</html>

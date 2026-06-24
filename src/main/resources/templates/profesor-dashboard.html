@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Profesor</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 <body>
 
@@ -18,9 +19,16 @@
     <strong th:text="${profesor.email}"></strong>
 </p>
 
+<p>
+    Asignaturas asignadas:
+    <strong th:text="${profesor.asignaturas}"></strong>
+</p>
+
 <ul>
     <li>
-        <a href="/profesor/alumnos">Gestionar alumnos</a>
+        <a th:href="@{/profesor/{id}/alumnos(id=${profesor.uid})}">
+            Gestionar notas
+        </a>
     </li>
 
     <li>
@@ -30,9 +38,9 @@
     </li>
 </ul>
 
-<br>
-
-<a href="/profesor-jefe/profesores">Volver a profesores registrados</a>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Cerrar sesion</button>
+</form>
 
 </body>
 </html>

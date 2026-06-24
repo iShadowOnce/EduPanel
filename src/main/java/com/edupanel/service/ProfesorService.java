@@ -41,6 +41,20 @@ public class ProfesorService {
         return profesorRepository.buscarPorId(uid);
     }
 
+    public Profesor buscarPorEmail(String email) {
+        if (email == null) {
+            return null;
+        }
+
+        for (Profesor profesor : profesorRepository.listarTodos()) {
+            if (profesor.getEmail() != null && profesor.getEmail().equalsIgnoreCase(email)) {
+                return profesor;
+            }
+        }
+
+        return null;
+    }
+
     public void asignarAsignatura(String profesorId, Asignatura asignatura) {
         Profesor profesor = buscarPorId(profesorId);
 
@@ -49,7 +63,19 @@ public class ProfesorService {
                 profesor.setAsignaturas(new ArrayList<>());
             }
 
-            profesor.getAsignaturas().add(asignatura);
+            if (!profesor.getAsignaturas().contains(asignatura)) {
+                profesor.getAsignaturas().add(asignatura);
+            }
+
+            profesorRepository.actualizar(profesor);
+        }
+    }
+
+    public void quitarAsignatura(String profesorId, Asignatura asignatura) {
+        Profesor profesor = buscarPorId(profesorId);
+
+        if (profesor != null && profesor.getAsignaturas() != null) {
+            profesor.getAsignaturas().remove(asignatura);
             profesorRepository.actualizar(profesor);
         }
     }
