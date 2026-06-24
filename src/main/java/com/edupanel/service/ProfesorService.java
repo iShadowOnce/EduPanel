@@ -41,6 +41,20 @@ public class ProfesorService {
         return profesorRepository.buscarPorId(uid);
     }
 
+    public Profesor buscarPorEmail(String email) {
+        if (email == null) {
+            return null;
+        }
+
+        for (Profesor profesor : profesorRepository.listarTodos()) {
+            if (profesor.getEmail() != null && profesor.getEmail().equalsIgnoreCase(email)) {
+                return profesor;
+            }
+        }
+
+        return null;
+    }
+
     public void asignarAsignatura(String profesorId, Asignatura asignatura) {
         Profesor profesor = buscarPorId(profesorId);
 

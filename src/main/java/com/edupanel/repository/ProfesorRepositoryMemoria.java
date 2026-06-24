@@ -41,6 +41,7 @@ public class ProfesorRepositoryMemoria implements ProfesorRepository {
             profesorExistente.setApellido(profesorActualizado.getApellido());
             profesorExistente.setRut(profesorActualizado.getRut());
             profesorExistente.setEmail(profesorActualizado.getEmail());
+            profesorExistente.setPassword(profesorActualizado.getPassword());
             profesorExistente.setRol(profesorActualizado.getRol());
             profesorExistente.setAsignaturas(profesorActualizado.getAsignaturas());
         }

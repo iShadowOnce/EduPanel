@@ -66,6 +66,7 @@ public class UsuarioRepositoryMemoria implements UsuarioRepository {
             usuarioExistente.setApellido(usuarioActualizado.getApellido());
             usuarioExistente.setRut(usuarioActualizado.getRut());
             usuarioExistente.setEmail(usuarioActualizado.getEmail());
+            usuarioExistente.setPassword(usuarioActualizado.getPassword());
             usuarioExistente.setRol(usuarioActualizado.getRol());
         }
     }

@@ -34,6 +34,7 @@ public class AlumnoService {
         alumno1.setApellido("Astudillo");
         alumno1.setRut("11.111.111-1");
         alumno1.setEmail("joaquin@correo.com");
+        alumno1.setPassword("123456");
 
         Calificacion nota1 = new Calificacion();
         nota1.setId("1");
@@ -74,6 +75,20 @@ public class AlumnoService {
         return alumnoRepository.buscarPorId(uid);
     }
 
+    public Alumno buscarPorEmail(String email) {
+        if (email == null) {
+            return null;
+        }
+
+        for (Alumno alumno : alumnoRepository.listarTodos()) {
+            if (alumno.getEmail() != null && alumno.getEmail().equalsIgnoreCase(email)) {
+                return alumno;
+            }
+        }
+
+        return null;
+    }
+
     public void agregarCalificacion(String alumnoId, Calificacion calificacion) {
         validarCalificacion(calificacion);
 
@@ -106,6 +121,10 @@ public class AlumnoService {
             alumnoExistente.setApellido(datosActualizados.getApellido());
             alumnoExistente.setRut(datosActualizados.getRut());
             alumnoExistente.setEmail(datosActualizados.getEmail());
+
+            if (datosActualizados.getPassword() != null && !datosActualizados.getPassword().isBlank()) {
+                alumnoExistente.setPassword(datosActualizados.getPassword());
+            }
 
             alumnoRepository.actualizar(alumnoExistente);
         }

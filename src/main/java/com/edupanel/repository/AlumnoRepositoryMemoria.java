@@ -42,6 +42,7 @@ public class AlumnoRepositoryMemoria implements AlumnoRepository {
             alumnoExistente.setApellido(alumnoActualizado.getApellido());
             alumnoExistente.setRut(alumnoActualizado.getRut());
             alumnoExistente.setEmail(alumnoActualizado.getEmail());
+            alumnoExistente.setPassword(alumnoActualizado.getPassword());
             alumnoExistente.setRol(alumnoActualizado.getRol());
             alumnoExistente.setNotas(alumnoActualizado.getNotas());
         }

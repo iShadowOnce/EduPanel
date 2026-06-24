@@ -14,6 +14,7 @@ public abstract class Usuario {
     private String apellido;
     private String rut;
     private String email;
+    private String password;
     private Rol rol = Rol.PENDIENTE;
 
     public abstract String obtenerRutaDashboard();
