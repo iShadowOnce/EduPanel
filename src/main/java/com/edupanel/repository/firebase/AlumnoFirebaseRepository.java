@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Profile("firebase")
 public class AlumnoFirebaseRepository extends FirebaseRepositorySupport implements AlumnoRepository {
+
     private final DatabaseReference alumnos = referencia("alumnos");
 
     @Override
@@ -28,8 +29,20 @@ public class AlumnoFirebaseRepository extends FirebaseRepositorySupport implemen
     }
 
     @Override
-    public void actualizar(Alumno alumno) {
-        guardar(alumno);
+    public void actualizar(Alumno alumnoActualizado) {
+        Alumno alumnoExistente = buscarPorId(alumnoActualizado.getUid());
+
+        if (alumnoExistente != null) {
+            alumnoExistente.setNombre(alumnoActualizado.getNombre());
+            alumnoExistente.setApellido(alumnoActualizado.getApellido());
+            alumnoExistente.setRut(alumnoActualizado.getRut());
+            alumnoExistente.setEmail(alumnoActualizado.getEmail());
+            alumnoExistente.setPassword(alumnoActualizado.getPassword());
+            alumnoExistente.setRol(alumnoActualizado.getRol());
+            alumnoExistente.setNotas(alumnoActualizado.getNotas());
+
+            guardar(alumnoExistente);
+        }
     }
 
     @Override
