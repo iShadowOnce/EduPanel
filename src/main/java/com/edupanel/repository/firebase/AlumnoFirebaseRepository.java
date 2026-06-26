@@ -11,21 +11,24 @@ import org.springframework.stereotype.Repository;
 @Profile("firebase")
 public class AlumnoFirebaseRepository extends FirebaseRepositorySupport implements AlumnoRepository {
 
-    private final DatabaseReference alumnos = referencia("alumnos");
+    // lazy: se llama referencia() en cada operacion, no en el constructor
+    private DatabaseReference alumnos() {
+        return referencia("alumnos");
+    }
 
     @Override
     public void guardar(Alumno alumno) {
-        esperar(alumnos.child(alumno.getUid()).setValueAsync(alumno));
+        esperar(alumnos().child(alumno.getUid()).setValueAsync(alumno));
     }
 
     @Override
     public Alumno buscarPorId(String id) {
-        return buscarPorId(alumnos, id, Alumno.class);
+        return buscarPorId(alumnos(), id, Alumno.class);
     }
 
     @Override
     public List<Alumno> listarTodos() {
-        return listarTodos(alumnos, Alumno.class);
+        return listarTodos(alumnos(), Alumno.class);
     }
 
     @Override
@@ -47,6 +50,6 @@ public class AlumnoFirebaseRepository extends FirebaseRepositorySupport implemen
 
     @Override
     public void eliminar(String id) {
-        esperar(alumnos.child(id).removeValueAsync());
+        esperar(alumnos().child(id).removeValueAsync());
     }
 }
