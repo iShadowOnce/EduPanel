@@ -1,5 +1,7 @@
-package com.edupanel.auth;
+package com.edupanel.auth.firebase;
 
+import com.edupanel.auth.AuthService;
+import com.edupanel.auth.SesionUsuario;
 import com.edupanel.model.Usuario;
 import com.edupanel.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.JsonNode;

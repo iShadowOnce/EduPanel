@@ -2,12 +2,12 @@ package com.edupanel.auth;
 
 import com.edupanel.model.Usuario;
 
-final class RegistroUsuarioValidator {
+public final class RegistroUsuarioValidator {
 
     private RegistroUsuarioValidator() {
     }
 
-    static void validar(Usuario usuario) {
+    public static void validar(Usuario usuario) {
         if (usuario.getNombre() == null || usuario.getNombre().isBlank()) {
             throw new IllegalArgumentException("El nombre es obligatorio.");
         }

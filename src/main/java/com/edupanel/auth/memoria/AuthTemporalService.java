@@ -1,5 +1,7 @@
-package com.edupanel.auth;
+package com.edupanel.auth.memoria;
 
+import com.edupanel.auth.AuthService;
+import com.edupanel.auth.SesionUsuario;
 import com.edupanel.model.Alumno;
 import com.edupanel.model.Profesor;
 import com.edupanel.model.Rol;

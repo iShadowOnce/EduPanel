@@ -1,5 +1,7 @@
-package com.edupanel.auth;
+package com.edupanel.auth.firebase;
 
+import com.edupanel.auth.RegistroUsuarioService;
+import com.edupanel.auth.RegistroUsuarioValidator;
 import com.edupanel.exception.UsuarioDuplicadoException;
 import com.edupanel.model.Rol;
 import com.edupanel.model.UsuarioPendiente;
