@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data // Pack completo incluye @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor
-@AllArgsConstructor // Constructor con argumentos
-@NoArgsConstructor // Constructor sin argumentos
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class Usuario {
 
     private String uid;
