@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 @Profile("firebase")
 public class UsuarioFirebaseRepository extends FirebaseRepositorySupport implements UsuarioRepository {
 
-    // lazy: se llama referencia() en cada operacion, no en el constructor
     private DatabaseReference usuarios() {
         return referencia("usuarios");
     }

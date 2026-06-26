@@ -1,4 +1,4 @@
-package com.edupanel.repository;
+package com.edupanel.repository.memoria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.edupanel.model.Alumno;
+import com.edupanel.repository.AlumnoRepository;
 
 @Repository
 @Profile("!firebase")

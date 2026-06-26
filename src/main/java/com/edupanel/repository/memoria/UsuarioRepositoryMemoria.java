@@ -1,7 +1,8 @@
-package com.edupanel.repository;
+package com.edupanel.repository.memoria;
 
 import com.edupanel.model.Rol;
 import com.edupanel.model.Usuario;
+import com.edupanel.repository.UsuarioRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
