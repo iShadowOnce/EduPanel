@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 abstract class FirebaseRepositorySupport {
 
+
     protected DatabaseReference referencia(String coleccion) {
         return FirebaseDatabase.getInstance().getReference(coleccion);
     }
