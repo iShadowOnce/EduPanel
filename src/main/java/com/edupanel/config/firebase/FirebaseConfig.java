@@ -1,4 +1,4 @@
-package com.edupanel.config;
+package com.edupanel.config.firebase;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -6,12 +6,14 @@ import com.google.firebase.FirebaseOptions;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 @Configuration
+@Profile("firebase")
 public class FirebaseConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(FirebaseConfig.class);

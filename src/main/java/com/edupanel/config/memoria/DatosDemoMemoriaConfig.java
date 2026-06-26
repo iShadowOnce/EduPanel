@@ -1,4 +1,4 @@
-package com.edupanel.config;
+package com.edupanel.config.memoria;
 
 import com.edupanel.model.Alumno;
 import com.edupanel.model.Anuncio;
