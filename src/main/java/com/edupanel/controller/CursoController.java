@@ -27,7 +27,7 @@ public class CursoController {
         model.addAttribute("cursos", cursoService.listarCursos());
         model.addAttribute("nuevoCurso", new Curso());
 
-        return "profesor-jefe-cursos";
+        return "admin/cursos";
     }
 
     @PostMapping("/profesor-jefe/cursos/guardar")
@@ -41,7 +41,7 @@ public class CursoController {
             model.addAttribute("cursos", cursoService.listarCursos());
             model.addAttribute("nuevoCurso", nuevoCurso);
 
-            return "profesor-jefe-cursos";
+            return "admin/cursos";
         }
     }
 
@@ -57,7 +57,7 @@ public class CursoController {
         model.addAttribute("curso", cursoService.buscarPorId(cursoId));
         model.addAttribute("alumnos", alumnoService.listarAlumnos());
 
-        return "profesor-jefe-curso-alumnos";
+        return "admin/curso-alumnos";
     }
 
     @PostMapping("/profesor-jefe/cursos/{cursoId}/alumnos/{alumnoId}/asignar")

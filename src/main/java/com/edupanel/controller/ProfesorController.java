@@ -35,7 +35,7 @@ public class ProfesorController {
 
         model.addAttribute("profesor", profesor);
 
-        return "profesor-dashboard";
+        return "profesor/dashboard";
     }
 
     @GetMapping("/profesor/{profesorId}/anuncios")
@@ -48,7 +48,7 @@ public class ProfesorController {
         model.addAttribute("asignaturas", profesor.getAsignaturas());
         //model.addAttribute("asignaturas", Asignatura.values()); de esta forma veria todos los anuncios en memoria
 
-        return "profesor-anuncios";
+        return "profesor/anuncios";
     }
 
     @PostMapping("/profesor/{profesorId}/anuncios/guardar")
@@ -73,7 +73,7 @@ public class ProfesorController {
             model.addAttribute("nuevoAnuncio", nuevoAnuncio);
             model.addAttribute("asignaturas", profesor.getAsignaturas());
 
-            return "profesor-anuncios";
+            return "profesor/anuncios";
         }
     }
 
@@ -96,7 +96,7 @@ public class ProfesorController {
         model.addAttribute("anuncio", anuncio);
         model.addAttribute("asignaturas", profesor.getAsignaturas());
 
-        return "profesor-editar-anuncio";
+        return "profesor/editar-anuncio";
     }
 
     @PostMapping("/profesor/{profesorId}/anuncios/{anuncioId}/actualizar")
@@ -122,7 +122,7 @@ public class ProfesorController {
             model.addAttribute("anuncio", anuncioActualizado);
             model.addAttribute("asignaturas", profesor.getAsignaturas());
 
-            return "profesor-editar-anuncio";
+            return "profesor/editar-anuncio";
         }
     }
 }

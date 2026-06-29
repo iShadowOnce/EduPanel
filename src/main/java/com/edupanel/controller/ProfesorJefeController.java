@@ -25,13 +25,13 @@ public class ProfesorJefeController {
 
     @GetMapping("/profesor-jefe/dashboard")
     public String dashboardProfesorJefe() {
-        return "profesor-jefe-dashboard";
+        return "admin/dashboard";
     }
 
     @GetMapping("/profesor-jefe/usuarios-pendientes")
     public String verUsuariosPendientes(Model model) {
         model.addAttribute("usuariosPendientes", usuarioService.listarUsuariosPendientes());
-        return "profesor-jefe-usuarios";
+        return "admin/usuarios";
     }
 
     @PostMapping("/profesor-jefe/usuarios/{id}/asignar-alumno")
@@ -49,7 +49,7 @@ public class ProfesorJefeController {
     @GetMapping("/profesor-jefe/profesores")
     public String verProfesores(Model model) {
         model.addAttribute("profesores", profesorService.listarProfesores());
-        return "profesor-jefe-profesores";
+        return "admin/profesores";
     }
 
     @GetMapping("/profesor-jefe/profesores/{id}/asignaturas")
@@ -59,7 +59,7 @@ public class ProfesorJefeController {
         model.addAttribute("profesor", profesor);
         model.addAttribute("asignaturasDisponibles", Asignatura.values());
 
-        return "profesor-jefe-asignaturas";
+        return "admin/asignaturas";
     }
 
     @PostMapping("/profesor-jefe/profesores/{id}/asignaturas/asignar")

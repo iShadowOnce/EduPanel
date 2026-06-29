@@ -19,7 +19,7 @@
     </p>
 
     <form
-        th:action="@{/profesor/alumnos/{alumnoId}/notas/{notaId}/actualizar(alumnoId=${alumno.uid}, notaId=${calificacion.id})}"
+        th:action="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/actualizar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${calificacion.id})}"
         th:object="${calificacion}" method="post">
 
         <label>ID:</label>
@@ -52,7 +52,7 @@
 
     <br>
 
-    <a th:href="@{/profesor/alumnos/{id}/notas(id=${alumno.uid})}">
+    <a th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas(profesorId=${profesor.uid}, alumnoId=${alumno.uid})}">
         Volver a notas
     </a>
 

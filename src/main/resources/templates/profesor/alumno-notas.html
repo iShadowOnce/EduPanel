@@ -75,14 +75,14 @@
                 <td th:text="${nota.descripcion}"></td>
                 <td>
                     <a
-                        th:href="@{/profesor/alumnos/{alumnoId}/notas/{notaId}/editar(alumnoId=${alumno.uid}, notaId=${nota.id})}">
+                        th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/editar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}">
                         Editar
                     </a>
 
                     |
 
                     <form
-                        th:action="@{/profesor/alumnos/{alumnoId}/notas/{notaId}/eliminar(alumnoId=${alumno.uid}, notaId=${nota.id})}"
+                        th:action="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/eliminar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}"
                         method="post" style="display:inline;">
                         <button type="submit">Eliminar</button>
                     </form>

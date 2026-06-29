@@ -42,14 +42,6 @@
                         Ver notas
                     </a>
 
-                    <a th:if="${profesor == null}" th:href="@{/profesor/alumnos/{id}/editar(id=${alumno.uid})}">
-                        Editar
-                    </a>
-
-                    <form th:if="${profesor == null}" th:action="@{/profesor/alumnos/{id}/eliminar(id=${alumno.uid})}" method="post"
-                        style="display:inline;">
-                        <button type="submit">Eliminar</button>
-                    </form>
                 </td>
             </tr>
         </tbody>
