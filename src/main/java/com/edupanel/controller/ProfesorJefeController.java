@@ -1,6 +1,7 @@
 package com.edupanel.controller;
 
 import com.edupanel.model.Rol;
+import com.edupanel.service.CursoService;
 import com.edupanel.service.ProfesorService;
 import com.edupanel.service.UsuarioService;
 import org.springframework.stereotype.Controller;
@@ -17,14 +18,21 @@ public class ProfesorJefeController {
 
     private final UsuarioService usuarioService;
     private final ProfesorService profesorService;
+    private final CursoService cursoService;
 
-    public ProfesorJefeController(UsuarioService usuarioService, ProfesorService profesorService) {
+    public ProfesorJefeController(UsuarioService usuarioService,
+            ProfesorService profesorService,
+            CursoService cursoService) {
         this.usuarioService = usuarioService;
         this.profesorService = profesorService;
+        this.cursoService = cursoService;
     }
 
     @GetMapping("/profesor-jefe/dashboard")
-    public String dashboardProfesorJefe() {
+    public String dashboardProfesorJefe(Model model) {
+        model.addAttribute("usuariosPendientesTotal", usuarioService.listarUsuariosPendientes().size());
+        model.addAttribute("usuariosTotal", usuarioService.listarUsuarios().size());
+        model.addAttribute("cursosTotal", cursoService.listarCursos().size());
         return "admin/dashboard";
     }
 

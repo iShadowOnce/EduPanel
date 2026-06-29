@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Panel Profesor Jefe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Profesor Jefe | EduPanel</title>
     <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
-<body>
+<body class="dashboard-page">
     <header class="app-header">
         <div class="app-nav-dock">
             <a class="app-home-link" href="/" th:href="@{/}" aria-label="Volver al inicio">
@@ -25,22 +26,73 @@
         </div>
     </header>
 
-    <h1>Panel Profesor Jefe</h1>
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <section class="dashboard-panel-header">
+                <p class="dashboard-kicker">Panel de administracion</p>
+                <h1>Panel Profesor Jefe</h1>
+                <p>
+                    Gestiona usuarios pendientes, profesores, cursos y asignaturas desde este panel.
+                </p>
 
-    <p>
-        Gestiona usuarios pendientes, profesores, cursos y asignaturas desde este panel.
-    </p>
+                <div class="dashboard-options" aria-label="Accesos de administracion">
+                    <a class="dashboard-option" href="/profesor-jefe/usuarios-pendientes"
+                        th:href="@{/profesor-jefe/usuarios-pendientes}">
+                        Usuarios pendientes
+                    </a>
+                    <a class="dashboard-option" href="/profesor-jefe/profesores"
+                        th:href="@{/profesor-jefe/profesores}">
+                        Gestionar Profesores
+                    </a>
+                    <a class="dashboard-option" href="/profesor-jefe/cursos"
+                        th:href="@{/profesor-jefe/cursos}">
+                        Gestionar Cursos
+                    </a>
+                </div>
+            </section>
 
-    <ul>
-        <li><a href="/profesor-jefe/usuarios-pendientes">Usuarios pendientes</a></li>
-        <li><a href="/profesor-jefe/profesores">Profesores registrados</a></li>
-        <li><a href="/profesor-jefe/cursos">Cursos</a></li>
-    </ul>
+            <section class="dashboard-summary" aria-labelledby="summary-title">
+                <div class="dashboard-welcome">
+                    <h2 id="summary-title">Resumen general del sistema</h2>
+                    <p>
+                        Mantente al dia con las estadisticas generales del sistema.
+                    </p>
+                </div>
 
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Cerrar sesion</button>
-    </form>
+                <div class="stats-grid">
+                    <article class="stat-card">
+                        <span class="stat-number" th:text="${usuariosPendientesTotal}">0</span>
+                        <span class="stat-label">Usuarios pendientes de aprobacion</span>
+                    </article>
 
+                    <article class="stat-card">
+                        <span class="stat-number" th:text="${usuariosTotal}">0</span>
+                        <span class="stat-label">Usuarios registrados totales</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <span class="stat-number" th:text="${cursosTotal}">0</span>
+                        <span class="stat-label">Cursos totales</span>
+                    </article>
+                </div>
+            </section>
+
+            <form class="dashboard-logout-form" th:action="@{/logout}" method="post">
+                <button class="landing-btn landing-btn-secondary" type="submit">Cerrar sesion</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="landing-footer">
+        <span>&copy; EduPanel. Desarrollado por Joaquin Astudillo y Cristobal Herrera.</span>
+        <a
+            class="landing-github-link"
+            href="https://github.com/iShadowOnce/EduPanel"
+            target="_blank"
+            rel="noopener noreferrer">
+            GitHub
+        </a>
+    </footer>
 </body>
 
 </html>

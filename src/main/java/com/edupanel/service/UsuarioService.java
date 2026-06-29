@@ -28,6 +28,10 @@ public class UsuarioService {
         return usuarioRepository.listarPendientes();
     }
 
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.listarTodos();
+    }
+
     public Usuario buscarPorEmail(String email) {
         return usuarioRepository.buscarPorEmail(email);
     }
