@@ -356,6 +356,208 @@ body.info-page .info-content {
     flex: 1;
 }
 
+body.auth-page {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: 0;
+    overflow-x: hidden;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(0, 111, 230, 0.12) 0%, transparent 54%),
+        linear-gradient(180deg, #fbfcfe 0%, #eef6ff 100%);
+    color: #1d2330;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.auth-page .app-header {
+    position: relative;
+    z-index: 2;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+}
+
+.auth-main {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 56px 20px 64px;
+}
+
+.auth-card {
+    width: min(440px, 100%);
+    padding: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 24px 54px rgba(23, 32, 51, 0.10);
+    backdrop-filter: blur(18px);
+    animation: landingFadeUp 0.65s ease both;
+}
+
+.register-card {
+    width: min(480px, 100%);
+}
+
+.pending-card {
+    width: min(540px, 100%);
+    text-align: center;
+}
+
+.pending-logo {
+    width: min(320px, 82%);
+    height: auto;
+    margin: 0 auto 22px;
+    filter: drop-shadow(0 16px 26px rgba(23, 32, 51, 0.10));
+}
+
+.pending-header {
+    margin-bottom: 26px;
+}
+
+.pending-header p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.pending-support-box {
+    margin-bottom: 28px;
+    padding: 22px;
+    border: 1px solid rgba(0, 111, 230, 0.12);
+    border-radius: 18px;
+    background: rgba(0, 111, 230, 0.06);
+    text-align: left;
+}
+
+.pending-support-box h2 {
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+
+.pending-support-box p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.pending-logout-form {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.pending-logout-form .landing-btn {
+    width: 100%;
+}
+
+.auth-card-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.auth-card-header h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    line-height: 1.12;
+}
+
+.auth-card-header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.auth-error {
+    width: 100%;
+    margin: 0 0 20px;
+    padding: 12px 14px;
+    border: 1px solid rgba(180, 35, 24, 0.25);
+    border-radius: 14px;
+    background: #fff1f0;
+    color: var(--danger);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.auth-form {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.auth-field {
+    margin-bottom: 18px;
+}
+
+.auth-field label {
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.auth-control {
+    min-height: 50px;
+    margin-bottom: 0;
+    padding: 13px 15px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.86);
+}
+
+.auth-control:focus {
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 111, 230, 0.10);
+}
+
+.auth-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.auth-actions .landing-btn,
+.auth-actions .landing-btn:hover {
+    width: 100%;
+}
+
+.auth-register-prompt {
+    margin: 24px 0 0;
+    padding-top: 22px;
+    border-top: 1px solid rgba(217, 225, 236, 0.85);
+    color: var(--muted);
+    font-size: 14px;
+    text-align: center;
+}
+
+.auth-register-prompt a,
+.auth-register-prompt a:hover {
+    display: inline;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--primary);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.auth-register-prompt a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
 body.landing-page {
     display: flex;
     flex-direction: column;
@@ -593,6 +795,27 @@ body.landing-page {
         flex-direction: column-reverse;
         padding: 20px;
         text-align: center;
+    }
+
+    .auth-main {
+        padding: 34px 18px 40px;
+    }
+
+    .auth-card {
+        padding: 30px 22px;
+        border-radius: 20px;
+    }
+
+    .auth-card-header h1 {
+        font-size: 26px;
+    }
+
+    .pending-logo {
+        width: min(280px, 88%);
+    }
+
+    .pending-support-box {
+        padding: 18px;
     }
 
     .info-content h1 {

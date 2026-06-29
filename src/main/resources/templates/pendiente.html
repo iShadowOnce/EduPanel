@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuenta pendiente | EduPanel</title>
     <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
-<body>
+<body class="auth-page pending-page">
     <header class="app-header">
         <div class="app-nav-dock">
             <a class="app-home-link" href="/" th:href="@{/}" aria-label="Volver al inicio">
@@ -19,24 +20,56 @@
             <nav class="app-nav" aria-label="Navegacion principal">
                 <a class="app-nav-link" href="/" th:href="@{/}">Inicio</a>
                 <a class="app-nav-link" href="/informacion" th:href="@{/informacion}">Informacion</a>
-                <a class="app-nav-link" href="/login" th:href="@{/login}">Iniciar sesion</a>
-                <a class="app-nav-link app-nav-cta" href="/registro" th:href="@{/registro}">Registrarse</a>
             </nav>
         </div>
     </header>
 
-    <h1>Cuenta pendiente</h1>
+    <main class="auth-main">
+        <section class="auth-card pending-card" aria-labelledby="pending-title">
+            <img
+                class="pending-logo"
+                src="/img/logo_index.png"
+                th:src="@{/img/logo_index.png}"
+                alt="EduPanel"
+                width="360"
+                loading="eager">
 
-    <p>
-        Tu registro fue recibido y esta esperando la asignacion de un rol.
-    </p>
+            <div class="auth-card-header pending-header">
+                <h1 id="pending-title">Registro exitoso</h1>
+                <p>
+                    Te has registrado correctamente en la plataforma. Tu cuenta esta a la espera
+                    de la aprobacion por parte de la administracion de la institucion.
+                </p>
+            </div>
 
-    <a href="/login">Volver al login</a>
-    <a href="/">Volver al inicio</a>
+            <div class="pending-support-box">
+                <h2>Tu cuenta aun esta pendiente</h2>
+                <p>
+                    Cuando un administrador revise tu solicitud y asigne tu rol, podras acceder
+                    a las funciones correspondientes de EduPanel.
+                </p>
+            </div>
 
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Cerrar sesion</button>
-    </form>
+            <div class="auth-actions">
+                <a class="landing-btn landing-btn-secondary" href="/" th:href="@{/}">Volver al inicio</a>
+
+                <form class="pending-logout-form" th:action="@{/logout}" method="post">
+                    <button class="landing-btn landing-btn-primary" type="submit">Cerrar sesion</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="landing-footer">
+        <span>&copy; EduPanel. Desarrollado por Joaquin Astudillo y Cristobal Herrera.</span>
+        <a
+            class="landing-github-link"
+            href="https://github.com/iShadowOnce/EduPanel"
+            target="_blank"
+            rel="noopener noreferrer">
+            GitHub
+        </a>
+    </footer>
 
 </body>
 

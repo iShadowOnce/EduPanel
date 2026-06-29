@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | EduPanel</title>
     <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
-<body>
+<body class="auth-page">
     <header class="app-header">
         <div class="app-nav-dock">
             <a class="app-home-link" href="/" th:href="@{/}" aria-label="Volver al inicio">
@@ -20,27 +21,67 @@
                 <a class="app-nav-link" href="/" th:href="@{/}">Inicio</a>
                 <a class="app-nav-link" href="/informacion" th:href="@{/informacion}">Informacion</a>
                 <a class="app-nav-link active" href="/login" th:href="@{/login}">Iniciar sesion</a>
-                <a class="app-nav-link app-nav-cta" href="/registro" th:href="@{/registro}">Registrarse</a>
+                <a class="app-nav-link app-nav-cta" href="/registro" th:href="@{/registro}">Solicitar Acceso</a>
             </nav>
         </div>
     </header>
 
-    <h1>Iniciar sesion</h1>
+    <main class="auth-main">
+        <section class="auth-card" aria-labelledby="login-title">
+            <div class="auth-card-header">
+                <h1 id="login-title">Iniciar sesion</h1>
+                <p>Ingresa tus credenciales para continuar en EduPanel.</p>
+            </div>
 
-    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+            <p class="auth-error" th:if="${error}" th:text="${error}"></p>
 
-    <form th:action="@{/login}" method="post">
-        <label>Email:</label>
-        <input type="email" name="email" th:value="${email}">
+            <form class="auth-form" th:action="@{/login}" method="post">
+                <div class="auth-field">
+                    <label for="email">Correo electronico</label>
+                    <input
+                        id="email"
+                        class="auth-control"
+                        type="email"
+                        name="email"
+                        th:value="${email}"
+                        placeholder="nombre@institucion.edu"
+                        required>
+                </div>
 
-        <label>Contrasena:</label>
-        <input type="password" name="password">
+                <div class="auth-field">
+                    <label for="password">Contrasena</label>
+                    <input
+                        id="password"
+                        class="auth-control"
+                        type="password"
+                        name="password"
+                        placeholder="Ingresa tu contrasena"
+                        required>
+                </div>
 
-        <button type="submit">Entrar</button>
-    </form>
+                <div class="auth-actions">
+                    <button class="landing-btn landing-btn-primary" type="submit">Entrar</button>
+                    <a class="landing-btn landing-btn-secondary" href="/" th:href="@{/}">Volver al inicio</a>
+                </div>
+            </form>
 
-    <a href="/registro">Crear cuenta</a>
-    <a href="/">Volver al inicio</a>
+            <p class="auth-register-prompt">
+                No tienes una cuenta en EduPanel?
+                <a href="/registro" th:href="@{/registro}">Solicitar registro institucional</a>
+            </p>
+        </section>
+    </main>
+
+    <footer class="landing-footer">
+        <span>&copy; EduPanel. Desarrollado por Joaquin Astudillo y Cristobal Herrera.</span>
+        <a
+            class="landing-github-link"
+            href="https://github.com/iShadowOnce/EduPanel"
+            target="_blank"
+            rel="noopener noreferrer">
+            GitHub
+        </a>
+    </footer>
 
 </body>
 
