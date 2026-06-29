@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduPanel Inicio</title>
+    <title>Informacion | EduPanel</title>
     <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
-<body class="landing-page">
+<body class="info-page">
     <header class="app-header">
         <div class="app-nav-dock">
             <a class="app-home-link" href="/" th:href="@{/}" aria-label="Volver al inicio">
@@ -18,35 +18,27 @@
             </a>
 
             <nav class="app-nav" aria-label="Navegacion principal">
-                <a class="app-nav-link active" href="/" th:href="@{/}">Inicio</a>
-                <a class="app-nav-link" href="/informacion" th:href="@{/informacion}">Informacion</a>
+                <a class="app-nav-link" href="/" th:href="@{/}">Inicio</a>
+                <a class="app-nav-link active" href="/informacion" th:href="@{/informacion}">Informacion</a>
                 <a class="app-nav-link" href="/login" th:href="@{/login}">Iniciar sesion</a>
                 <a class="app-nav-link app-nav-cta" href="/registro" th:href="@{/registro}">Registrarse</a>
             </nav>
         </div>
     </header>
 
-    <main class="landing-main">
-        <section class="landing-hero" aria-labelledby="landing-title">
-            <img
-                th:src="@{/img/logo_index.png}"
-                alt="EduPanel"
-                class="landing-logo"
-                width="620"
-                loading="eager">
+    <main class="info-content">
+        <h1>Informacion</h1>
 
-            <h1 id="landing-title">Gestion academica mas simplificada.</h1>
+        <p>
+            EduPanel es una aplicacion web orientada a la gestion academica, pensada para facilitar
+            la administracion de informacion institucional, usuarios, cursos, anuncios y calificaciones.
+        </p>
 
-            <p class="landing-subtitle">
-                Una plataforma centrada en la administracion de calificaciones para estudiantes,
-                facilitando la labor docente y la experiencia escolar.
-            </p>
-
-            <div class="landing-actions" aria-label="Accesos principales">
-                <a class="landing-btn landing-btn-primary" th:href="@{/login}">Iniciar sesion</a>
-                <a class="landing-btn landing-btn-secondary" th:href="@{/registro}">Solicitar acceso</a>
-            </div>
-        </section>
+        <p>
+            Esta aplicacion web fue desarrollada por dos estudiantes de la Universidad de La Frontera,
+            para la asignatura de Programacion Orientada a Objetos en la carrera de Ingenieria en Informatica.
+            Se trata de un proyecto final desarrollado con Spring Boot, Firebase y Thymeleaf.
+        </p>
     </main>
 
     <footer class="landing-footer">
@@ -59,7 +51,6 @@
             GitHub
         </a>
     </footer>
-
 </body>
 
 </html>

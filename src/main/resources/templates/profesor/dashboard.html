@@ -6,6 +6,22 @@
     <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 <body>
+    <header class="app-header">
+        <div class="app-nav-dock">
+            <a class="app-home-link" href="/" th:href="@{/}" aria-label="Volver al inicio">
+                <span class="app-home-logo-frame">
+                    <img src="/img/logo_atras.png" th:src="@{/img/logo_atras.png}" alt="EduPanel">
+                </span>
+            </a>
+
+            <nav class="app-nav" aria-label="Navegacion principal">
+                <a class="app-nav-link" href="/" th:href="@{/}">Inicio</a>
+                <a class="app-nav-link" href="/informacion" th:href="@{/informacion}">Informacion</a>
+                <a class="app-nav-link" href="/login" th:href="@{/login}">Iniciar sesion</a>
+                <a class="app-nav-link app-nav-cta" href="/registro" th:href="@{/registro}">Registrarse</a>
+            </nav>
+        </div>
+    </header>
 
 <h1>Panel del Profesor</h1>
 

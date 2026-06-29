@@ -49,7 +49,7 @@ public class UsuarioService {
             alumno.setApellido(usuario.getApellido());
             alumno.setRut(usuario.getRut());
             alumno.setEmail(usuario.getEmail());
-            // TODO Firebase: este password solo existe para el modo temporal en memoria.
+            // TODO Firebase: este password solo existe para el modo temporal en memoria
             // Con Firebase Auth debe venir null y no guardarse en Realtime Database.
             alumno.setPassword(usuario.getPassword());
 

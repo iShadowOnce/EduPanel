@@ -5,16 +5,17 @@
 :root {
     --bg: #f4f7fb;
     --surface: #ffffff;
-    --surface-soft: #edf6f2;
+    --surface-soft: #eef6ff;
     --text: #172033;
     --muted: #5d6678;
-    --primary: #146c64;
-    --primary-dark: #0f514b;
-    --accent: #365a9c;
+    --primary: #006fe6;
+    --primary-dark: #0054b8;
+    --accent: #0b8ff3;
     --danger: #b42318;
     --border: #d9e1ec;
     --shadow: 0 16px 40px rgba(18, 38, 63, 0.08);
     --radius: 8px;
+    --button-radius: 999px;
 }
 
 html {
@@ -111,7 +112,7 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-    outline: 3px solid rgba(20, 108, 100, 0.18);
+    outline: 3px solid rgba(0, 111, 230, 0.18);
     border-color: var(--primary);
 }
 
@@ -124,7 +125,7 @@ a {
     margin: 4px 6px 4px 0;
     padding: 8px 12px;
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: var(--button-radius);
     background: var(--surface);
     color: var(--primary-dark);
     font: inherit;
@@ -237,6 +238,270 @@ p[style*="color:red"] {
     font-weight: 700;
 }
 
+.app-header {
+    display: flex;
+    width: min(1100px, 100%);
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 26px;
+}
+
+.app-nav-dock {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 12px;
+    border: 1px solid rgba(217, 225, 236, 0.78);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 18px 38px rgba(23, 32, 51, 0.10);
+    backdrop-filter: blur(16px);
+}
+
+.app-home-link,
+.app-home-link:hover {
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+}
+
+.app-home-logo-frame {
+    display: block;
+    width: 44px;
+    height: 44px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 10px 20px rgba(23, 32, 51, 0.10);
+}
+
+.app-home-logo-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: scale(1.45);
+}
+
+.app-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.app-nav-link,
+.app-nav-link:hover {
+    width: auto;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 16px;
+    border: 0;
+    border-radius: var(--button-radius);
+    background: transparent;
+    color: #737b89;
+    font-size: 14px;
+    font-weight: 800;
+    white-space: nowrap;
+    transform: none;
+}
+
+.app-nav-link:hover,
+.app-nav-link.active {
+    background: rgba(0, 111, 230, 0.08);
+    color: var(--text);
+}
+
+.app-nav-cta {
+    background: rgba(0, 111, 230, 0.10);
+    color: var(--primary);
+}
+
+.app-nav-cta:hover,
+.app-nav-cta.active {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.info-content {
+    width: min(820px, 100%);
+    margin: 0 auto;
+    padding: 24px 0 40px;
+}
+
+.info-content h1 {
+    font-size: 40px;
+    margin-bottom: 18px;
+}
+
+.info-content p {
+    max-width: 760px;
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+body.info-page {
+    display: flex;
+    flex-direction: column;
+}
+
+body.info-page .app-header {
+    flex-shrink: 0;
+}
+
+body.info-page .info-content {
+    flex: 1;
+}
+
+body.landing-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 0;
+    overflow-x: hidden;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(0, 111, 230, 0.12) 0%, transparent 54%),
+        linear-gradient(180deg, #fbfcfe 0%, #eef6ff 100%);
+    color: #1d2330;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.landing-page .app-header {
+    position: relative;
+    z-index: 2;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+}
+
+.landing-main {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 72px 20px 56px;
+    text-align: center;
+}
+
+.landing-hero {
+    display: flex;
+    width: min(820px, 100%);
+    flex-direction: column;
+    align-items: center;
+}
+
+.landing-logo {
+    width: min(620px, 92vw);
+    height: auto;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 18px 26px rgba(23, 32, 51, 0.10));
+    animation: landingFadeUp 0.7s ease both;
+}
+
+.landing-page h1 {
+    max-width: 760px;
+    margin: 0 0 18px;
+    color: #172033;
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.08;
+    animation: landingFadeUp 0.7s ease 0.08s both;
+}
+
+.landing-subtitle {
+    max-width: 620px;
+    margin: 0 0 38px;
+    color: #5d6678;
+    font-size: 20px;
+    line-height: 1.55;
+    animation: landingFadeUp 0.7s ease 0.16s both;
+}
+
+.landing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    animation: landingFadeUp 0.7s ease 0.24s both;
+}
+
+.landing-btn,
+.landing-btn:hover {
+    min-width: 168px;
+    min-height: 48px;
+    margin: 0;
+    padding: 12px 24px;
+    border-radius: var(--button-radius);
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+    box-shadow: none;
+}
+
+.landing-btn-primary {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(0, 111, 230, 0.22);
+}
+
+.landing-btn-primary:hover {
+    border-color: var(--primary-dark);
+    background: var(--primary-dark);
+}
+
+.landing-btn-secondary {
+    border-color: rgba(0, 111, 230, 0.28);
+    background: rgba(0, 111, 230, 0.08);
+    color: var(--primary-dark);
+}
+
+.landing-btn-secondary:hover {
+    border-color: rgba(0, 111, 230, 0.40);
+    background: rgba(0, 111, 230, 0.14);
+}
+
+.landing-footer {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: auto;
+    padding: 22px clamp(20px, 5vw, 48px);
+    border-top: 1px solid rgba(217, 225, 236, 0.9);
+    background: rgba(251, 252, 254, 0.82);
+    color: #5d6678;
+    font-size: 13px;
+}
+
+.landing-github-link,
+.landing-github-link:hover {
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--primary-dark);
+    font-weight: 800;
+}
+
+@keyframes landingFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 640px) {
     body {
         padding: 22px 14px;
@@ -258,5 +523,83 @@ p[style*="color:red"] {
     td a,
     td button {
         width: auto;
+    }
+
+    .app-header {
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .app-nav-dock {
+        width: 100%;
+        max-width: 430px;
+        flex-direction: column;
+        gap: 10px;
+        border-radius: 28px;
+    }
+
+    .app-home-link,
+    .app-home-link:hover {
+        width: auto;
+    }
+
+    .app-home-logo-frame {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+    }
+
+    .app-nav {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .app-nav-link,
+    .app-nav-link:hover {
+        width: auto;
+        min-height: 38px;
+        padding: 0 12px;
+        font-size: 13px;
+    }
+
+    body.landing-page {
+        padding: 0;
+    }
+
+    .landing-main {
+        padding: 52px 18px 36px;
+    }
+
+    .landing-page h1 {
+        font-size: 38px;
+    }
+
+    .landing-subtitle {
+        margin-bottom: 30px;
+        font-size: 17px;
+    }
+
+    .landing-actions {
+        width: 100%;
+    }
+
+    .landing-btn,
+    .landing-btn:hover {
+        width: min(100%, 340px);
+    }
+
+    .landing-footer {
+        flex-direction: column-reverse;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .info-content h1 {
+        font-size: 30px;
+    }
+
+    .info-content p {
+        font-size: 16px;
     }
 }

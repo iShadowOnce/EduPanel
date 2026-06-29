@@ -12,6 +12,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping({"/informacion","/informacion.html"})
+    public String informacion() {
+        return "informacion";
+    }
+
     @GetMapping("/pendiente")
     public String pendiente() {
         return "pendiente";
