@@ -52,6 +52,10 @@
                         th:href="@{/profesor-jefe/anuncios}">
                         Gestionar Anuncios
                     </a>
+                    <a class="dashboard-option" href="/profesor-jefe/mensajes"
+                        th:href="@{/profesor-jefe/mensajes}">
+                        Bandeja de entrada
+                    </a>
                 </div>
             </section>
 
@@ -77,6 +81,11 @@
                     <article class="stat-card">
                         <span class="stat-number" th:text="${cursosTotal}">0</span>
                         <span class="stat-label">Cursos totales</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <span class="stat-number" th:text="${mensajesContactoTotal}">0</span>
+                        <span class="stat-label">Mensajes recibidos</span>
                     </article>
                 </div>
             </section>
@@ -107,6 +116,37 @@
                             <td th:text="${anuncio.titulo}"></td>
                             <td th:text="${anuncio.asignatura != null ? anuncio.asignatura.nombre : 'General'}"></td>
                             <td th:text="${anuncio.profesorNombre}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="dashboard-summary" aria-labelledby="messages-title">
+                <div class="dashboard-welcome">
+                    <h2 id="messages-title">Mensajes de profesores</h2>
+                    <p>
+                        Revisa solicitudes y avisos enviados por los profesores.
+                    </p>
+                </div>
+
+                <p th:if="${mensajesContacto == null or #lists.isEmpty(mensajesContacto)}">
+                    No hay mensajes recibidos.
+                </p>
+
+                <table th:if="${mensajesContacto != null and !#lists.isEmpty(mensajesContacto)}" border="1">
+                    <thead>
+                        <tr>
+                            <th>Prioridad</th>
+                            <th>Profesor</th>
+                            <th>Asunto</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="mensaje : ${mensajesContacto}">
+                            <td th:text="${mensaje.prioridad != null ? mensaje.prioridad.nombre : 'Sin prioridad'}"></td>
+                            <td th:text="${mensaje.profesorNombre}"></td>
+                            <td th:text="${mensaje.asunto}"></td>
                         </tr>
                     </tbody>
                 </table>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Contactar Profesor Jefe</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="app-nav-dock">
+            <a class="app-home-link" href="/" th:href="@{/}" aria-label="Volver al inicio">
+                <span class="app-home-logo-frame">
+                    <img src="/img/logo_atras.png" th:src="@{/img/logo_atras.png}" alt="EduPanel">
+                </span>
+            </a>
+
+            <nav class="app-nav" aria-label="Navegacion principal">
+                <a class="app-nav-link" href="/" th:href="@{/}">Inicio</a>
+                <a class="app-nav-link" href="/informacion" th:href="@{/informacion}">Informacion</a>
+                <a class="app-nav-link" href="/login" th:href="@{/login}">Iniciar sesion</a>
+                <a class="app-nav-link app-nav-cta" href="/registro" th:href="@{/registro}">Registrarse</a>
+            </nav>
+        </div>
+    </header>
+
+    <h1>Contactar Profesor Jefe</h1>
+
+    <p>
+        Profesor:
+        <strong th:text="${profesor.nombre + ' ' + profesor.apellido}"></strong>
+    </p>
+
+    <p th:if="${exito}" th:text="${exito}" style="color:green;"></p>
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+    <form th:action="@{/profesor/{id}/contacto/enviar(id=${profesor.uid})}"
+        th:object="${mensajeContacto}"
+        method="post">
+
+        <label>Asunto:</label>
+        <input type="text" th:field="*{asunto}">
+        <br>
+
+        <label>Prioridad:</label>
+        <select th:field="*{prioridad}">
+            <option th:each="prioridad : ${prioridades}"
+                th:value="${prioridad}"
+                th:text="${prioridad.nombre}">
+            </option>
+        </select>
+        <br>
+
+        <label>Mensaje:</label>
+        <textarea th:field="*{mensaje}"></textarea>
+        <br>
+
+        <button type="submit">Enviar mensaje</button>
+    </form>
+
+    <br>
+
+    <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
+        Volver al dashboard
+    </a>
+
+</body>
+
+</html>

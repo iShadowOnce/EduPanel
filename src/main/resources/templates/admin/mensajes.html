@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bandeja de entrada</title>
+    <link rel="stylesheet" th:href="@{/css/edupanel.css}">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="app-nav-dock">
+            <a class="app-home-link" href="/" th:href="@{/}" aria-label="Volver al inicio">
+                <span class="app-home-logo-frame">
+                    <img src="/img/logo_atras.png" th:src="@{/img/logo_atras.png}" alt="EduPanel">
+                </span>
+            </a>
+
+            <nav class="app-nav" aria-label="Navegacion principal">
+                <a class="app-nav-link" href="/" th:href="@{/}">Inicio</a>
+                <a class="app-nav-link" href="/informacion" th:href="@{/informacion}">Informacion</a>
+                <a class="app-nav-link" href="/login" th:href="@{/login}">Iniciar sesion</a>
+                <a class="app-nav-link app-nav-cta" href="/registro" th:href="@{/registro}">Registrarse</a>
+            </nav>
+        </div>
+    </header>
+
+    <h1>Bandeja de entrada</h1>
+
+    <p th:if="${mensajesContacto == null or #lists.isEmpty(mensajesContacto)}">
+        No hay mensajes enviados por profesores.
+    </p>
+
+    <table th:if="${mensajesContacto != null and !#lists.isEmpty(mensajesContacto)}" border="1">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Prioridad</th>
+                <th>Profesor</th>
+                <th>Email</th>
+                <th>Asunto</th>
+                <th>Mensaje</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="mensaje : ${mensajesContacto}">
+                <td th:text="${mensaje.fechaEnvio}"></td>
+                <td th:text="${mensaje.prioridad != null ? mensaje.prioridad.nombre : 'Sin prioridad'}"></td>
+                <td th:text="${mensaje.profesorNombre}"></td>
+                <td th:text="${mensaje.profesorEmail}"></td>
+                <td th:text="${mensaje.asunto}"></td>
+                <td th:text="${mensaje.mensaje}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <a href="/profesor-jefe/dashboard" th:href="@{/profesor-jefe/dashboard}">
+        Volver al panel
+    </a>
+
+</body>
+
+</html>

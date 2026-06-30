@@ -1,9 +1,13 @@
 package com.edupanel.controller;
 
 import com.edupanel.exception.AnuncioInvalidoException;
+import com.edupanel.exception.MensajeContactoInvalidoException;
 import com.edupanel.model.Anuncio;
+import com.edupanel.model.MensajeContacto;
+import com.edupanel.model.PrioridadMensaje;
 import com.edupanel.model.Profesor;
 import com.edupanel.service.AnuncioService;
+import com.edupanel.service.MensajeContactoService;
 import com.edupanel.service.ProfesorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -20,10 +24,14 @@ public class ProfesorController {
 
     private final AnuncioService anuncioService;
     private final ProfesorService profesorService;
+    private final MensajeContactoService mensajeContactoService;
 
-    public ProfesorController(AnuncioService anuncioService, ProfesorService profesorService) {
+    public ProfesorController(AnuncioService anuncioService,
+            ProfesorService profesorService,
+            MensajeContactoService mensajeContactoService) {
         this.anuncioService = anuncioService;
         this.profesorService = profesorService;
+        this.mensajeContactoService = mensajeContactoService;
     }
 
     @GetMapping("/profesor/dashboard")
@@ -140,6 +148,44 @@ public class ProfesorController {
             model.addAttribute("asignaturas", profesor.getAsignaturas());
 
             return "profesor/editar-anuncio";
+        }
+    }
+
+    @GetMapping("/profesor/{profesorId}/contacto")
+    public String contactarProfesorJefe(@PathVariable String profesorId, Model model) {
+        Profesor profesor = profesorService.buscarPorId(profesorId);
+
+        if (profesor == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El profesor indicado no existe.");
+        }
+
+        model.addAttribute("profesor", profesor);
+        model.addAttribute("mensajeContacto", new MensajeContacto());
+        model.addAttribute("prioridades", PrioridadMensaje.values());
+
+        return "profesor/contacto";
+    }
+
+    @PostMapping("/profesor/{profesorId}/contacto/enviar")
+    public String enviarMensajeProfesorJefe(@PathVariable String profesorId,
+            @ModelAttribute MensajeContacto mensajeContacto,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        try {
+            mensajeContactoService.enviarMensaje(profesorId, mensajeContacto);
+            redirectAttributes.addFlashAttribute("exito", "Mensaje enviado al profesor jefe.");
+
+            return "redirect:/profesor/" + profesorId + "/contacto";
+
+        } catch (MensajeContactoInvalidoException e) {
+            Profesor profesor = profesorService.buscarPorId(profesorId);
+
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("profesor", profesor);
+            model.addAttribute("mensajeContacto", mensajeContacto);
+            model.addAttribute("prioridades", PrioridadMensaje.values());
+
+            return "profesor/contacto";
         }
     }
 }

@@ -4,12 +4,15 @@ import com.edupanel.auth.AuthService;
 import com.edupanel.auth.SesionUsuario;
 import com.edupanel.exception.AnuncioInvalidoException;
 import com.edupanel.model.Anuncio;
+import com.edupanel.model.MensajeContacto;
 import com.edupanel.model.Rol;
 import com.edupanel.service.AnuncioService;
 import com.edupanel.service.CursoService;
+import com.edupanel.service.MensajeContactoService;
 import com.edupanel.service.ProfesorService;
 import com.edupanel.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,23 +31,30 @@ public class ProfesorJefeController {
     private final ProfesorService profesorService;
     private final CursoService cursoService;
     private final AnuncioService anuncioService;
+    private final MensajeContactoService mensajeContactoService;
 
     public ProfesorJefeController(UsuarioService usuarioService,
             ProfesorService profesorService,
             CursoService cursoService,
-            AnuncioService anuncioService) {
+            AnuncioService anuncioService,
+            MensajeContactoService mensajeContactoService) {
         this.usuarioService = usuarioService;
         this.profesorService = profesorService;
         this.cursoService = cursoService;
         this.anuncioService = anuncioService;
+        this.mensajeContactoService = mensajeContactoService;
     }
 
     @GetMapping("/profesor-jefe/dashboard")
     public String dashboardProfesorJefe(Model model) {
+        List<MensajeContacto> mensajesContacto = mensajeContactoService.listarMensajes();
+
         model.addAttribute("usuariosPendientesTotal", usuarioService.listarUsuariosPendientes().size());
         model.addAttribute("usuariosTotal", usuarioService.listarUsuarios().size());
         model.addAttribute("cursosTotal", cursoService.listarCursos().size());
         model.addAttribute("anuncios", anuncioService.listarAnuncios());
+        model.addAttribute("mensajesContacto", mensajesContacto);
+        model.addAttribute("mensajesContactoTotal", mensajesContacto.size());
         return "admin/dashboard";
     }
 
@@ -168,6 +178,13 @@ public class ProfesorJefeController {
         anuncioService.eliminarAnuncioComoAdmin(anuncioId);
 
         return "redirect:/profesor-jefe/anuncios";
+    }
+
+    @GetMapping("/profesor-jefe/mensajes")
+    public String verMensajes(Model model) {
+        model.addAttribute("mensajesContacto", mensajeContactoService.listarMensajes());
+
+        return "admin/mensajes";
     }
 
     private String obtenerAdministradorId(HttpSession session) {
