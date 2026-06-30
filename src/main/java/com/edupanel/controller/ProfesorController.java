@@ -34,6 +34,7 @@ public class ProfesorController {
         Profesor profesor = profesorService.buscarPorId(profesorId);
 
         model.addAttribute("profesor", profesor);
+        model.addAttribute("anuncios", anuncioService.listarAnuncios());
 
         return "profesor/dashboard";
     }

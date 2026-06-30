@@ -46,7 +46,7 @@
         <select th:field="*{asignatura}">
             <option th:each="asignatura : ${asignaturas}"
                 th:value="${asignatura}"
-                th:text="${asignatura}">
+                th:text="${asignatura.nombre}">
             </option>
         </select>
         <br>

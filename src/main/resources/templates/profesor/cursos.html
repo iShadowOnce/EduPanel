@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Alumnos</title>
+    <title>Cursos</title>
     <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
@@ -25,48 +25,38 @@
         </div>
     </header>
 
-    <h1>Alumnos del curso</h1>
-
-    <p>
-        Curso:
-        <strong th:text="${curso.nombre}"></strong>
-    </p>
+    <h1>Seleccionar curso</h1>
 
     <p>
         Profesor:
         <strong th:text="${profesor.nombre + ' ' + profesor.apellido}"></strong>
     </p>
 
-    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
-
-    <p th:if="${alumnos == null or #lists.isEmpty(alumnos)}">
-        Este curso todavia no tiene alumnos asignados.
+    <p>
+        Asignaturas:
+        <strong th:text="${profesor.asignaturas}"></strong>
     </p>
 
-    <table th:if="${alumnos != null and !#lists.isEmpty(alumnos)}" border="1">
+    <p th:if="${cursos == null or #lists.isEmpty(cursos)}">
+        No hay cursos disponibles.
+    </p>
+
+    <table th:if="${cursos != null and !#lists.isEmpty(cursos)}" border="1">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>RUT</th>
-                <th>Email</th>
-                <th>Promedio</th>
-                <th>Estado</th>
+                <th>Curso</th>
+                <th>Alumnos asignados</th>
                 <th>Acciones</th>
             </tr>
         </thead>
 
         <tbody>
-            <tr th:each="alumno : ${alumnos}">
-                <td th:text="${alumno.nombre}"></td>
-                <td th:text="${alumno.apellido}"></td>
-                <td th:text="${alumno.rutFormateado}"></td>
-                <td th:text="${alumno.email}"></td>
-                <td th:text="${#numbers.formatDecimal(alumno.calcularPromedio(), 1, 1)}"></td>
-                <td th:text="${alumno.obtenerEstadoAcademico()}"></td>
+            <tr th:each="curso : ${cursos}">
+                <td th:text="${curso.nombre}"></td>
+                <td th:text="${curso.alumnosIds.size()}"></td>
                 <td>
-                    <a th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas(profesorId=${profesor.uid}, alumnoId=${alumno.uid})}">
-                        Ver notas
+                    <a th:href="@{/profesor/{profesorId}/cursos/{cursoId}/alumnos(profesorId=${profesor.uid}, cursoId=${curso.id})}">
+                        Ver alumnos
                     </a>
                 </td>
             </tr>
@@ -75,8 +65,8 @@
 
     <br>
 
-    <a th:href="@{/profesor/{id}/cursos(id=${profesor.uid})}">
-        Volver a cursos
+    <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
+        Volver al panel
     </a>
 
 </body>

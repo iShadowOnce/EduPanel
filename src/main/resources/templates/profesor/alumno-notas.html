@@ -31,26 +31,39 @@
         Alumno:
         <strong th:text="${alumno.nombre + ' ' + alumno.apellido}"></strong>
     </p>
+
+    <p th:if="${curso != null}">
+        Curso:
+        <strong th:text="${curso.nombre}"></strong>
+    </p>
+
     <p>
-        Promedio:
+        Promedio general:
         <strong th:text="${#numbers.formatDecimal(alumno.calcularPromedio(), 1, 1)}"></strong>
     </p>
+
     <p>
         Estado:
         <strong th:text="${alumno.obtenerEstadoAcademico()}"></strong>
     </p>
 
-    <h2>Agregar calificación</h2>
-
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
-    <form th:if="${profesor != null}"
+    <h2>Agregar calificacion</h2>
+
+    <p th:if="${asignaturas == null or #lists.isEmpty(asignaturas)}" style="color:red;">
+        Este profesor no tiene asignaturas asignadas, por lo que solo puede revisar notas.
+    </p>
+
+    <form th:if="${asignaturas != null and !#lists.isEmpty(asignaturas)}"
         th:action="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/guardar(profesorId=${profesor.uid}, alumnoId=${alumno.uid})}"
         th:object="${nuevaCalificacion}" method="post">
 
         <label>Asignatura:</label>
         <select th:field="*{asignatura}">
-            <option th:each="asignatura : ${asignaturas}" th:value="${asignatura}" th:text="${asignatura}">
+            <option th:each="asignatura : ${asignaturas}"
+                th:value="${asignatura}"
+                th:text="${asignatura.nombre}">
             </option>
         </select>
 
@@ -61,7 +74,7 @@
 
         <br>
 
-        <label>Descripción:</label>
+        <label>Descripcion:</label>
         <input type="text" th:field="*{descripcion}">
 
         <br>
@@ -73,49 +86,62 @@
 
     <h2>Notas registradas</h2>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Asignatura</th>
-                <th>Nota</th>
-                <th>Descripción</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+    <section th:each="resumen : ${resumenesAsignatura}">
+        <h3 th:text="${resumen.nombreAsignatura}"></h3>
 
-        <tbody>
-            <tr th:each="nota : ${alumno.notas}">
-                <td th:text="${nota.asignatura}"></td>
-                <td th:text="${nota.nota}"></td>
-                <td th:text="${nota.descripcion}"></td>
-                <td>
-                    <span th:if="${profesor.asignaturas != null and profesor.asignaturas.contains(nota.asignatura)}">
-                        <a
-                            th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/editar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}">
-                            Editar
-                        </a>
+        <p th:if="${!resumen.tieneCalificaciones}">
+            Sin notas registradas.
+        </p>
 
-                        |
+        <table th:if="${resumen.tieneCalificaciones}" border="1">
+            <thead>
+                <tr>
+                    <th>Nota</th>
+                    <th>Descripcion</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-                        <form
-                            th:action="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/eliminar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}"
-                            method="post" style="display:inline;">
-                            <button type="submit">Eliminar</button>
-                        </form>
-                    </span>
+            <tbody>
+                <tr th:each="nota : ${resumen.calificaciones}">
+                    <td th:text="${#numbers.formatDecimal(nota.nota, 1, 1)}"></td>
+                    <td th:text="${nota.descripcion}"></td>
+                    <td>
+                        <span th:if="${profesor.asignaturas != null and profesor.asignaturas.contains(nota.asignatura)}">
+                            <a
+                                th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/editar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}">
+                                Editar
+                            </a>
+                            |
+                            Para eliminar, contactar al profesor jefe
+                        </span>
 
-                    <span th:if="${profesor.asignaturas == null or !profesor.asignaturas.contains(nota.asignatura)}">
-                        Solo lectura
-                    </span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                        <span th:if="${profesor.asignaturas == null or !profesor.asignaturas.contains(nota.asignatura)}">
+                            Solo lectura
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td>Promedio asignatura</td>
+                    <td th:text="${#numbers.formatDecimal(resumen.promedio, 1, 1)}"></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
 
     <br>
 
-    <a th:if="${profesor != null}" th:href="@{/profesor/{id}/alumnos(id=${profesor.uid})}">
-        Volver a alumnos
+    <a th:if="${curso != null}"
+        th:href="@{/profesor/{profesorId}/cursos/{cursoId}/alumnos(profesorId=${profesor.uid}, cursoId=${curso.id})}">
+        Volver al curso
+    </a>
+
+    <a th:if="${curso == null}" th:href="@{/profesor/{id}/cursos(id=${profesor.uid})}">
+        Volver a cursos
     </a>
 
 </body>

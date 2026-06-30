@@ -42,7 +42,7 @@
 
 <ul>
     <li>
-        <a th:href="@{/profesor/{id}/alumnos(id=${profesor.uid})}">
+        <a th:href="@{/profesor/{id}/cursos(id=${profesor.uid})}">
             Gestionar notas
         </a>
     </li>
@@ -53,6 +53,36 @@
         </a>
     </li>
 </ul>
+
+<hr>
+
+<h2>Anuncios recientes</h2>
+
+<p th:if="${anuncios == null or #lists.isEmpty(anuncios)}">
+    No hay anuncios publicados.
+</p>
+
+<table th:if="${anuncios != null and !#lists.isEmpty(anuncios)}" border="1">
+    <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Asignatura</th>
+            <th>Profesor</th>
+            <th>Mensaje</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr th:each="anuncio : ${anuncios}">
+            <td th:text="${anuncio.titulo}"></td>
+            <td th:text="${anuncio.asignatura != null ? anuncio.asignatura.nombre : 'General'}"></td>
+            <td th:text="${anuncio.profesorNombre}"></td>
+            <td th:text="${anuncio.mensaje}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
 
 <form th:action="@{/logout}" method="post">
     <button type="submit">Cerrar sesion</button>
