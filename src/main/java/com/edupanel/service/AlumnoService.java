@@ -1,9 +1,7 @@
 package com.edupanel.service;
 
 import com.edupanel.exception.AlumnoInvalidoException;
-import com.edupanel.exception.CalificacionInvalidaException;
 import com.edupanel.model.Alumno;
-import com.edupanel.model.Calificacion;
 import com.edupanel.model.Rol;
 import com.edupanel.repository.AlumnoRepository;
 import java.util.ArrayList;
@@ -58,24 +56,6 @@ public class AlumnoService {
         return null;
     }
 
-    public void agregarCalificacion(String alumnoId, Calificacion calificacion) {
-        validarCalificacion(calificacion);
-
-        Alumno alumno = buscarPorId(alumnoId);
-
-        if (alumno != null) {
-            if (alumno.getNotas() == null) {
-                alumno.setNotas(new ArrayList<>());
-            }
-
-            calificacion.setId(UUID.randomUUID().toString());
-            calificacion.setAlumnoId(alumnoId);
-
-            alumno.getNotas().add(calificacion);
-            alumnoRepository.actualizar(alumno);
-        }
-    }
-
     public void eliminarAlumno(String uid) {
         alumnoRepository.eliminar(uid);
     }
@@ -99,44 +79,6 @@ public class AlumnoService {
         }
     }
 
-    public Calificacion buscarCalificacionPorId(String alumnoId, String notaId) {
-        Alumno alumno = buscarPorId(alumnoId);
-
-        if (alumno != null && alumno.getNotas() != null) {
-            for (Calificacion calificacion : alumno.getNotas()) {
-                if (calificacion.getId().equals(notaId)) {
-                    return calificacion;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public void actualizarCalificacion(String alumnoId, String notaId, Calificacion datosActualizados) {
-        validarCalificacion(datosActualizados);
-
-        Calificacion calificacionExistente = buscarCalificacionPorId(alumnoId, notaId);
-
-        if (calificacionExistente != null) {
-            calificacionExistente.setAsignatura(datosActualizados.getAsignatura());
-            calificacionExistente.setNota(datosActualizados.getNota());
-            calificacionExistente.setDescripcion(datosActualizados.getDescripcion());
-
-            Alumno alumno = buscarPorId(alumnoId);
-            alumnoRepository.actualizar(alumno);
-        }
-    }
-
-    public void eliminarCalificacion(String alumnoId, String notaId) {
-        Alumno alumno = buscarPorId(alumnoId);
-
-        if (alumno != null && alumno.getNotas() != null) {
-            alumno.getNotas().removeIf(calificacion -> calificacion.getId().equals(notaId));
-            alumnoRepository.actualizar(alumno);
-        }
-    }
-
     private void validarAlumno(Alumno alumno) {
         if (alumno.getNombre() == null || alumno.getNombre().isBlank()) {
             throw new AlumnoInvalidoException("El nombre del alumno es obligatorio.");
@@ -155,17 +97,4 @@ public class AlumnoService {
         }
     }
 
-    private void validarCalificacion(Calificacion calificacion) {
-        if (calificacion.getAsignatura() == null) {
-            throw new CalificacionInvalidaException("Debe seleccionar una asignatura.");
-        }
-
-        if (calificacion.getNota() < 1.0 || calificacion.getNota() > 7.0) {
-            throw new CalificacionInvalidaException("La nota debe estar entre 1.0 y 7.0.");
-        }
-
-        if (calificacion.getDescripcion() == null || calificacion.getDescripcion().isBlank()) {
-            throw new CalificacionInvalidaException("La descripcion de la nota es obligatoria.");
-        }
-    }
 }
