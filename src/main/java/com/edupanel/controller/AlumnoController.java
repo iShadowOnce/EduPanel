@@ -1,6 +1,7 @@
 package com.edupanel.controller;
 
 import com.edupanel.service.AlumnoService;
+import com.edupanel.service.CalificacionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.edupanel.model.Calificacion;
+import com.edupanel.model.Alumno;
 import com.edupanel.service.AnuncioService;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edupanel.exception.CalificacionInvalidaException;
 
@@ -36,15 +41,18 @@ public class AlumnoController {
     private final AnuncioService anuncioService;
     private final ProfesorService profesorService;
     private final CursoService cursoService;
+    private final CalificacionService calificacionService;
 
     public AlumnoController(AlumnoService alumnoService,
             AnuncioService anuncioService,
             ProfesorService profesorService,
-            CursoService cursoService) {
+            CursoService cursoService,
+            CalificacionService calificacionService) {
         this.alumnoService = alumnoService;
         this.anuncioService = anuncioService;
         this.profesorService = profesorService;
         this.cursoService = cursoService;
+        this.calificacionService = calificacionService;
     }
 
     @GetMapping("/alumno/{id}/dashboard")
@@ -60,8 +68,9 @@ public class AlumnoController {
     @GetMapping("/alumno/{id}/notas")
     public String verNotasAlumnoComoAlumno(@PathVariable String id, Model model) {
         Curso curso = cursoService.buscarCursoPorAlumnoId(id);
+        Alumno alumno = buscarAlumnoConNotas(id);
 
-        model.addAttribute("alumno", alumnoService.buscarPorId(id));
+        model.addAttribute("alumno", alumno);
         model.addAttribute("curso", curso);
 
         return "alumno/notas";
@@ -93,9 +102,10 @@ public class AlumnoController {
             @PathVariable String alumnoId,
             Model model) {
         Profesor profesor = profesorService.buscarPorId(profesorId);
+        Alumno alumno = buscarAlumnoConNotas(alumnoId);
 
         model.addAttribute("profesor", profesor);
-        model.addAttribute("alumno", alumnoService.buscarPorId(alumnoId));
+        model.addAttribute("alumno", alumno);
         model.addAttribute("nuevaCalificacion", new Calificacion());
         model.addAttribute("asignaturas", profesor.getAsignaturas());
 
@@ -108,7 +118,7 @@ public class AlumnoController {
             @ModelAttribute Calificacion nuevaCalificacion,
             Model model) {
         try {
-            alumnoService.agregarCalificacion(alumnoId, nuevaCalificacion);
+            calificacionService.guardar(alumnoId, nuevaCalificacion);
 
             return "redirect:/profesor/" + profesorId + "/alumnos/" + alumnoId + "/notas";
 
@@ -117,7 +127,7 @@ public class AlumnoController {
 
             model.addAttribute("error", e.getMessage());
             model.addAttribute("profesor", profesor);
-            model.addAttribute("alumno", alumnoService.buscarPorId(alumnoId));
+            model.addAttribute("alumno", buscarAlumnoConNotas(alumnoId));
             model.addAttribute("nuevaCalificacion", nuevaCalificacion);
             model.addAttribute("asignaturas", profesor.getAsignaturas());
 
@@ -131,10 +141,17 @@ public class AlumnoController {
             @PathVariable String notaId,
             Model model) {
         Profesor profesor = profesorService.buscarPorId(profesorId);
+        Alumno alumno = buscarAlumnoConNotas(alumnoId);
+        Calificacion calificacion = calificacionService.buscarPorId(alumnoId, notaId);
+
+        if (calificacion == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La nota indicada no existe.");
+        }
 
         model.addAttribute("profesor", profesor);
-        model.addAttribute("alumno", alumnoService.buscarPorId(alumnoId));
-        model.addAttribute("calificacion", alumnoService.buscarCalificacionPorId(alumnoId, notaId));
+        model.addAttribute("alumno", alumno);
+        model.addAttribute("calificacion", calificacion);
+        model.addAttribute("asignaturas", profesor.getAsignaturas());
 
         return "profesor/editar-nota";
     }
@@ -146,7 +163,7 @@ public class AlumnoController {
             @ModelAttribute Calificacion calificacionActualizada,
             Model model) {
         try {
-            alumnoService.actualizarCalificacion(alumnoId, notaId, calificacionActualizada);
+            calificacionService.actualizar(alumnoId, notaId, calificacionActualizada);
             return "redirect:/profesor/" + profesorId + "/alumnos/" + alumnoId + "/notas";
 
         } catch (CalificacionInvalidaException e) {
@@ -154,7 +171,8 @@ public class AlumnoController {
 
             model.addAttribute("error", e.getMessage());
             model.addAttribute("profesor", profesor);
-            model.addAttribute("alumno", alumnoService.buscarPorId(alumnoId));
+            model.addAttribute("alumno", buscarAlumnoConNotas(alumnoId));
+            model.addAttribute("asignaturas", profesor.getAsignaturas());
 
             calificacionActualizada.setId(notaId);
             calificacionActualizada.setAlumnoId(alumnoId);
@@ -168,10 +186,25 @@ public class AlumnoController {
     @PostMapping("/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/eliminar")
     public String eliminarNotaComoProfesor(@PathVariable String profesorId,
             @PathVariable String alumnoId,
-            @PathVariable String notaId) {
+            @PathVariable String notaId,
+            RedirectAttributes redirectAttributes) {
 
-        alumnoService.eliminarCalificacion(alumnoId, notaId);
+        try {
+            calificacionService.eliminar(alumnoId, notaId);
+        } catch (CalificacionInvalidaException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
 
         return "redirect:/profesor/" + profesorId + "/alumnos/" + alumnoId + "/notas";
+    }
+
+    private Alumno buscarAlumnoConNotas(String alumnoId) {
+        Alumno alumno = alumnoService.buscarPorId(alumnoId);
+        if (alumno == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El alumno indicado no existe.");
+        }
+
+        alumno.setNotas(calificacionService.listarPorAlumno(alumnoId));
+        return alumno;
     }
 }
