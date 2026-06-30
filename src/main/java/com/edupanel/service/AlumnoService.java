@@ -13,13 +13,22 @@ import org.springframework.stereotype.Service;
 public class AlumnoService {
 
     private final AlumnoRepository alumnoRepository;
+    private final CalificacionService calificacionService;
 
-    public AlumnoService(AlumnoRepository alumnoRepository) {
+    public AlumnoService(AlumnoRepository alumnoRepository,
+            CalificacionService calificacionService) {
         this.alumnoRepository = alumnoRepository;
+        this.calificacionService = calificacionService;
     }
 
     public List<Alumno> listarAlumnos() {
-        return alumnoRepository.listarTodos();
+        List<Alumno> alumnos = alumnoRepository.listarTodos();
+
+        for (Alumno alumno : alumnos) {
+            alumno.setNotas(calificacionService.listarPorAlumno(alumno.getUid()));
+        }
+
+        return alumnos;
     }
 
     public void guardarAlumno(Alumno alumno) {
