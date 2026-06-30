@@ -54,6 +54,7 @@
                 <th>RUT</th>
                 <th>Email</th>
                 <th>Estado en el curso</th>
+                <th>Notas</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -73,6 +74,17 @@
 
                     <span th:if="${!curso.alumnosIds.contains(alumno.uid)}">
                         No asignado
+                    </span>
+                </td>
+
+                <td>
+                    <a th:if="${curso.alumnosIds.contains(alumno.uid)}"
+                        th:href="@{/profesor-jefe/cursos/{cursoId}/alumnos/{alumnoId}/notas(cursoId=${curso.id}, alumnoId=${alumno.uid})}">
+                        Gestionar notas
+                    </a>
+
+                    <span th:if="${!curso.alumnosIds.contains(alumno.uid)}">
+                        Asignar primero
                     </span>
                 </td>
 
