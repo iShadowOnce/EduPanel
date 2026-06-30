@@ -86,6 +86,8 @@ public class CalificacionFirebaseRepository extends FirebaseRepositorySupport im
         Map<String, Object> datos = new HashMap<>();
         datos.put("id", calificacion.getId());
         datos.put("alumnoId", calificacion.getAlumnoId());
+        datos.put("nombre", calificacion.getNombre());
+        datos.put("rut", calificacion.getRut());
         datos.put("asignatura", calificacion.getAsignatura().name());
         datos.put("nota", calificacion.getNota());
         datos.put("descripcion", calificacion.getDescripcion());
@@ -104,6 +106,8 @@ public class CalificacionFirebaseRepository extends FirebaseRepositorySupport im
             Calificacion calificacion = new Calificacion();
             calificacion.setId(snapshot.child("id").getValue(String.class));
             calificacion.setAlumnoId(snapshot.child("alumnoId").getValue(String.class));
+            calificacion.setNombre(snapshot.child("nombre").getValue(String.class));
+            calificacion.setRut(snapshot.child("rut").getValue(String.class));
             calificacion.setAsignatura(Asignatura.valueOf(asignatura));
             calificacion.setNota(nota);
             calificacion.setDescripcion(snapshot.child("descripcion").getValue(String.class));

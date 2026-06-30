@@ -11,6 +11,8 @@ public class Calificacion {
 
     private String id;
     private String alumnoId;
+    private String nombre;
+    private String rut;
     private Asignatura asignatura;
     private double nota;
     private String descripcion;
