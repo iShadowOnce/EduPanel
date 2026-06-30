@@ -4,8 +4,10 @@ import com.edupanel.exception.CalificacionInvalidaException;
 import com.edupanel.model.Alumno;
 import com.edupanel.model.Asignatura;
 import com.edupanel.model.Calificacion;
+import com.edupanel.model.Profesor;
 import com.edupanel.repository.AlumnoRepository;
 import com.edupanel.repository.CalificacionRepository;
+import com.edupanel.repository.ProfesorRepository;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -16,11 +18,14 @@ public class CalificacionService {
 
     private final CalificacionRepository calificacionRepository;
     private final AlumnoRepository alumnoRepository;
+    private final ProfesorRepository profesorRepository;
 
     public CalificacionService(CalificacionRepository calificacionRepository,
-            AlumnoRepository alumnoRepository) {
+            AlumnoRepository alumnoRepository,
+            ProfesorRepository profesorRepository) {
         this.calificacionRepository = calificacionRepository;
         this.alumnoRepository = alumnoRepository;
+        this.profesorRepository = profesorRepository;
     }
 
     public List<Calificacion> listarPorAlumno(String alumnoId) {
@@ -39,21 +44,23 @@ public class CalificacionService {
         return calificacionRepository.listarPorAsignatura(asignatura);
     }
 
-    public Calificacion buscarPorId(String alumnoId, String notaId) {
+    public Calificacion buscarPorId(String profesorId, String alumnoId, String notaId) {
         Alumno alumno = obtenerAlumnoExistente(alumnoId);
         validarIdentificador(notaId);
         Calificacion calificacion = calificacionRepository.buscarPorId(alumnoId, notaId);
 
         if (calificacion != null) {
+            validarProfesorPuedeGestionar(profesorId, calificacion.getAsignatura());
             completarDatosAlumno(calificacion, alumno);
         }
 
         return calificacion;
     }
 
-    public void guardar(String alumnoId, Calificacion calificacion) {
+    public void guardar(String profesorId, String alumnoId, Calificacion calificacion) {
         Alumno alumno = obtenerAlumnoExistente(alumnoId);
         validarCalificacion(calificacion);
+        validarProfesorPuedeGestionar(profesorId, calificacion.getAsignatura());
 
         calificacion.setId(UUID.randomUUID().toString());
         calificacion.setAlumnoId(alumnoId);
@@ -64,7 +71,10 @@ public class CalificacionService {
         sincronizarNotasAlumno(alumno, calificacionRepository.listarPorAlumno(alumnoId));
     }
 
-    public void actualizar(String alumnoId, String notaId, Calificacion datosActualizados) {
+    public void actualizar(String profesorId,
+            String alumnoId,
+            String notaId,
+            Calificacion datosActualizados) {
         Alumno alumno = obtenerAlumnoExistente(alumnoId);
         validarIdentificador(notaId);
         validarCalificacion(datosActualizados);
@@ -73,6 +83,9 @@ public class CalificacionService {
         if (existente == null) {
             throw new CalificacionInvalidaException("La nota indicada no existe.");
         }
+
+        validarProfesorPuedeGestionar(profesorId, existente.getAsignatura());
+        validarProfesorPuedeGestionar(profesorId, datosActualizados.getAsignatura());
 
         existente.setAsignatura(datosActualizados.getAsignatura());
         existente.setNota(datosActualizados.getNota());
@@ -83,13 +96,16 @@ public class CalificacionService {
         sincronizarNotasAlumno(alumno, calificacionRepository.listarPorAlumno(alumnoId));
     }
 
-    public void eliminar(String alumnoId, String notaId) {
+    public void eliminar(String profesorId, String alumnoId, String notaId) {
         Alumno alumno = obtenerAlumnoExistente(alumnoId);
         validarIdentificador(notaId);
 
-        if (calificacionRepository.buscarPorId(alumnoId, notaId) == null) {
+        Calificacion existente = calificacionRepository.buscarPorId(alumnoId, notaId);
+        if (existente == null) {
             throw new CalificacionInvalidaException("La nota indicada no existe.");
         }
+
+        validarProfesorPuedeGestionar(profesorId, existente.getAsignatura());
         calificacionRepository.eliminar(alumnoId, notaId);
         sincronizarNotasAlumno(alumno, calificacionRepository.listarPorAlumno(alumnoId));
     }
@@ -127,6 +143,21 @@ public class CalificacionService {
     private void sincronizarNotasAlumno(Alumno alumno, List<Calificacion> calificaciones) {
         alumno.setNotas(calificaciones);
         alumnoRepository.actualizar(alumno);
+    }
+
+    private void validarProfesorPuedeGestionar(String profesorId, Asignatura asignatura) {
+        Profesor profesor = profesorId == null || profesorId.isBlank()
+                ? null
+                : profesorRepository.buscarPorId(profesorId);
+
+        if (profesor == null) {
+            throw new CalificacionInvalidaException("El profesor indicado no existe.");
+        }
+
+        if (profesor.getAsignaturas() == null || !profesor.getAsignaturas().contains(asignatura)) {
+            throw new CalificacionInvalidaException(
+                    "No puede modificar una nota de una asignatura que no tiene asignada.");
+        }
     }
 
     private void validarIdentificador(String notaId) {

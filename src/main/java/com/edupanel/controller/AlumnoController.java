@@ -118,7 +118,7 @@ public class AlumnoController {
             @ModelAttribute Calificacion nuevaCalificacion,
             Model model) {
         try {
-            calificacionService.guardar(alumnoId, nuevaCalificacion);
+            calificacionService.guardar(profesorId, alumnoId, nuevaCalificacion);
 
             return "redirect:/profesor/" + profesorId + "/alumnos/" + alumnoId + "/notas";
 
@@ -139,10 +139,18 @@ public class AlumnoController {
     public String editarNotaComoProfesor(@PathVariable String profesorId,
             @PathVariable String alumnoId,
             @PathVariable String notaId,
-            Model model) {
+            Model model,
+            RedirectAttributes redirectAttributes) {
         Profesor profesor = profesorService.buscarPorId(profesorId);
         Alumno alumno = buscarAlumnoConNotas(alumnoId);
-        Calificacion calificacion = calificacionService.buscarPorId(alumnoId, notaId);
+        Calificacion calificacion;
+
+        try {
+            calificacion = calificacionService.buscarPorId(profesorId, alumnoId, notaId);
+        } catch (CalificacionInvalidaException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/profesor/" + profesorId + "/alumnos/" + alumnoId + "/notas";
+        }
 
         if (calificacion == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La nota indicada no existe.");
@@ -163,7 +171,7 @@ public class AlumnoController {
             @ModelAttribute Calificacion calificacionActualizada,
             Model model) {
         try {
-            calificacionService.actualizar(alumnoId, notaId, calificacionActualizada);
+            calificacionService.actualizar(profesorId, alumnoId, notaId, calificacionActualizada);
             return "redirect:/profesor/" + profesorId + "/alumnos/" + alumnoId + "/notas";
 
         } catch (CalificacionInvalidaException e) {
@@ -190,7 +198,7 @@ public class AlumnoController {
             RedirectAttributes redirectAttributes) {
 
         try {
-            calificacionService.eliminar(alumnoId, notaId);
+            calificacionService.eliminar(profesorId, alumnoId, notaId);
         } catch (CalificacionInvalidaException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
