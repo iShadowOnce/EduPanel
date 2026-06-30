@@ -42,7 +42,7 @@
     <h2>Lista de alumnos</h2>
 
     <p th:if="${alumnos == null or #lists.isEmpty(alumnos)}">
-        Todavía no hay alumnos registrados.
+        Todavia no hay alumnos registrados.
     </p>
 
     <table th:if="${alumnos != null and !#lists.isEmpty(alumnos)}" border="1">
@@ -108,7 +108,10 @@
     <br>
 
     <a href="/profesor-jefe/dashboard">Volver al panel</a>
+    <br>
     <a href="/profesor-jefe/cursos">Volver a cursos</a>
+    <br>
+    <a href="/profesor-jefe/alumnos">Ver alumnos registrados</a>
 
 </body>
 

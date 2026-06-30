@@ -8,6 +8,8 @@ import com.edupanel.model.Curso;
 import com.edupanel.service.AlumnoService;
 import com.edupanel.service.CalificacionService;
 import com.edupanel.service.CursoService;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +40,14 @@ public class CursoController {
         model.addAttribute("cursos", cursoService.listarCursos());
 
         return "admin/cursos";
+    }
+
+    @GetMapping("/profesor-jefe/alumnos")
+    public String verAlumnosRegistrados(Model model) {
+        model.addAttribute("alumnos", alumnoService.listarAlumnos());
+        model.addAttribute("cursoPorAlumnoId", crearMapaCursosPorAlumno());
+
+        return "admin/alumnos";
     }
 
     @GetMapping("/profesor-jefe/cursos/{cursoId}/alumnos")
@@ -205,5 +215,21 @@ public class CursoController {
                     HttpStatus.BAD_REQUEST,
                     "El alumno no pertenece al curso seleccionado.");
         }
+    }
+
+    private Map<String, Curso> crearMapaCursosPorAlumno() {
+        Map<String, Curso> cursoPorAlumnoId = new HashMap<>();
+
+        for (Curso curso : cursoService.listarCursos()) {
+            if (curso.getAlumnosIds() == null) {
+                continue;
+            }
+
+            for (String alumnoId : curso.getAlumnosIds()) {
+                cursoPorAlumnoId.put(alumnoId, curso);
+            }
+        }
+
+        return cursoPorAlumnoId;
     }
 }
