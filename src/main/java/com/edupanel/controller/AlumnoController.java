@@ -58,9 +58,11 @@ public class AlumnoController {
     @GetMapping("/alumno/{id}/dashboard")
     public String dashboardAlumno(@PathVariable String id, Model model) {
         Curso curso = cursoService.buscarCursoPorAlumnoId(id);
+        Alumno alumno = buscarAlumnoConNotas(id);
 
-        model.addAttribute("alumno", alumnoService.buscarPorId(id));
+        model.addAttribute("alumno", alumno);
         model.addAttribute("curso", curso);
+        model.addAttribute("anuncios", anuncioService.listarAnuncios());
 
         return "alumno/dashboard";
     }
@@ -72,6 +74,7 @@ public class AlumnoController {
 
         model.addAttribute("alumno", alumno);
         model.addAttribute("curso", curso);
+        model.addAttribute("resumenesAsignatura", calificacionService.resumirPorAsignatura(alumno.getNotas()));
 
         return "alumno/notas";
     }

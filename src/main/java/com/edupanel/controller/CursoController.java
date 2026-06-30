@@ -1,15 +1,15 @@
 package com.edupanel.controller;
 
-import com.edupanel.exception.CursoInvalidoException;
 import com.edupanel.model.Curso;
+import com.edupanel.service.AlumnoService;
 import com.edupanel.service.CursoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.edupanel.service.AlumnoService;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class CursoController {
@@ -25,36 +25,18 @@ public class CursoController {
     @GetMapping("/profesor-jefe/cursos")
     public String verCursos(Model model) {
         model.addAttribute("cursos", cursoService.listarCursos());
-        model.addAttribute("nuevoCurso", new Curso());
 
         return "admin/cursos";
     }
 
-    @PostMapping("/profesor-jefe/cursos/guardar")
-    public String guardarCurso(@ModelAttribute Curso nuevoCurso, Model model) {
-        try {
-            cursoService.guardarCurso(nuevoCurso);
-            return "redirect:/profesor-jefe/cursos";
-
-        } catch (CursoInvalidoException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("cursos", cursoService.listarCursos());
-            model.addAttribute("nuevoCurso", nuevoCurso);
-
-            return "admin/cursos";
-        }
-    }
-
-    @PostMapping("/profesor-jefe/cursos/{id}/eliminar")
-    public String eliminarCurso(@PathVariable String id) {
-        cursoService.eliminarCurso(id);
-
-        return "redirect:/profesor-jefe/cursos";
-    }
-
     @GetMapping("/profesor-jefe/cursos/{cursoId}/alumnos")
     public String gestionarAlumnosCurso(@PathVariable String cursoId, Model model) {
-        model.addAttribute("curso", cursoService.buscarPorId(cursoId));
+        Curso curso = cursoService.buscarPorId(cursoId);
+        if (curso == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El curso indicado no existe.");
+        }
+
+        model.addAttribute("curso", curso);
         model.addAttribute("alumnos", alumnoService.listarAlumnos());
 
         return "admin/curso-alumnos";

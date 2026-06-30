@@ -5,10 +5,14 @@ import com.edupanel.model.Alumno;
 import com.edupanel.model.Asignatura;
 import com.edupanel.model.Calificacion;
 import com.edupanel.model.Profesor;
+import com.edupanel.model.ResumenNotasAsignatura;
 import com.edupanel.repository.AlumnoRepository;
 import com.edupanel.repository.CalificacionRepository;
 import com.edupanel.repository.ProfesorRepository;
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,24 @@ public class CalificacionService {
         completarDatosAlumno(calificaciones, alumno);
         sincronizarNotasAlumno(alumno, calificaciones);
         return calificaciones;
+    }
+
+    public List<ResumenNotasAsignatura> resumirPorAsignatura(List<Calificacion> calificaciones) {
+        Map<Asignatura, ResumenNotasAsignatura> resumenes = new EnumMap<>(Asignatura.class);
+
+        for (Asignatura asignatura : Asignatura.values()) {
+            resumenes.put(asignatura, new ResumenNotasAsignatura(asignatura));
+        }
+
+        if (calificaciones != null) {
+            for (Calificacion calificacion : calificaciones) {
+                if (calificacion.getAsignatura() != null && resumenes.containsKey(calificacion.getAsignatura())) {
+                    resumenes.get(calificacion.getAsignatura()).agregar(calificacion);
+                }
+            }
+        }
+
+        return new ArrayList<>(resumenes.values());
     }
 
     public List<Calificacion> listarPorAsignatura(Asignatura asignatura) {

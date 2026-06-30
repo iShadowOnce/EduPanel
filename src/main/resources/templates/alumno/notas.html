@@ -32,8 +32,13 @@
         <strong th:text="${alumno.nombre + ' ' + alumno.apellido}"></strong>
     </p>
 
+    <p th:if="${curso != null}">
+        Curso:
+        <strong th:text="${curso.nombre}"></strong>
+    </p>
+
     <p>
-        Promedio:
+        Promedio general:
         <strong th:text="${#numbers.formatDecimal(alumno.calcularPromedio(), 1, 1)}"></strong>
     </p>
 
@@ -42,23 +47,38 @@
         <strong th:text="${alumno.obtenerEstadoAcademico()}"></strong>
     </p>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Asignatura</th>
-                <th>Nota</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
+    <hr>
 
-        <tbody>
-            <tr th:each="nota : ${alumno.notas}">
-                <td th:text="${nota.asignatura}"></td>
-                <td th:text="${nota.nota}"></td>
-                <td th:text="${nota.descripcion}"></td>
-            </tr>
-        </tbody>
-    </table>
+    <section th:each="resumen : ${resumenesAsignatura}">
+        <h2 th:text="${resumen.nombreAsignatura}"></h2>
+
+        <p th:if="${!resumen.tieneCalificaciones}">
+            Sin notas registradas.
+        </p>
+
+        <table th:if="${resumen.tieneCalificaciones}" border="1">
+            <thead>
+                <tr>
+                    <th>Nota</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="nota : ${resumen.calificaciones}">
+                    <td th:text="${#numbers.formatDecimal(nota.nota, 1, 1)}"></td>
+                    <td th:text="${nota.descripcion}"></td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td>Promedio asignatura</td>
+                    <td th:text="${#numbers.formatDecimal(resumen.promedio, 1, 1)}"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
 
     <br>
 

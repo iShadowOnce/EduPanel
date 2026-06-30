@@ -25,34 +25,21 @@
         </div>
     </header>
 
-    <h1>Gestión de cursos</h1>
+    <h1>Gestion de cursos</h1>
 
-    <h2>Crear curso</h2>
-
-    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
-
-    <form th:action="@{/profesor-jefe/cursos/guardar}" th:object="${nuevoCurso}" method="post">
-
-        <label>Nombre del curso:</label>
-        <input type="text" th:field="*{nombre}">
-        <br>
-
-        <button type="submit">Guardar curso</button>
-    </form>
-
-    <hr>
-
-    <h2>Lista de cursos</h2>
+    <p>
+        Los cursos son oficiales y van desde 1 Basico hasta 4 Medio.
+        Desde aqui solo se asignan o quitan alumnos.
+    </p>
 
     <p th:if="${cursos == null or #lists.isEmpty(cursos)}">
-        Todavía no hay cursos registrados.
+        No hay cursos disponibles.
     </p>
 
     <table th:if="${cursos != null and !#lists.isEmpty(cursos)}" border="1">
         <thead>
             <tr>
-                <th>UUID</th>
-                <th>Nombre</th>
+                <th>Curso</th>
                 <th>Alumnos asignados</th>
                 <th>Acciones</th>
             </tr>
@@ -60,20 +47,12 @@
 
         <tbody>
             <tr th:each="curso : ${cursos}">
-                <td th:text="${curso.id}"></td>
                 <td th:text="${curso.nombre}"></td>
                 <td th:text="${curso.alumnosIds.size()}"></td>
                 <td>
                     <a th:href="@{/profesor-jefe/cursos/{id}/alumnos(id=${curso.id})}">
                         Gestionar alumnos
                     </a>
-
-                    |
-
-                    <form th:action="@{/profesor-jefe/cursos/{id}/eliminar(id=${curso.id})}" method="post"
-                        style="display:inline;">
-                        <button type="submit">Eliminar</button>
-                    </form>
                 </td>
             </tr>
         </tbody>

@@ -1,12 +1,22 @@
 package com.edupanel.model;
 
 public enum Asignatura {
-    LENGUAJE,
-    MATEMATICAS,
-    CIENCIAS_NATURALES,
-    INGLES,
-    HISTORIA,
-    ARTES,
-    EDUCACION_FISICA,
-    MUSICA
+    LENGUAJE("Lenguaje"),
+    MATEMATICAS("Matematicas"),
+    CIENCIAS_NATURALES("Ciencias Naturales"),
+    INGLES("Ingles"),
+    HISTORIA("Historia"),
+    ARTES("Artes"),
+    EDUCACION_FISICA("Educacion Fisica"),
+    MUSICA("Musica");
+
+    private final String nombre;
+
+    Asignatura(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
 }
