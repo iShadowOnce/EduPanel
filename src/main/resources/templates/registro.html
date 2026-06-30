@@ -65,7 +65,11 @@
                         class="auth-control"
                         type="text"
                         th:field="*{rut}"
-                        placeholder="Ej. 12.345.678-9"
+                        placeholder="Ej. 12.345.678-5"
+                        maxlength="12"
+                        pattern="(?:[0-9]{1,8}|[0-9]{1,3}(?:\.[0-9]{3}){1,2})-?[0-9kK]"
+                        title="Ingresa hasta 8 numeros y un digito verificador; se acepta K o k"
+                        autocapitalize="characters"
                         required>
                 </div>
 

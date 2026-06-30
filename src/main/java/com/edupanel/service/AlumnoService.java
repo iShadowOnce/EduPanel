@@ -4,6 +4,7 @@ import com.edupanel.exception.AlumnoInvalidoException;
 import com.edupanel.model.Alumno;
 import com.edupanel.model.Rol;
 import com.edupanel.repository.AlumnoRepository;
+import com.edupanel.util.RutUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -97,8 +98,10 @@ public class AlumnoService {
             throw new AlumnoInvalidoException("El apellido del alumno es obligatorio.");
         }
 
-        if (alumno.getRut() == null || alumno.getRut().isBlank()) {
-            throw new AlumnoInvalidoException("El RUT del alumno es obligatorio.");
+        try {
+            alumno.setRut(RutUtils.normalizar(alumno.getRut()));
+        } catch (IllegalArgumentException e) {
+            throw new AlumnoInvalidoException(e.getMessage());
         }
 
         if (alumno.getEmail() == null || alumno.getEmail().isBlank()) {

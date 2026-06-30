@@ -1,6 +1,7 @@
 package com.edupanel.auth;
 
 import com.edupanel.model.Usuario;
+import com.edupanel.util.RutUtils;
 
 public final class RegistroUsuarioValidator {
 
@@ -16,9 +17,7 @@ public final class RegistroUsuarioValidator {
             throw new IllegalArgumentException("El apellido es obligatorio.");
         }
 
-        if (usuario.getRut() == null || usuario.getRut().isBlank()) {
-            throw new IllegalArgumentException("El RUT es obligatorio.");
-        }
+        usuario.setRut(RutUtils.normalizar(usuario.getRut()));
 
         if (usuario.getEmail() == null || usuario.getEmail().isBlank()) {
             throw new IllegalArgumentException("El email es obligatorio.");

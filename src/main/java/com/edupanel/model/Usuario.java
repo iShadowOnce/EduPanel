@@ -1,5 +1,6 @@
 package com.edupanel.model;
 
+import com.edupanel.util.RutUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,10 @@ public abstract class Usuario {
     */
     private String password;
     private Rol rol = Rol.PENDIENTE;
+
+    public String getRutFormateado() {
+        return RutUtils.formatear(rut);
+    }
 
     public abstract String obtenerRutaDashboard();
 }
