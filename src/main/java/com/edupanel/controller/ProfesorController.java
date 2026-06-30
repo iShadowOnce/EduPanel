@@ -2,16 +2,18 @@ package com.edupanel.controller;
 
 import com.edupanel.exception.AnuncioInvalidoException;
 import com.edupanel.model.Anuncio;
-import com.edupanel.model.Asignatura;
 import com.edupanel.model.Profesor;
 import com.edupanel.service.AnuncioService;
 import com.edupanel.service.ProfesorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ProfesorController {
@@ -44,10 +46,9 @@ public class ProfesorController {
         Profesor profesor = profesorService.buscarPorId(profesorId);
 
         model.addAttribute("profesor", profesor);
-        model.addAttribute("anuncios", anuncioService.listarPorProfesor(profesorId));
+        model.addAttribute("anuncios", anuncioService.listarAnuncios());
         model.addAttribute("nuevoAnuncio", new Anuncio());
         model.addAttribute("asignaturas", profesor.getAsignaturas());
-        //model.addAttribute("asignaturas", Asignatura.values()); de esta forma veria todos los anuncios en memoria
 
         return "profesor/anuncios";
     }
@@ -70,7 +71,7 @@ public class ProfesorController {
 
             model.addAttribute("error", e.getMessage());
             model.addAttribute("profesor", profesor);
-            model.addAttribute("anuncios", anuncioService.listarPorProfesor(profesorId));
+            model.addAttribute("anuncios", anuncioService.listarAnuncios());
             model.addAttribute("nuevoAnuncio", nuevoAnuncio);
             model.addAttribute("asignaturas", profesor.getAsignaturas());
 
@@ -80,8 +81,13 @@ public class ProfesorController {
 
     @PostMapping("/profesor/{profesorId}/anuncios/{anuncioId}/eliminar")
     public String eliminarAnuncio(@PathVariable String profesorId,
-            @PathVariable String anuncioId) {
-        anuncioService.eliminarAnuncio(anuncioId);
+            @PathVariable String anuncioId,
+            RedirectAttributes redirectAttributes) {
+        try {
+            anuncioService.eliminarAnuncio(profesorId, anuncioId);
+        } catch (AnuncioInvalidoException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
 
         return "redirect:/profesor/" + profesorId + "/anuncios";
     }
@@ -89,9 +95,19 @@ public class ProfesorController {
     @GetMapping("/profesor/{profesorId}/anuncios/{anuncioId}/editar")
     public String editarAnuncio(@PathVariable String profesorId,
             @PathVariable String anuncioId,
-            Model model) {
+            Model model,
+            RedirectAttributes redirectAttributes) {
         Profesor profesor = profesorService.buscarPorId(profesorId);
         Anuncio anuncio = anuncioService.buscarPorId(anuncioId);
+
+        if (anuncio == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El anuncio indicado no existe.");
+        }
+
+        if (!profesorId.equals(anuncio.getProfesorId())) {
+            redirectAttributes.addFlashAttribute("error", "Solo puede editar sus propios anuncios.");
+            return "redirect:/profesor/" + profesorId + "/anuncios";
+        }
 
         model.addAttribute("profesor", profesor);
         model.addAttribute("anuncio", anuncio);
@@ -106,7 +122,7 @@ public class ProfesorController {
             @ModelAttribute Anuncio anuncioActualizado,
             Model model) {
         try {
-            anuncioService.actualizarAnuncio(anuncioId, anuncioActualizado);
+            anuncioService.actualizarAnuncio(profesorId, anuncioId, anuncioActualizado);
 
             return "redirect:/profesor/" + profesorId + "/anuncios";
 

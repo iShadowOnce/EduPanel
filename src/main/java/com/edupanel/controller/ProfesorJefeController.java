@@ -1,15 +1,23 @@
 package com.edupanel.controller;
 
+import com.edupanel.auth.AuthService;
+import com.edupanel.auth.SesionUsuario;
+import com.edupanel.exception.AnuncioInvalidoException;
+import com.edupanel.model.Anuncio;
 import com.edupanel.model.Rol;
+import com.edupanel.service.AnuncioService;
 import com.edupanel.service.CursoService;
 import com.edupanel.service.ProfesorService;
 import com.edupanel.service.UsuarioService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
 import com.edupanel.model.Asignatura;
 import com.edupanel.model.Profesor;
 
@@ -19,13 +27,16 @@ public class ProfesorJefeController {
     private final UsuarioService usuarioService;
     private final ProfesorService profesorService;
     private final CursoService cursoService;
+    private final AnuncioService anuncioService;
 
     public ProfesorJefeController(UsuarioService usuarioService,
             ProfesorService profesorService,
-            CursoService cursoService) {
+            CursoService cursoService,
+            AnuncioService anuncioService) {
         this.usuarioService = usuarioService;
         this.profesorService = profesorService;
         this.cursoService = cursoService;
+        this.anuncioService = anuncioService;
     }
 
     @GetMapping("/profesor-jefe/dashboard")
@@ -33,6 +44,7 @@ public class ProfesorJefeController {
         model.addAttribute("usuariosPendientesTotal", usuarioService.listarUsuariosPendientes().size());
         model.addAttribute("usuariosTotal", usuarioService.listarUsuarios().size());
         model.addAttribute("cursosTotal", cursoService.listarCursos().size());
+        model.addAttribute("anuncios", anuncioService.listarAnuncios());
         return "admin/dashboard";
     }
 
@@ -84,5 +96,102 @@ public class ProfesorJefeController {
         profesorService.quitarAsignatura(id, asignatura);
 
         return "redirect:/profesor-jefe/profesores/" + id + "/asignaturas";
+    }
+
+    @GetMapping("/profesor-jefe/anuncios")
+    public String verAnuncios(Model model) {
+        model.addAttribute("anuncios", anuncioService.listarAnuncios());
+        model.addAttribute("nuevoAnuncio", new Anuncio());
+        model.addAttribute("asignaturas", Asignatura.values());
+
+        return "admin/anuncios";
+    }
+
+    @PostMapping("/profesor-jefe/anuncios/guardar")
+    public String guardarAnuncio(@ModelAttribute Anuncio nuevoAnuncio,
+            HttpSession session,
+            Model model) {
+        try {
+            anuncioService.guardarAnuncioComoAdmin(
+                    nuevoAnuncio,
+                    obtenerAdministradorId(session),
+                    obtenerAdministradorNombre(session));
+
+            return "redirect:/profesor-jefe/anuncios";
+
+        } catch (AnuncioInvalidoException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("anuncios", anuncioService.listarAnuncios());
+            model.addAttribute("nuevoAnuncio", nuevoAnuncio);
+            model.addAttribute("asignaturas", Asignatura.values());
+
+            return "admin/anuncios";
+        }
+    }
+
+    @GetMapping("/profesor-jefe/anuncios/{anuncioId}/editar")
+    public String editarAnuncio(@PathVariable String anuncioId, Model model) {
+        Anuncio anuncio = anuncioService.buscarPorId(anuncioId);
+
+        if (anuncio == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El anuncio indicado no existe.");
+        }
+
+        model.addAttribute("anuncio", anuncio);
+        model.addAttribute("asignaturas", Asignatura.values());
+
+        return "admin/editar-anuncio";
+    }
+
+    @PostMapping("/profesor-jefe/anuncios/{anuncioId}/actualizar")
+    public String actualizarAnuncio(@PathVariable String anuncioId,
+            @ModelAttribute Anuncio anuncioActualizado,
+            Model model) {
+        try {
+            anuncioService.actualizarAnuncioComoAdmin(anuncioId, anuncioActualizado);
+
+            return "redirect:/profesor-jefe/anuncios";
+
+        } catch (AnuncioInvalidoException e) {
+            anuncioActualizado.setId(anuncioId);
+
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("anuncio", anuncioActualizado);
+            model.addAttribute("asignaturas", Asignatura.values());
+
+            return "admin/editar-anuncio";
+        }
+    }
+
+    @PostMapping("/profesor-jefe/anuncios/{anuncioId}/eliminar")
+    public String eliminarAnuncio(@PathVariable String anuncioId) {
+        anuncioService.eliminarAnuncioComoAdmin(anuncioId);
+
+        return "redirect:/profesor-jefe/anuncios";
+    }
+
+    private String obtenerAdministradorId(HttpSession session) {
+        SesionUsuario sesionUsuario = obtenerSesionUsuario(session);
+        return sesionUsuario == null ? "PROFESOR_JEFE" : sesionUsuario.getUid();
+    }
+
+    private String obtenerAdministradorNombre(HttpSession session) {
+        SesionUsuario sesionUsuario = obtenerSesionUsuario(session);
+
+        if (sesionUsuario == null) {
+            return "Profesor Jefe";
+        }
+
+        return sesionUsuario.getNombre() + " " + sesionUsuario.getApellido();
+    }
+
+    private SesionUsuario obtenerSesionUsuario(HttpSession session) {
+        Object usuarioSesion = session.getAttribute(AuthService.SESION_USUARIO);
+
+        if (usuarioSesion instanceof SesionUsuario sesionUsuario) {
+            return sesionUsuario;
+        }
+
+        return null;
     }
 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Editar Anuncio</title>
+    <title>Editar anuncio</title>
     <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
@@ -30,14 +30,14 @@
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
     <form
-        th:action="@{/profesor/{profesorId}/anuncios/{anuncioId}/actualizar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}"
+        th:action="@{/profesor-jefe/anuncios/{anuncioId}/actualizar(anuncioId=${anuncio.id})}"
         th:object="${anuncio}" method="post">
 
         <label>ID:</label>
         <input type="text" th:field="*{id}" readonly>
         <br>
 
-        <label>Título:</label>
+        <label>Titulo:</label>
         <input type="text" th:field="*{titulo}">
         <br>
 
@@ -47,7 +47,9 @@
 
         <label>Asignatura:</label>
         <select th:field="*{asignatura}">
-            <option th:each="asignatura : ${asignaturas}" th:value="${asignatura}" th:text="${asignatura.nombre}">
+            <option th:each="asignatura : ${asignaturas}"
+                th:value="${asignatura}"
+                th:text="${asignatura.nombre}">
             </option>
         </select>
         <br>
@@ -57,7 +59,7 @@
 
     <br>
 
-    <a th:href="@{/profesor/{id}/anuncios(id=${profesor.uid})}">
+    <a href="/profesor-jefe/anuncios">
         Volver a anuncios
     </a>
 

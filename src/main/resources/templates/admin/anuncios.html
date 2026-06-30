@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Anuncios</title>
+    <title>Gestion de anuncios</title>
     <link rel="stylesheet" th:href="@{/css/edupanel.css}">
 </head>
 
@@ -25,30 +25,13 @@
         </div>
     </header>
 
-    <h1>Anuncios</h1>
-
-    <p>
-        Profesor:
-        <strong th:text="${profesor.nombre + ' ' + profesor.apellido}"></strong>
-    </p>
-
-    <p>
-        Asignaturas asignadas:
-        <strong th:text="${profesor.asignaturas}"></strong>
-    </p>
-
-    <hr>
+    <h1>Gestion de anuncios</h1>
 
     <h2>Crear anuncio</h2>
 
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
-    <p th:if="${asignaturas == null or #lists.isEmpty(asignaturas)}" style="color:red;">
-        Este profesor no tiene asignaturas asignadas. No puede crear anuncios todavia.
-    </p>
-
-    <form th:if="${asignaturas != null and !#lists.isEmpty(asignaturas)}"
-        th:action="@{/profesor/{id}/anuncios/guardar(id=${profesor.uid})}"
+    <form th:action="@{/profesor-jefe/anuncios/guardar}"
         th:object="${nuevoAnuncio}"
         method="post">
 
@@ -99,25 +82,18 @@
                 <td th:text="${anuncio.asignatura != null ? anuncio.asignatura.nombre : 'General'}"></td>
                 <td th:text="${anuncio.profesorNombre}"></td>
                 <td th:text="${anuncio.fechaPublicacion}"></td>
-
                 <td>
-                    <span th:if="${anuncio.profesorId == profesor.uid}">
-                        <a th:href="@{/profesor/{profesorId}/anuncios/{anuncioId}/editar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}">
-                            Editar
-                        </a>
+                    <a th:href="@{/profesor-jefe/anuncios/{anuncioId}/editar(anuncioId=${anuncio.id})}">
+                        Editar
+                    </a>
 
-                        |
+                    |
 
-                        <form th:action="@{/profesor/{profesorId}/anuncios/{anuncioId}/eliminar(profesorId=${profesor.uid}, anuncioId=${anuncio.id})}"
-                            method="post"
-                            style="display:inline;">
-                            <button type="submit">Eliminar</button>
-                        </form>
-                    </span>
-
-                    <span th:if="${anuncio.profesorId != profesor.uid}">
-                        Solo lectura
-                    </span>
+                    <form th:action="@{/profesor-jefe/anuncios/{anuncioId}/eliminar(anuncioId=${anuncio.id})}"
+                        method="post"
+                        style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
@@ -125,9 +101,7 @@
 
     <br>
 
-    <a th:href="@{/profesor/{id}/dashboard(id=${profesor.uid})}">
-        Volver al dashboard
-    </a>
+    <a href="/profesor-jefe/dashboard">Volver al panel</a>
 
 </body>
 
