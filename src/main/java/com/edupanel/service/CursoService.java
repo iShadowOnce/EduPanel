@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -53,25 +54,38 @@ public class CursoService {
     public void asignarAlumnoACurso(String cursoId, String alumnoId) {
         Curso curso = buscarPorId(cursoId);
 
-        if (curso != null) {
-            if (curso.getAlumnosIds() == null) {
-                curso.setAlumnosIds(new ArrayList<>());
-            }
-
-            if (!curso.getAlumnosIds().contains(alumnoId)) {
-                curso.getAlumnosIds().add(alumnoId);
-            }
-
-            cursoRepository.actualizar(curso);
+        if (curso == null) {
+            return;
         }
+
+        // Un alumno solo puede pertenecer a un curso. Al reasignarlo, se eliminan
+        for (Curso otroCurso : cursoRepository.listarTodos()) {
+            if (Objects.equals(otroCurso.getId(), cursoId)
+                    || otroCurso.getAlumnosIds() == null) {
+                continue;
+            }
+
+            if (otroCurso.getAlumnosIds().removeIf(alumnoId::equals)) {
+                cursoRepository.actualizar(otroCurso);
+            }
+        }
+
+        if (curso.getAlumnosIds() == null) {
+            curso.setAlumnosIds(new ArrayList<>());
+        }
+
+        curso.getAlumnosIds().removeIf(alumnoId::equals);
+        curso.getAlumnosIds().add(alumnoId);
+        cursoRepository.actualizar(curso);
     }
 
     public void quitarAlumnoDeCurso(String cursoId, String alumnoId) {
         Curso curso = buscarPorId(cursoId);
 
         if (curso != null && curso.getAlumnosIds() != null) {
-            curso.getAlumnosIds().remove(alumnoId);
-            cursoRepository.actualizar(curso);
+            if (curso.getAlumnosIds().removeIf(alumnoId::equals)) {
+                cursoRepository.actualizar(curso);
+            }
         }
     }
 
