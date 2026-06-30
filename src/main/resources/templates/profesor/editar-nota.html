@@ -44,14 +44,10 @@
 
         <label>Asignatura:</label>
         <select th:field="*{asignatura}">
-            <option value="MATEMATICAS">Matemáticas</option>
-            <option value="LENGUAJE">Lenguaje</option>
-            <option value="CIENCIAS_NATURALES">Ciencias Naturales</option>
-            <option value="INGLES">Inglés</option>
-            <option value="HISTORIA">Historia</option>
-            <option value="ARTES">Artes</option>
-            <option value="EDUCACION_FISICA">Educación Física</option>
-            <option value="MUSICA">Música</option>
+            <option th:each="asignatura : ${asignaturas}"
+                th:value="${asignatura}"
+                th:text="${asignatura}">
+            </option>
         </select>
         <br>
 
