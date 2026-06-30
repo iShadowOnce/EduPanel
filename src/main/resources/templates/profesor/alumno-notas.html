@@ -33,7 +33,7 @@
     </p>
     <p>
         Promedio:
-        <strong th:text="${alumno.calcularPromedio()}"></strong>
+        <strong th:text="${#numbers.formatDecimal(alumno.calcularPromedio(), 1, 1)}"></strong>
     </p>
     <p>
         Estado:
@@ -89,18 +89,24 @@
                 <td th:text="${nota.nota}"></td>
                 <td th:text="${nota.descripcion}"></td>
                 <td>
-                    <a
-                        th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/editar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}">
-                        Editar
-                    </a>
+                    <span th:if="${profesor.asignaturas != null and profesor.asignaturas.contains(nota.asignatura)}">
+                        <a
+                            th:href="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/editar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}">
+                            Editar
+                        </a>
 
-                    |
+                        |
 
-                    <form
-                        th:action="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/eliminar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}"
-                        method="post" style="display:inline;">
-                        <button type="submit">Eliminar</button>
-                    </form>
+                        <form
+                            th:action="@{/profesor/{profesorId}/alumnos/{alumnoId}/notas/{notaId}/eliminar(profesorId=${profesor.uid}, alumnoId=${alumno.uid}, notaId=${nota.id})}"
+                            method="post" style="display:inline;">
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </span>
+
+                    <span th:if="${profesor.asignaturas == null or !profesor.asignaturas.contains(nota.asignatura)}">
+                        Solo lectura
+                    </span>
                 </td>
             </tr>
         </tbody>

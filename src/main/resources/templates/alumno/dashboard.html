@@ -34,7 +34,7 @@
 
     <p>
         Promedio actual:
-        <strong th:text="${alumno.calcularPromedio()}"></strong>
+        <strong th:text="${#numbers.formatDecimal(alumno.calcularPromedio(), 1, 1)}"></strong>
     </p>
 
     <p>

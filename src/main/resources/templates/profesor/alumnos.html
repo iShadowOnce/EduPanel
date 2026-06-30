@@ -50,7 +50,7 @@
                 <td th:text="${alumno.apellido}"></td>
                 <td th:text="${alumno.rut}"></td>
                 <td th:text="${alumno.email}"></td>
-                <td th:text="${alumno.calcularPromedio()}"></td>
+                <td th:text="${#numbers.formatDecimal(alumno.calcularPromedio(), 1, 1)}"></td>
                 <td th:text="${alumno.obtenerEstadoAcademico()}"></td>
                 <td>
                     <a th:if="${profesor != null}"
