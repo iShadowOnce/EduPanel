@@ -6,7 +6,9 @@ import com.edupanel.repository.CalificacionRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +26,13 @@ public class CalificacionFirebaseRepository extends FirebaseRepositorySupport im
         esperar(calificaciones()
                 .child(calificacion.getAlumnoId())
                 .child(calificacion.getId())
-                .setValueAsync(calificacion));
+                .setValueAsync(convertirParaFirebase(calificacion)));
+    }
+
+    @Override
+    public Calificacion buscarPorId(String alumnoId, String id) {
+        DataSnapshot snapshot = leer(calificaciones().child(alumnoId).child(id));
+        return snapshot.exists() ? convertirDesdeFirebase(snapshot) : null;
     }
 
     @Override
@@ -33,7 +41,7 @@ public class CalificacionFirebaseRepository extends FirebaseRepositorySupport im
         List<Calificacion> calificacionesAlumno = new ArrayList<>();
 
         for (DataSnapshot hijo : snapshot.getChildren()) {
-            Calificacion calificacion = hijo.getValue(Calificacion.class);
+            Calificacion calificacion = convertirDesdeFirebase(hijo);
 
             if (calificacion != null) {
                 calificacionesAlumno.add(calificacion);
@@ -50,7 +58,7 @@ public class CalificacionFirebaseRepository extends FirebaseRepositorySupport im
 
         for (DataSnapshot porAlumno : snapshot.getChildren()) {
             for (DataSnapshot hijo : porAlumno.getChildren()) {
-                Calificacion calificacion = hijo.getValue(Calificacion.class);
+                Calificacion calificacion = convertirDesdeFirebase(hijo);
 
                 if (calificacion != null && calificacion.getAsignatura() == asignatura) {
                     calificacionesFiltradas.add(calificacion);
@@ -66,18 +74,42 @@ public class CalificacionFirebaseRepository extends FirebaseRepositorySupport im
         esperar(calificaciones()
                 .child(calificacionActualizada.getAlumnoId())
                 .child(calificacionActualizada.getId())
-                .setValueAsync(calificacionActualizada));
+                .setValueAsync(convertirParaFirebase(calificacionActualizada)));
     }
 
     @Override
-    public void eliminar(String id) {
-        DataSnapshot snapshot = leer(calificaciones());
+    public void eliminar(String alumnoId, String id) {
+        esperar(calificaciones().child(alumnoId).child(id).removeValueAsync());
+    }
 
-        for (DataSnapshot porAlumno : snapshot.getChildren()) {
-            if (porAlumno.hasChild(id)) {
-                esperar(calificaciones().child(porAlumno.getKey()).child(id).removeValueAsync());
-                return;
-            }
+    private Map<String, Object> convertirParaFirebase(Calificacion calificacion) {
+        Map<String, Object> datos = new HashMap<>();
+        datos.put("id", calificacion.getId());
+        datos.put("alumnoId", calificacion.getAlumnoId());
+        datos.put("asignatura", calificacion.getAsignatura().name());
+        datos.put("nota", calificacion.getNota());
+        datos.put("descripcion", calificacion.getDescripcion());
+        return datos;
+    }
+
+    private Calificacion convertirDesdeFirebase(DataSnapshot snapshot) {
+        String asignatura = snapshot.child("asignatura").getValue(String.class);
+        Double nota = snapshot.child("nota").getValue(Double.class);
+
+        if (asignatura == null || nota == null) {
+            return null;
+        }
+
+        try {
+            Calificacion calificacion = new Calificacion();
+            calificacion.setId(snapshot.child("id").getValue(String.class));
+            calificacion.setAlumnoId(snapshot.child("alumnoId").getValue(String.class));
+            calificacion.setAsignatura(Asignatura.valueOf(asignatura));
+            calificacion.setNota(nota);
+            calificacion.setDescripcion(snapshot.child("descripcion").getValue(String.class));
+            return calificacion;
+        } catch (IllegalArgumentException e) {
+            return null;
         }
     }
 }
